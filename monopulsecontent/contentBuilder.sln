@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "contentBuilder", "monopulsecontent\monopulsecontent\contentBuilder.csproj", "{6C25AF70-B526-4EBC-9172-0AA867AABDD9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "contentBuilderContent", "monopulsecontent\monopulsecontentContent\contentBuilderContent.contentproj", "{79A30117-B269-4B67-A8A8-3E88D33499E7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C25AF70-B526-4EBC-9172-0AA867AABDD9}.Debug|x86.ActiveCfg = Debug|x86
+		{6C25AF70-B526-4EBC-9172-0AA867AABDD9}.Debug|x86.Build.0 = Debug|x86
+		{6C25AF70-B526-4EBC-9172-0AA867AABDD9}.Release|x86.ActiveCfg = Release|x86
+		{6C25AF70-B526-4EBC-9172-0AA867AABDD9}.Release|x86.Build.0 = Release|x86
+		{79A30117-B269-4B67-A8A8-3E88D33499E7}.Debug|x86.ActiveCfg = Debug|x86
+		{79A30117-B269-4B67-A8A8-3E88D33499E7}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
