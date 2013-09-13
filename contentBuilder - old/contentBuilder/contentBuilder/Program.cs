@@ -1,6 +1,6 @@
 using System;
 
-namespace ContentBuilder
+namespace monopulsecontent
 {
 #if WINDOWS || XBOX
     static class Program

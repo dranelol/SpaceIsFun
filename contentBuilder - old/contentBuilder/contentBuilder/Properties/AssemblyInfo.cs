@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ContentBuilder")]
-[assembly: AssemblyProduct("ContentBuilder")]
+[assembly: AssemblyTitle("monopulsecontent")]
+[assembly: AssemblyProduct("monopulsecontent")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2013")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 // On Windows, the following GUID is for the ID of the typelib if this
 // project is exposed to COM. On other platforms, it unique identifies the
 // title storage container when deploying this assembly to the device.
-[assembly: Guid("712065f3-62d5-4bdb-a1bd-4de94635221d")]
+[assembly: Guid("b5d44909-b62c-468f-811e-75344c537884")]
 
 // Version information for an assembly consists of the following four values:
 //
