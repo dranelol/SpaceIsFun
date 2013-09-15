@@ -18,6 +18,7 @@ namespace SpaceIsFun
     /// </summary>
     public class Game1 : Game
     {
+        
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         KeyboardState currentKeyState;
@@ -74,6 +75,8 @@ namespace SpaceIsFun
             screenWidth = 1024;
             screenHeight = 768;
             Content.RootDirectory = "Content";
+
+            Console.WriteLine();
         }
 
         #region game loop methods
