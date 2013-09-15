@@ -29,7 +29,7 @@ namespace SpaceIsFun
         public event Enter enter;
         public event Leave leave;
         public event Update update;
-
+        int i = 1;
         internal void execEnter()
         {
             System.Diagnostics.Debug.WriteLine("entering: " + name);
@@ -54,6 +54,7 @@ namespace SpaceIsFun
             get
             {
                 return transitions;
+
             }
         }
     }
