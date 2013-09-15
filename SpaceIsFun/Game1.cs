@@ -178,8 +178,10 @@ namespace SpaceIsFun
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
-            
 
+            Console.WriteLine("asdasd");
+            Console.WriteLine("asdasd");
+            Console.WriteLine("asdasd");
         }
 
         /// <summary>
