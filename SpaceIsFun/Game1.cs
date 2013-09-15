@@ -60,6 +60,7 @@ namespace SpaceIsFun
             set
             {
                 screenHeight = value;
+                ni;
             }
         }
 
