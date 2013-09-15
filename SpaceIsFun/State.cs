@@ -22,6 +22,8 @@ namespace SpaceIsFun
             }
         }
 
+        public string cheese = "Parmesan";
+
         public delegate void Enter();
         public delegate void Leave();
         public delegate void Update(GameTime gameTime);
