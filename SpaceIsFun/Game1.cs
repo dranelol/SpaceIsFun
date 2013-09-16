@@ -69,7 +69,7 @@ namespace SpaceIsFun
         public Game1()
             : base()
         {
-            Console.WriteLine("Happy Days!");
+            
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 1024;
             graphics.PreferredBackBufferHeight = 768;
@@ -77,7 +77,7 @@ namespace SpaceIsFun
             screenHeight = 768;
             Content.RootDirectory = "Content";
 
-            Console.WriteLine();
+          
         }
 
         #region game loop methods
