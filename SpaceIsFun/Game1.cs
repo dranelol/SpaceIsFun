@@ -18,6 +18,7 @@ namespace SpaceIsFun
     /// </summary>
     public class Game1 : Game
     {
+        
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         KeyboardState currentKeyState;
@@ -68,12 +69,15 @@ namespace SpaceIsFun
         public Game1()
             : base()
         {
+            
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 1024;
             graphics.PreferredBackBufferHeight = 768;
             screenWidth = 1024;
             screenHeight = 768;
             Content.RootDirectory = "Content";
+
+          
         }
 
         #region game loop methods
@@ -178,8 +182,10 @@ namespace SpaceIsFun
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
-            
 
+            Console.WriteLine("asdasd");
+            Console.WriteLine("asdasd");
+            Console.WriteLine("asdasd");
         }
 
         /// <summary>
