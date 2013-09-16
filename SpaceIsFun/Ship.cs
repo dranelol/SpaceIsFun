@@ -10,6 +10,7 @@ namespace SpaceIsFun
 {
     class Grid : Entity
     {
+        #region fields
         /// <summary>
         /// x,y position of the grid on the ship (ie, top left grid will be 1,1)
         /// </summary>
@@ -46,6 +47,24 @@ namespace SpaceIsFun
             }
         }
 
+        #endregion
+
+        #region constructor / destructor
+        public Grid()
+            : base()
+        {
+        }
+
+        public Grid(Texture2D spriteTexture, Vector2 position) 
+            : base()
+        {
+            sprite = new Drawable(spriteTexture, position);
+        }
+
+        #endregion
+
+        #region methods
+
         public override void Update(GameTime gameTime)
         {
             Sprite.Update(gameTime);
@@ -54,9 +73,10 @@ namespace SpaceIsFun
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Sprite.Draw(spriteBatch, );
+            Sprite.Draw(spriteBatch);
             base.Draw(spriteBatch);
         }
+        #endregion
 
 
 
@@ -101,6 +121,7 @@ namespace SpaceIsFun
         private int shields;
         private int energy;
         private List<Grid> shipGrid;
+        private Texture2D gridTexture;
 
         public int HP
         {
@@ -171,14 +192,25 @@ namespace SpaceIsFun
 
         #region constructors / destructors
 
-        public Ship(Texture2D spriteTexture, Vector2 position)
+        public Ship(Texture2D shipTexture, Texture2D gridTexture, Vector2 position)
             : base()
         {
             hp = 10;
             energy = 5;
             shields = 2;
 
-            sprite = new Drawable(spriteTexture, position);
+            sprite = new Drawable(shipTexture, position);
+            shipGrid = new List<Grid>();
+
+            for (int i = 0; i < shipTexture.Bounds.Width; i += 32)
+            {
+                for (int j = 0; j < shipTexture.Bounds.Height; j += 32)
+                {
+                    Grid newGrid = new Grid(gridTexture, new Vector2(i+position.X, j+position.Y));
+                    shipGrid.Add(newGrid);
+                }
+            }
+
         }
 
         #endregion
@@ -193,6 +225,11 @@ namespace SpaceIsFun
         override public void Draw(SpriteBatch spriteBatch)
         {
             sprite.Draw(spriteBatch);
+            foreach (Grid shipgrid in shipGrid)
+            {
+                shipgrid.Draw(spriteBatch);
+            }
+
             base.Draw(spriteBatch);
         }
 

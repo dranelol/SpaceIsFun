@@ -70,7 +70,7 @@ namespace SpaceIsFun
 
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position)
+        public void Draw(SpriteBatch spriteBatch)
         {
             //spriteBatch.Begin();
             spriteBatch.Draw(spriteTexture, position2D, Color.White);
@@ -80,6 +80,13 @@ namespace SpaceIsFun
         public void UnloadContent()
         {
         }
+
+        public void MoveBy(Vector2 delta)
+        {
+            position2D.X += delta.X;
+            position2D.Y += delta.Y;
+        }
+
 
         
 

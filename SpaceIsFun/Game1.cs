@@ -36,6 +36,7 @@ namespace SpaceIsFun
         Texture2D shipTexture;
         Texture2D energyBar;
         Texture2D healthBar;
+        Texture2D gridTexture;
         
         private int screenWidth;
         public int ScreenWidth
@@ -155,7 +156,8 @@ namespace SpaceIsFun
             shipTexture = Content.Load<Texture2D>("ship1");
             energyBar = Content.Load<Texture2D>("energyBar");
             healthBar = Content.Load<Texture2D>("healthBar");
-            playerShip = new Ship(shipTexture, new Vector2(50, 50));
+            gridTexture = Content.Load<Texture2D>("Grid");
+            playerShip = new Ship(shipTexture, gridTexture, new Vector2(50, 50));
             font = Content.Load<SpriteFont>("Calibri");
 
             
@@ -265,9 +267,6 @@ namespace SpaceIsFun
             Widget loginpanel = new Panel(100, 100, 300, 140);
 
 
-
-        
-
             loginpanel.AddWidget(new Button(50, 100, "Play", 2, (Widget widget) =>
             {
                 stateMachine.Transition(battle.Name);
@@ -329,8 +328,6 @@ namespace SpaceIsFun
                 gui.AddWidget(energy6);
                 gui.AddWidget(energy7);
 
-                
-
                 for (int i = 0; i < playerShip.Energy; i++)
                 {
                     energy1.AddWidget(energyBar1 = new Image(0, (128 - 16 - 8 - 8) - i * 16, energyBarSprite));
@@ -339,22 +336,13 @@ namespace SpaceIsFun
 
                 
 
-                
-
-                
-
             };
 
             battle.update += (GameTime gameTime) =>
             {
-                
-
-
-                
-                System.Diagnostics.Debug.WriteLine(playerShip.Energy.ToString());
+                //System.Diagnostics.Debug.WriteLine(playerShip.Energy.ToString());
 
                 
-
                 if (currentKeyState.IsKeyDown(Keys.A))
                 {
                     stateMachine.Transition(startMenu.Name);
