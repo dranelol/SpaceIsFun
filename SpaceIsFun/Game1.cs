@@ -69,6 +69,7 @@ namespace SpaceIsFun
         public Game1()
             : base()
         {
+            Console.WriteLine("Happy Days!");
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 1024;
             graphics.PreferredBackBufferHeight = 768;
@@ -181,8 +182,10 @@ namespace SpaceIsFun
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
-            
 
+            Console.WriteLine("asdasd");
+            Console.WriteLine("asdasd");
+            Console.WriteLine("asdasd");
         }
 
         /// <summary>
