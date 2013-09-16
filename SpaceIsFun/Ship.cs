@@ -55,10 +55,11 @@ namespace SpaceIsFun
         {
         }
 
-        public Grid(Texture2D spriteTexture, Vector2 position) 
+        public Grid(Texture2D spriteTexture, Vector2 position, Vector2 gPosition) 
             : base()
         {
             sprite = new Drawable(spriteTexture, position);
+            gridPosition = gPosition;
         }
 
         #endregion
@@ -206,7 +207,7 @@ namespace SpaceIsFun
             {
                 for (int j = 0; j < shipTexture.Bounds.Height; j += 32)
                 {
-                    Grid newGrid = new Grid(gridTexture, new Vector2(i+position.X, j+position.Y));
+                    Grid newGrid = new Grid(gridTexture, new Vector2(i+position.X, j+position.Y), new Vector2(i,j));
                     shipGrid.Add(newGrid);
                 }
             }
