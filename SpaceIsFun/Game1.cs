@@ -167,6 +167,8 @@ namespace SpaceIsFun
             gui.AddText("password", new Text(font, Color.TransparentBlack));
             gui.AddText("empty", new Text(font, Color.LightSlateGray));
             gui.AddText("empty", new Text(font, Color.LightSlateGray));
+            gui.AddText("empty", new Text(font, Color.LightSlateGray));
+
             
             
              
