@@ -70,18 +70,18 @@ namespace SpaceIsFun
 
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
             //spriteBatch.Begin();
-
-            spriteBatch.Draw(spriteTexture, position2D, Color.White); 
-
+            spriteBatch.Draw(spriteTexture, position2D, Color.White);
             //spriteBatch.
         }
 
         public void UnloadContent()
         {
         }
+
+        
 
         #endregion
 
