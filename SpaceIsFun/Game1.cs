@@ -111,11 +111,6 @@ namespace SpaceIsFun
             pauseState.Transitions.Add(startMenu.Name, startMenu);
             pauseState.Transitions.Add(battle.Name, battle);
 
-
-            
-            
-           
-
             #region ui setup
 
             
@@ -341,7 +336,14 @@ namespace SpaceIsFun
             battle.update += (GameTime gameTime) =>
             {
                 //System.Diagnostics.Debug.WriteLine(playerShip.Energy.ToString());
-
+                if (((currentMouseState.X > playerShip.Sprite.Position2D.X)
+                      && (currentMouseState.X < playerShip.Sprite.Position2D.X + playerShip.Sprite.Width)
+                    && ((currentMouseState.Y > playerShip.Sprite.Position2D.Y)
+                      && (currentMouseState.Y < playerShip.Sprite.Position2D.Y + playerShip.Sprite.Height))))
+                {
+                    // our mouse cursor should be within the bounds of the ship
+                    System.Diagnostics.Debug.WriteLine("Cursor on the ship!");
+                }
                 
                 if (currentKeyState.IsKeyDown(Keys.A))
                 {
