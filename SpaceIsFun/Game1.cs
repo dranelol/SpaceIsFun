@@ -43,6 +43,7 @@ namespace SpaceIsFun
             get
             {
                 return GraphicsDevice.DisplayMode.Width;
+                Console.WriteLine("its me mario");
             }
             set
             {
