@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace SpaceIsFun
 {
@@ -46,6 +47,22 @@ namespace SpaceIsFun
                 sprite = value;
             }
         }
+
+        private bool highlighted;
+
+        public bool Highlighted
+        {
+            get
+            {
+                return highlighted;
+            }
+
+            set
+            {
+                highlighted = value;
+            }
+        }
+
 
         #endregion
 
@@ -234,6 +251,42 @@ namespace SpaceIsFun
             base.Draw(spriteBatch);
         }
 
+        public bool checkShipHover(MouseState currentMouseState)
+        {
+            if (((currentMouseState.X > sprite.Position2D.X)
+                    && (currentMouseState.X < sprite.Position2D.X + sprite.Width)
+                  && ((currentMouseState.Y > sprite.Position2D.Y)
+                    && (currentMouseState.Y < sprite.Position2D.Y + sprite.Height))))
+             {
+                // our mouse cursor should be within the bounds of the ship
+                //System.Diagnostics.Debug.WriteLine("Cursor on the ship!");
+                return true;
+             }
+
+            else
+            {
+                return false;
+            }
+
+        }
+
+        public Vector2 checkGridHover(MouseState currentMouseState)
+        {
+            // we know the cursor is within bounds, this will only get called if checkShipHover returns true
+
+            Vector2 ret = new Vector2();
+
+            // x position relative to the ship
+            float relativeXPos = currentMouseState.X - sprite.Position2D.X;
+            // y position relative to the ship
+            float relativeYPos = currentMouseState.Y - sprite.Position2D.Y;
+
+            ret.X = (int)relativeXPos / 32;
+            ret.Y = (int)relativeYPos / 32;
+
+
+            return ret;
+        }
 
         #endregion 
     }

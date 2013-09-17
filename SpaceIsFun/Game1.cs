@@ -37,6 +37,7 @@ namespace SpaceIsFun
         Texture2D energyBar;
         Texture2D healthBar;
         Texture2D gridTexture;
+        Texture2D gridHighlightTexture;
         
         private int screenWidth;
         public int ScreenWidth
@@ -152,6 +153,7 @@ namespace SpaceIsFun
             energyBar = Content.Load<Texture2D>("energyBar");
             healthBar = Content.Load<Texture2D>("healthBar");
             gridTexture = Content.Load<Texture2D>("Grid");
+            gridHighlightTexture = Content.Load<Texture2D>("GridHighlight");
             playerShip = new Ship(shipTexture, gridTexture, new Vector2(50, 50));
             font = Content.Load<SpriteFont>("Calibri");
 
@@ -335,19 +337,35 @@ namespace SpaceIsFun
 
             battle.update += (GameTime gameTime) =>
             {
-                //System.Diagnostics.Debug.WriteLine(playerShip.Energy.ToString());
-                if (((currentMouseState.X > playerShip.Sprite.Position2D.X)
-                      && (currentMouseState.X < playerShip.Sprite.Position2D.X + playerShip.Sprite.Width)
-                    && ((currentMouseState.Y > playerShip.Sprite.Position2D.Y)
-                      && (currentMouseState.Y < playerShip.Sprite.Position2D.Y + playerShip.Sprite.Height))))
-                {
-                    // our mouse cursor should be within the bounds of the ship
-                    System.Diagnostics.Debug.WriteLine("Cursor on the ship!");
-                }
+                #region input handlers
+
+                #region mouse
                 
+                
+
+                //System.Diagnostics.Debug.WriteLine(playerShip.);
+                #endregion
+
+                #region keys
                 if (currentKeyState.IsKeyDown(Keys.A))
                 {
                     stateMachine.Transition(startMenu.Name);
+                }
+
+                if (currentKeyState.IsKeyDown(Keys.C))
+                {
+                    bool shipHover = playerShip.checkShipHover(currentMouseState);
+                    if (shipHover == true)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Cursor on ship!");
+
+                        Vector2 gridHover = playerShip.checkGridHover(currentMouseState);
+
+                        if (gridHover.X != -1 && gridHover.Y != -1)
+                        {
+                            System.Diagnostics.Debug.WriteLine("Cursor on grid: " + gridHover.ToString());
+                        }
+                    }
                 }
 
                 if (currentKeyState.IsKeyDown(Keys.E) == true && previousKeyState.IsKeyUp(Keys.E) == true)
@@ -366,9 +384,6 @@ namespace SpaceIsFun
                         }
                     }
 
-
-
-
                 }
                 if (currentKeyState.IsKeyDown(Keys.R) == true && previousKeyState.IsKeyUp(Keys.R) == true)
                 {
@@ -386,8 +401,10 @@ namespace SpaceIsFun
                         }
                     }
                 }
+                #endregion
+                #endregion
 
-                
+
             };
 
             battle.leave += () =>
@@ -421,5 +438,12 @@ namespace SpaceIsFun
         }
 
         #endregion
+
+
+        
     }
+
+   
+
+    
 }
