@@ -1,5 +1,4 @@
-﻿#region Using Statements
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -9,7 +8,6 @@ using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
 using Ruminate.GUI.Framework;
 using Ruminate.GUI.Content;
-#endregion
 
 namespace SpaceIsFun
 {
@@ -26,10 +24,9 @@ namespace SpaceIsFun
         MouseState previousMouseState;
         StateMachine stateMachine;
         State startMenu, battle, pauseState;
-        Gui gui = null;
+        Gui gui;
         Skin skin;
         SpriteFont font;
-        Widget panel1;
 
         Ship playerShip;
 
@@ -38,6 +35,11 @@ namespace SpaceIsFun
         Texture2D healthBar;
         Texture2D gridTexture;
         Texture2D gridHighlightTexture;
+
+        // 0: cursor over no ship
+        // 1: cursor over player ship
+        // 2: cursor over enemy ship
+        int shipCursorFocus;
         
         private int screenWidth;
         public int ScreenWidth
@@ -64,8 +66,6 @@ namespace SpaceIsFun
                 screenHeight = value;
             }
         }
-
-        
 
         public Game1()
             : base()
@@ -131,12 +131,10 @@ namespace SpaceIsFun
 
             #endregion
 
-
             setupStartMenu();
             setupBattle();
             setupPauseState();
             
-
         }
 
         /// <summary>
@@ -154,7 +152,7 @@ namespace SpaceIsFun
             healthBar = Content.Load<Texture2D>("healthBar");
             gridTexture = Content.Load<Texture2D>("Grid");
             gridHighlightTexture = Content.Load<Texture2D>("GridHighlight");
-            playerShip = new Ship(shipTexture, gridTexture, new Vector2(50, 50));
+            playerShip = new Ship(shipTexture, gridTexture, gridHighlightTexture, new Vector2(50, 50));
             font = Content.Load<SpriteFont>("Calibri");
 
             
@@ -167,8 +165,6 @@ namespace SpaceIsFun
             gui.AddText("empty", new Text(font, Color.LightSlateGray));
 
             
-            
-             
         }
 
         /// <summary>
@@ -281,8 +277,6 @@ namespace SpaceIsFun
                 {
                     stateMachine.Transition(battle.Name);
                 }
-                
-               
                  
             };
 
@@ -305,15 +299,14 @@ namespace SpaceIsFun
             Panel energy6 = new Panel(320+4, screenHeight-128, 40, 128 - 8);
             Panel energy7 = new Panel(384+4, screenHeight-128, 40, 128 - 8);
 
-
             Image energyBar1;
-
-
-
 
             List<Widget> energyBarTest = new List<Widget>();
 
             int shipStartEnergy = playerShip.Energy;
+
+            Point currentlySelectedPlayerGrid = new Point(-1, -1);
+            Point currentlySelectedEnemyGrid = new Point(-1, -1);
             
             battle.enter += () =>
             {
@@ -330,9 +323,6 @@ namespace SpaceIsFun
                     energy1.AddWidget(energyBar1 = new Image(0, (128 - 16 - 8 - 8) - i * 16, energyBarSprite));
                     energyBarTest.Add(energyBar1);
                 }
-
-                
-
             };
 
             battle.update += (GameTime gameTime) =>
@@ -341,8 +331,6 @@ namespace SpaceIsFun
 
                 #region mouse
                 
-                
-
                 //System.Diagnostics.Debug.WriteLine(playerShip.);
                 #endregion
 
@@ -352,7 +340,7 @@ namespace SpaceIsFun
                     stateMachine.Transition(startMenu.Name);
                 }
 
-                if (currentKeyState.IsKeyDown(Keys.C))
+                if (currentKeyState.IsKeyDown(Keys.C) && previousKeyState.IsKeyUp(Keys.C))
                 {
                     bool shipHover = playerShip.checkShipHover(currentMouseState);
                     if (shipHover == true)
@@ -363,16 +351,21 @@ namespace SpaceIsFun
 
                         if (gridHover.X != -1 && gridHover.Y != -1)
                         {
-                            System.Diagnostics.Debug.WriteLine("Cursor on grid: " + gridHover.ToString());
+                            System.Diagnostics.Debug.WriteLine("Cursor on grid: " + playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition.ToString());
+                            // select that grid
+                            playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].Highlight();
+
+                            System.Diagnostics.Debug.WriteLine("Highighted?: " + playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].Highlighted.ToString());
+
                         }
                     }
                 }
 
                 if (currentKeyState.IsKeyDown(Keys.E) == true && previousKeyState.IsKeyUp(Keys.E) == true)
                 {
-                    System.Diagnostics.Debug.WriteLine("lost energy!");
-                    if (playerShip.Energy >= 0)
+                    if (playerShip.Energy > 0)
                     {
+                        System.Diagnostics.Debug.WriteLine("lost energy!");
                         playerShip.Energy = playerShip.Energy - 1;
                     }
 
@@ -387,9 +380,9 @@ namespace SpaceIsFun
                 }
                 if (currentKeyState.IsKeyDown(Keys.R) == true && previousKeyState.IsKeyUp(Keys.R) == true)
                 {
-                    System.Diagnostics.Debug.WriteLine("gained energy!");
-                    if (playerShip.Energy <= 5)
+                    if (playerShip.Energy < 5)
                     {
+                        System.Diagnostics.Debug.WriteLine("gained energy!");
                         playerShip.Energy = playerShip.Energy + 1;
                     }
 

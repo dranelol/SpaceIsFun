@@ -63,6 +63,36 @@ namespace SpaceIsFun
             }
         }
 
+        private Texture2D gridTexture;
+
+        private Texture2D gridHighlightTexture;
+
+        public Texture2D GridTexture
+        {
+            get
+            {
+                return gridTexture;
+            }
+
+            set
+            {
+                gridTexture = value;
+            }
+        }
+
+        public Texture2D GridHighlightTexture
+        {
+            get
+            {
+                return gridHighlightTexture;
+            }
+
+            set
+            {
+                gridHighlightTexture = value;
+            }
+        }
+
 
         #endregion
 
@@ -72,10 +102,12 @@ namespace SpaceIsFun
         {
         }
 
-        public Grid(Texture2D spriteTexture, Vector2 position, Vector2 gPosition) 
+        public Grid(Texture2D spriteTexture, Texture2D highlightTexture, Vector2 position, Vector2 gPosition) 
             : base()
         {
-            sprite = new Drawable(spriteTexture, position);
+            gridTexture = spriteTexture;
+            gridHighlightTexture = highlightTexture;
+            sprite = new Drawable(gridTexture, position);
             gridPosition = gPosition;
         }
 
@@ -91,8 +123,31 @@ namespace SpaceIsFun
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            if (highlighted == true)
+            {
+                Sprite.SpriteTexture = gridHighlightTexture;
+            }
+
+            if (highlighted == false)
+            {
+                Sprite.SpriteTexture = gridTexture;
+            }
+
             Sprite.Draw(spriteBatch);
             base.Draw(spriteBatch);
+        }
+
+        public void Highlight()
+        {
+            if (highlighted == true)
+            {
+                highlighted = false;
+            }
+
+            else
+            {
+                highlighted = true;
+            }
         }
         #endregion
 
@@ -138,7 +193,7 @@ namespace SpaceIsFun
         private int hp;
         private int shields;
         private int energy;
-        private List<Grid> shipGrid;
+        private Grid[,] shipGrid;
         private Texture2D gridTexture;
 
         public int HP
@@ -193,7 +248,7 @@ namespace SpaceIsFun
             }
         }
 
-        public List<Grid> ShipGrid
+        public Grid[,] ShipGrid
         {
             get
             {
@@ -210,7 +265,7 @@ namespace SpaceIsFun
 
         #region constructors / destructors
 
-        public Ship(Texture2D shipTexture, Texture2D gridTexture, Vector2 position)
+        public Ship(Texture2D shipTexture, Texture2D gridTexture, Texture2D highlightTexture, Vector2 position)
             : base()
         {
             hp = 10;
@@ -218,14 +273,16 @@ namespace SpaceIsFun
             shields = 2;
 
             sprite = new Drawable(shipTexture, position);
-            shipGrid = new List<Grid>();
+            int gridWidth = shipTexture.Bounds.Width / 32;
+            int gridHeight = shipTexture.Bounds.Height / 32;
+            shipGrid = new Grid[gridWidth, gridHeight];
 
-            for (int i = 0; i < shipTexture.Bounds.Width; i += 32)
+            for (int i = 0; i < shipTexture.Bounds.Width/32; i++)
             {
-                for (int j = 0; j < shipTexture.Bounds.Height; j += 32)
+                for (int j = 0; j < shipTexture.Bounds.Height/32; j++)
                 {
-                    Grid newGrid = new Grid(gridTexture, new Vector2(i+position.X, j+position.Y), new Vector2(i,j));
-                    shipGrid.Add(newGrid);
+                    shipGrid[i,j] = new Grid(gridTexture, highlightTexture, new Vector2(i*32+position.X, j*32+position.Y), new Vector2(i,j));
+                    
                 }
             }
 
