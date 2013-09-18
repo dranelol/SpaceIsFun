@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace SpaceIsFun.Game_States
 {
-    class Menu : State
+    class StartMenu : State
     {
     }
 }
