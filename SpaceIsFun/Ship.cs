@@ -9,6 +9,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace SpaceIsFun
 {
+    /// <summary>
+    /// Pew pew, its a weapon!
+    /// </summary>
     class Weapon : Entity
     {
         #region fields
@@ -87,6 +90,10 @@ namespace SpaceIsFun
 
 
     }
+
+    /// <summary>
+    /// A grid of the ship
+    /// </summary>
     class Grid : Entity
     {
         #region fields
@@ -277,7 +284,9 @@ namespace SpaceIsFun
 
     }
 
-
+    /// <summary>
+    /// Its a ship!
+    /// </summary>
     class Ship : Entity
     {
         #region fields
