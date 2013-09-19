@@ -17,6 +17,10 @@ namespace SpaceIsFun
         #endregion
 
         #region constructors / destructors
+
+        /// <summary>
+        /// constructor for an entity
+        /// </summary>
         public Entity()
             : base()
         {
@@ -24,10 +28,19 @@ namespace SpaceIsFun
         #endregion
 
         #region methods
+
+        /// <summary>
+        /// update the entity
+        /// </summary>
+        /// <param name="gameTime">current game time</param>
         virtual public void Update(GameTime gameTime)
         {
         }
 
+        /// <summary>
+        /// draw the entity
+        /// </summary>
+        /// <param name="spriteBatch">main spriteBatch object</param>
         virtual public void Draw(SpriteBatch spriteBatch)
         {
         }
