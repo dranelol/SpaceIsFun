@@ -9,6 +9,39 @@ using Microsoft.Xna.Framework.Input;
 
 namespace SpaceIsFun
 {
+    class Weapon : Entity
+    {
+        private bool readyToFire;
+        public bool ReadyToFire
+        {
+            get
+            {
+                return readyToFire;
+            }
+
+            set
+            {
+                readyToFire = value;
+            }
+        }
+
+        private bool aimedAtTarget;
+
+        public bool AimedAtTarget
+        {
+            get
+            {
+                return aimedAtTarget;
+            }
+
+            set
+            {
+                aimedAtTarget = value;
+            }
+        }
+
+
+    }
     class Grid : Entity
     {
         #region fields
