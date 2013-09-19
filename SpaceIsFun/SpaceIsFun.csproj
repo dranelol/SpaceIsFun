@@ -38,7 +38,7 @@
     <Compile Include="Drawable.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Game States\Battle.cs" />
-    <Compile Include="Game States\Menu.cs" />
+    <Compile Include="Game States\StartMenu.cs" />
     <Compile Include="Game States\Overworld.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
