@@ -10,6 +10,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace SpaceIsFun
 {
+    /// <summary>
+    ///  This is the object that holds all the info for drawing an entity
+    /// </summary>
     class Drawable : Object
     {
         #region fields
