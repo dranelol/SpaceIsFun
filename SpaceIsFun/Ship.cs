@@ -380,6 +380,9 @@ namespace SpaceIsFun
             base.Draw(spriteBatch);
         }
 
+        /// <summary>
+        /// highlight the room if its unhighlighted, unhighlight it if its highlighted
+        /// </summary>
         public void Highlight()
         {
             if (highlighted == true)
