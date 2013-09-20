@@ -75,9 +75,11 @@ namespace SpaceIsFun
         Texture2D shipTexture;
         Texture2D energyBar;
         Texture2D healthBar;
-        Texture2D gridTexture;
-        Texture2D gridHighlightTexture;
+        Texture2D gridSprite;
+        Texture2D gridHighlightSprite;
         Texture2D energyBarSprite;
+        Texture2D roomSprite;
+        Texture2D roomHighlightSprite;
 
         #endregion
 
@@ -197,12 +199,15 @@ namespace SpaceIsFun
             shipTexture = Content.Load<Texture2D>("ship1");
             energyBar = Content.Load<Texture2D>("energyBar");
             healthBar = Content.Load<Texture2D>("healthBar");
-            gridTexture = Content.Load<Texture2D>("Grid");
-            gridHighlightTexture = Content.Load<Texture2D>("GridHighlight");
+            gridSprite = Content.Load<Texture2D>("Grid");
+            gridHighlightSprite = Content.Load<Texture2D>("GridHighlight");
             energyBarSprite = Content.Load<Texture2D>("energyBar");
+            roomSprite = Content.Load<Texture2D>("Room2x2");
+            roomHighlightSprite = Content.Load<Texture2D>("Room2x2highlight");
+
 
             // initialize the player's ship
-            playerShip = new Ship(shipTexture, gridTexture, gridHighlightTexture, new Vector2(50, 50));
+            playerShip = new Ship(shipTexture, gridSprite, gridHighlightSprite, new Vector2(50, 50));
 
             // load fonts
 
@@ -424,7 +429,7 @@ namespace SpaceIsFun
                     // returns whether or not the cursor is hovering over the player's ship
                     bool shipHover = playerShip.checkShipHover(currentMouseState);
                     
-                    // if the cursor is hovering over the player's ship, print a message and figure out which grid the cursor is in
+                    // if the cursor is hovering over the player's ship, print a message and figure out which room the cursor is in
                     if (shipHover == true)
                     {
                         System.Diagnostics.Debug.WriteLine("Cursor on ship!");
@@ -437,9 +442,9 @@ namespace SpaceIsFun
                         {
                             System.Diagnostics.Debug.WriteLine("Cursor on grid: " + playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition.ToString());
                             // highlight that grid
-                            playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].Highlight();
+                            //playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].Highlight();
 
-                            System.Diagnostics.Debug.WriteLine("Highighted?: " + playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].Highlighted.ToString());
+                            //System.Diagnostics.Debug.WriteLine("Highighted?: " + playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].Highlighted.ToString());
 
                         }
                     }

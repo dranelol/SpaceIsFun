@@ -133,25 +133,16 @@ namespace SpaceIsFun
             }
         }
 
-        private bool highlighted;
+        
 
-        public bool Highlighted
-        {
-            get
-            {
-                return highlighted;
-            }
-
-            set
-            {
-                highlighted = value;
-            }
-        }
-
+        /// <summary>
+        /// texture for a grid object
+        /// </summary>
         private Texture2D gridTexture;
 
-        private Texture2D gridHighlightTexture;
-
+        /// <summary>
+        /// parameter for gridTexture
+        /// </summary>
         public Texture2D GridTexture
         {
             get
@@ -165,19 +156,6 @@ namespace SpaceIsFun
             }
         }
 
-        public Texture2D GridHighlightTexture
-        {
-            get
-            {
-                return gridHighlightTexture;
-            }
-
-            set
-            {
-                gridHighlightTexture = value;
-            }
-        }
-
 
         #endregion
 
@@ -187,11 +165,10 @@ namespace SpaceIsFun
         {
         }
 
-        public Grid(Texture2D spriteTexture, Texture2D highlightTexture, Vector2 position, Vector2 gPosition) 
+        public Grid(Texture2D spriteTexture, Vector2 position, Vector2 gPosition) 
             : base()
         {
             gridTexture = spriteTexture;
-            gridHighlightTexture = highlightTexture;
             sprite = new Drawable(gridTexture, position);
             gridPosition = gPosition;
         }
@@ -208,31 +185,8 @@ namespace SpaceIsFun
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (highlighted == true)
-            {
-                Sprite.SpriteTexture = gridHighlightTexture;
-            }
-
-            if (highlighted == false)
-            {
-                Sprite.SpriteTexture = gridTexture;
-            }
-
             Sprite.Draw(spriteBatch);
             base.Draw(spriteBatch);
-        }
-
-        public void Highlight()
-        {
-            if (highlighted == true)
-            {
-                highlighted = false;
-            }
-
-            else
-            {
-                highlighted = true;
-            }
         }
         #endregion
 
@@ -247,7 +201,7 @@ namespace SpaceIsFun
     {
         #region fields
         /// <summary>
-        /// grid position of the room's top-left grid
+        /// grid position of the room's top-left grid (if the room's top-left grid's grid position is (2,2), then this will be (2,2)
         /// </summary>
         private Vector2 roomPosition;
 
@@ -267,6 +221,108 @@ namespace SpaceIsFun
             }
         }
 
+        /// <summary>
+        /// position of this room's 1,1 in screenspace
+        /// </summary>
+        private Vector2 position;
+
+        /// <summary>
+        /// parameter for position
+        /// </summary>
+        public Vector2 Position
+        {
+            get
+            {
+                return position;
+            }
+
+            set
+            {
+                position = value;
+            }
+        }
+
+        /// <summary>
+        /// drawable for the room (this is probably never gonna move)
+        /// </summary>
+        private Drawable sprite;
+
+        public Drawable Sprite
+        {
+            get
+            {
+                return sprite;
+            }
+
+            set
+            {
+                sprite = value;
+            }
+        }
+
+        /// <summary>
+        /// texture for the room
+        /// </summary>
+        private Texture2D roomTexture;
+
+        /// <summary>
+        /// texture for the room while highlighted
+        /// </summary>
+        private Texture2D roomHighlightTexture;
+
+        /// <summary>
+        /// parameter for roomTexture
+        /// </summary>
+        public Texture2D RoomTexture
+        {
+            get
+            {
+                return roomTexture;
+            }
+
+            set
+            {
+                roomTexture = value;
+            }
+        }
+
+        /// <summary>
+        /// paramter for roomHighlightTexture
+        /// </summary>
+        public Texture2D RoomHighlightTexture
+        {
+            get
+            {
+                return roomHighlightTexture;
+            }
+
+            set
+            {
+                roomHighlightTexture = value;
+            }
+        }
+
+        /// <summary>
+        /// whether or not the room is highlighted
+        /// </summary>
+        private bool highlighted;
+
+        /// <summary>
+        /// parameter for highlighted
+        /// </summary>
+        public bool Highlighted
+        {
+            get
+            {
+                return highlighted;
+            }
+
+            set
+            {
+                highlighted = value;
+            }
+        }
+
         #endregion
 
         #region constructors / destructors
@@ -275,9 +331,66 @@ namespace SpaceIsFun
 
         }
 
+        /// <summary>
+        /// constructor for a room
+        /// </summary>
+        /// <param name="texture">texture for the room</param>
+        /// <param name="highlightTexture">texture for the room when its highlighted</param>
+        /// <param name="position">position of the room in screen space</param>
+        public Room(Texture2D texture, Texture2D highlightTexture, Vector2 pos, Vector2 roomPos)
+        {
+            position = pos;
+            roomTexture = texture;
+            roomHighlightTexture = highlightTexture;
+            roomPosition = roomPos;
+        }
+
         #endregion
 
         #region methods
+
+        /// <summary>
+        /// update the room
+        /// </summary>
+        /// <param name="gameTime"></param>
+        public override void Update(GameTime gameTime)
+        {
+            Sprite.Update(gameTime);
+            base.Update(gameTime);
+        }
+
+        /// <summary>
+        /// draw the room
+        /// </summary>
+        /// <param name="spriteBatch">main spriteBatch object</param>
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            if (highlighted == true)
+            {
+                Sprite.SpriteTexture = roomHighlightTexture;
+            }
+
+            if (highlighted == false)
+            {
+                Sprite.SpriteTexture = roomTexture;
+            }
+
+            Sprite.Draw(spriteBatch);
+            base.Draw(spriteBatch);
+        }
+
+        public void Highlight()
+        {
+            if (highlighted == true)
+            {
+                highlighted = false;
+            }
+
+            else
+            {
+                highlighted = true;
+            }
+        }
 
         #endregion
 
@@ -433,6 +546,48 @@ namespace SpaceIsFun
                 shipGrid = value;
             }
         }
+
+        /// <summary>
+        /// the list of rooms for a ship
+        /// </summary>
+        private List<Room> roomList;
+
+        /// <summary>
+        /// parameter for roomList
+        /// </summary>
+        public List<Room> RoomList
+        {
+            get
+            {
+                return roomList;
+            }
+
+            set
+            {
+                roomList = value;
+            }
+        }
+
+        /// <summary>
+        /// relation between rooms and their grid objects
+        /// </summary>
+        private Dictionary<Grid, Room> roomGridDict;
+
+        /// <summary>
+        /// parameter for roomGridList
+        /// </summary>
+        public Dictionary<Grid, Room> RoomGridDict
+        {
+            get
+            {
+                return roomGridDict;
+            }
+
+            set
+            {
+                roomGridDict = value;
+            }
+        }
         #endregion
 
         #region constructors / destructors
@@ -466,7 +621,7 @@ namespace SpaceIsFun
                 for (int j = 0; j < shipTexture.Bounds.Height/32; j++)
                 {
                     // create a new grid object for i,j
-                    shipGrid[i,j] = new Grid(gridTexture, highlightTexture, new Vector2(i*32+position.X, j*32+position.Y), new Vector2(i,j));
+                    shipGrid[i,j] = new Grid(gridTexture, new Vector2(i*32+position.X, j*32+position.Y), new Vector2(i,j));
                     
                 }
             }
@@ -551,6 +706,30 @@ namespace SpaceIsFun
 
             // grid y position relative to the ship
             ret.Y = (int)relativeYPos / 32;
+
+            return ret;
+        }
+
+        /// <summary>
+        /// check which room the cursor is currently hovering over, this only should get called if checkShipHover returns TRUE
+        /// </summary>
+        /// <param name="gridToCheck"></param>
+        /// <returns></returns>
+        public Room checkRoomHover(MouseState currentMouseState)
+        {
+            Room ret = new Room();
+
+            // find the grid we're hovering over
+
+            Vector2 gridHover = checkGridHover(currentMouseState);
+
+            // convert this point to a grid object
+            Grid gridToCheck = shipGrid[(int)gridHover.X, (int)gridHover.Y];
+
+            // get the room out of the grid,room dict
+
+            ret = roomGridDict[gridToCheck];
+
 
             return ret;
         }

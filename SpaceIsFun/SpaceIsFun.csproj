@@ -89,6 +89,8 @@
     <Content Include="Content\GridHighlight.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Content\Room2x2.xnb" />
+    <None Include="Content\Room2x2highlight.xnb" />
     <None Include="Content\uiskinmap.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
