@@ -336,13 +336,14 @@ namespace SpaceIsFun
         /// </summary>
         /// <param name="texture">texture for the room</param>
         /// <param name="highlightTexture">texture for the room when its highlighted</param>
-        /// <param name="position">position of the room in screen space</param>
-        public Room(Texture2D texture, Texture2D highlightTexture, Vector2 pos, Vector2 roomPos)
+        /// <param name="x">x-position of the top-left grid position</param>
+        /// <param name="y">y-position of the top-left grid position</param>
+        public Room(Texture2D texture, Texture2D highlightTexture, int x, int y)
         {
-            position = pos;
+            position = new Vector2(x * 32, y * 32);
             roomTexture = texture;
             roomHighlightTexture = highlightTexture;
-            roomPosition = roomPos;
+            roomPosition = new Vector2(x, y);
         }
 
         #endregion

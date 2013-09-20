@@ -154,6 +154,8 @@ namespace SpaceIsFun
             previousMouseState = Mouse.GetState();
 
             // initialize the game state machine and states
+
+            #region state machine setup
             stateMachine = new StateMachine(this);
 
             startMenu = new State { Name = "startMenu" };
@@ -171,9 +173,12 @@ namespace SpaceIsFun
             pauseState.Transitions.Add(startMenu.Name, startMenu);
             pauseState.Transitions.Add(battle.Name, battle);
 
-            #region ui setup
+            #endregion
 
             // set up any UI elements here
+
+            #region ui setup
+
 
             #endregion
 
@@ -196,6 +201,7 @@ namespace SpaceIsFun
 
             // load all needed textures here
 
+            #region textures
             shipTexture = Content.Load<Texture2D>("ship1");
             energyBar = Content.Load<Texture2D>("energyBar");
             healthBar = Content.Load<Texture2D>("healthBar");
@@ -205,8 +211,10 @@ namespace SpaceIsFun
             roomSprite = Content.Load<Texture2D>("Room2x2");
             roomHighlightSprite = Content.Load<Texture2D>("Room2x2highlight");
 
+            #endregion
 
             // initialize the player's ship
+
             playerShip = new Ship(shipTexture, gridSprite, gridHighlightSprite, new Vector2(50, 50));
 
             // load fonts
