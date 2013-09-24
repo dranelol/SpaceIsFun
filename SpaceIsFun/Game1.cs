@@ -132,6 +132,7 @@ namespace SpaceIsFun
             screenWidth = 1024;
             screenHeight = 768;
             Content.RootDirectory = "Content";
+			Console.WriteLine("Muahahaha!");
         }
 
         #endregion
