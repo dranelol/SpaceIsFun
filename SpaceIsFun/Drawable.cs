@@ -99,6 +99,69 @@ namespace SpaceIsFun
             }
         }
 
+        /// <summary>
+        /// which frame of animation we're on. if this isn't an animated drawable, this remains 0
+        /// </summary>
+        private int frame;
+
+        /// <summary>
+        /// parameter for frame
+        /// </summary>
+        public int Frame
+        {
+            get
+            {
+                return frame;
+            }
+
+            set
+            {
+                frame = value;
+            }
+        }
+
+        /// <summary>
+        /// speed of the drawable; how much it moves (in screen space) per frame
+        /// </summary>
+        private float speed;
+
+        /// <summary>
+        /// parameter for speed
+        /// </summary>
+        public float Speed
+        {
+            get
+            {
+                return speed;
+            }
+
+            set
+            {
+                speed = value;
+            }
+        }
+
+        /// <summary>
+        /// current target of moving drawable
+        /// </summary>
+        private Vector2 target;
+
+        /// <summary>
+        /// parameter for target
+        /// </summary>
+        public Vector2 Target
+        {
+            get
+            {
+                return target;
+            }
+
+            set
+            {
+                target = value;
+            }
+        }
+
         #endregion
 
         #region constructors / destructors
@@ -142,7 +205,14 @@ namespace SpaceIsFun
         /// <param name="gameTime">current game time</param>
         public void Update(GameTime gameTime)
         {
+            // if we're at our current target, and still pathing, check if path is empty
+            // if path is not empty, pop path and update new target
+            // if path is empty, stop moving, stop pathing, set target to null (-1,-1 maybe?)
 
+
+            // if we have a current target, figure out how much to move by and move
+
+            
         }
 
         /// <summary>

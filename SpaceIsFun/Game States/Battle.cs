@@ -19,6 +19,13 @@ namespace SpaceIsFun
         /// </summary>
         void setupBattle()
         {
+            Vector2 target1 = new Vector2();
+
+            Vector2 target2 = new Vector2();
+
+            bool target1Selected = false;
+            bool target2Selected = false;
+
             // sets up seven energy bars for the ship
             Panel energy1 = new Panel(4, screenHeight - 128, 40, 128 - 8);
             Panel energy2 = new Panel(64 + 4, screenHeight - 128, 40, 128 - 8);
@@ -91,8 +98,34 @@ namespace SpaceIsFun
                             //playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].Highlight();
 
                             //System.Diagnostics.Debug.WriteLine("Highighted?: " + playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].Highlighted.ToString());
+                            if (target1Selected == false)
+                            {
+                                target1Selected = true;
+                            }
+
+                            target1 = playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition;
+                            
 
                         }
+                    }
+
+
+                }
+                if (currentKeyState.IsKeyDown(Keys.V) && previousKeyState.IsKeyUp(Keys.V))
+                {
+                    Vector2 gridHover = playerShip.checkGridHover(currentMouseState);
+                    System.Diagnostics.Debug.WriteLine("Cursor on grid: " + playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition.ToString());
+
+                    if (target2Selected == false && target1Selected == true)
+                    {
+                        target2 = playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition;
+
+                        System.Diagnostics.Debug.WriteLine(target1.ToString() + " " + target2.ToString());
+
+                        target1Selected = false;
+
+                        target1 = new Vector2();
+                        target2 = new Vector2();
                     }
                 }
 
