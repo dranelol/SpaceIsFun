@@ -111,6 +111,9 @@ namespace SpaceIsFun
 
 
                 }
+
+                // second target for pathfinder checking 
+
                 if (currentKeyState.IsKeyDown(Keys.V) && previousKeyState.IsKeyUp(Keys.V))
                 {
                     Vector2 gridHover = playerShip.checkGridHover(currentMouseState);
