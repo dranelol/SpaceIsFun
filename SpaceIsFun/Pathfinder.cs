@@ -1,23 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
-using DigitalRune.Geometry;
-using DigitalRune.Physics;
-using DigitalRune.Mathematics.Algebra;
-using DigiRuneGameEngine;
-using DigitalRune.Geometry.Shapes;
-using DigitalRune.Game;
-using DigitalRune.Geometry.Collisions;
-using DigitalRune.Physics.Constraints;
-using XNAGameEngine.Alarms;
-using DigitalRune.Game.UI.Controls;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using DigitalRune.Collections;
-using DigiRuneGameEngine.GameComponents.GameObjects;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Storage;
+using Microsoft.Xna.Framework.GamerServices;
+using Ruminate.GUI.Framework;
+using Ruminate.GUI.Content;
 
-namespace DigiRuneGameEngine
+namespace SpaceIsFun
 {
     /// <summary>
     /// Reresents one node in the search space
@@ -30,7 +22,7 @@ namespace DigiRuneGameEngine
         /// </summary>
         /// 
         
-        public Point Position
+        public Vector2 Position
         {
             get;
             set;
@@ -74,25 +66,28 @@ namespace DigiRuneGameEngine
         public float DistanceToGoal;
 
         /// <summary>
-        /// Distance traveled from spawn
+        /// Current total distance traveled
         /// </summary>
         public float DistanceTraveled;
+        
 
 
 
     }
 
+    /*
+     * TODO: 
+     *      -Reimplement
+     * 
+     * 
+     */
+
+
     
 
     public class Pathfinder
     {
-        protected Game Game;
-
-        protected MyGame MyGame
-        {
-            get { return (MyGame)Game; }
-        }
-
+        
 
         // Array of the walkable nodes
 
@@ -105,24 +100,32 @@ namespace DigiRuneGameEngine
         // Height of the map
         private int mapHeight;
 
+        // size of one grid square
+        private int sizeofOneGrid = 32;
+
         /// <summary>
         /// Constructor
         /// </summary>
-        public Pathfinder(Map map, Game game, List<BattleUnit> currentUnits, BattleUnit callingUnit)
+        public Pathfinder(Grid[,] map)
         {
-            mapWidth = map.MapWidth;
-            mapHeight = map.MapHeight;
-            
-            InitSearchNodes(map, currentUnits, callingUnit);
+            mapWidth = map.GetLength(0);
+            mapHeight = map.GetLength(1);
 
-            Game = game;
+            System.Diagnostics.Debug.WriteLine(mapWidth.ToString() + ", " + mapHeight.ToString());
+            
+            InitSearchNodes(map);
+
+            // instead of units, i want to path with source grid and target grid
+
+            
 
         }
 
         /// <summary>
         /// This function initializes the map's search tiles
+        /// Precondition: 
         /// </summary>
-        private void InitSearchNodes(Map map, List<BattleUnit> currentUnits, BattleUnit callingUnit)
+        private void InitSearchNodes(Grid[,] map)
         {
             searchNodes = new SearchNode[mapWidth, mapHeight];
 
@@ -132,11 +135,10 @@ namespace DigiRuneGameEngine
                 {
                     SearchNode node = new SearchNode();
 
-                    node.Position = new Point(x, y);
+                    node.Position = new Vector2(x, y);
 
                     // heuristic for "is this node walkable?"
-
-                    if (map.GetIndex(x, y) == 0)
+                    /*if (map[x,y].BelongsToRoom == true)  
                     { 
                         node.Walkable = true;
                     }
@@ -144,17 +146,11 @@ namespace DigiRuneGameEngine
                     else
                     {
                         node.Walkable = false;
-                    }
+                    }*/
 
-                    foreach (BattleUnit unit in currentUnits)
-                    {
-                        if (unit.MapPosition == node.Position && unit != callingUnit)
-                        {
-                            node.Walkable = false;
-                        }
-                    }
+                    node.Walkable = true;
                     
-
+                    
                     if (node.Walkable == true)
                     {
                         node.Neighbors = new SearchNode[4];
@@ -184,19 +180,19 @@ namespace DigiRuneGameEngine
                         continue;
                     }
 
-                    Point[] neighbors = new Point[]
+                    Vector2[] neighbors = new Vector2[]
                     {
-                        new Point(x, y - 1), // The node above the current node
-                        new Point(x, y + 1), // The node below the current node
-                        new Point(x - 1, y), // The node to the left of the current node
-                        new Point(x + 1, y), // The node to the right of the current node
+                        new Vector2(x, y - 1), // The node above the current node
+                        new Vector2(x, y + 1), // The node below the current node
+                        new Vector2(x - 1, y), // The node to the left of the current node
+                        new Vector2(x + 1, y), // The node to the right of the current node
                     };
 
                     // Loop through all the neighbors
 
                     for (int i = 0; i < neighbors.Length; i++)
                     {
-                        Point position = neighbors[i];
+                        Vector2 position = neighbors[i];
 
                         // Make sure this neighbor is part of the level
                         if (position.X < 0
@@ -208,7 +204,7 @@ namespace DigiRuneGameEngine
                         }
 
 
-                        SearchNode neighbor = searchNodes[position.X, position.Y];
+                        SearchNode neighbor = searchNodes[(int)position.X, (int)position.Y];
 
                         // Again, only care about the nodes that can be walked on
 
@@ -243,7 +239,7 @@ namespace DigiRuneGameEngine
         /// <param name="point1"></param>
         /// <param name="point2"></param>
         /// <returns></returns>
-        private float GetManhattanDistance(Point point1, Point point2)
+        private float GetManhattanDistance(Vector2 point1, Vector2 point2)
         {
             return Math.Abs(point1.X - point2.X) +
                    Math.Abs(point1.Y - point2.Y);
@@ -321,11 +317,24 @@ namespace DigiRuneGameEngine
 
             List<Vector2> path = new List<Vector2>();
 
-            // reverse the path, transform into points(tiles)
+            // reverse the path, transform into points(grids)
+
+            // ----------------------------------------------------
+            // ----------------------------------------------------
+            // ----------------------------------------------------
+            // ----------------------------------------------------
+            // ----------------------------------------------------
+            // ----------------------------------------------------
+            // ----------------------------------------------------
+            // ----------------------------------------------------
+            // ----------------------------------------------------
+            // ----------------------------------------------------
+            // ----------------------------------------------------
+            // ----------------------------------------------------
 
             for (int i = closedList.Count - 1; i >= 0; i--)
             {
-                path.Add(new Vector2(closedList[i].Position.X * 64, closedList[i].Position.Y * 64));
+                path.Add(new Vector2(closedList[i].Position.X * 32, closedList[i].Position.Y * 32)); //<--------------------------------------------------Change 32 to global variables
             }
 
             return path;
@@ -337,10 +346,10 @@ namespace DigiRuneGameEngine
         /// <param name="start"></param>
         /// <param name="end"></param>
         /// <returns></returns>
-        public List<Vector2> FindOptimalPath(Point start, Point end)
+        public List<Vector2> FindOptimalPath(Vector2 start, Vector2 end)
         {
-            //Point start = new Point((int)(source.sprite.X / 64), (int)(source.sprite.X / 64));
-            //Point end = new Point((int)(target.sprite.X / 64), (int)(target.sprite.X / 64));
+            //Vector2 start = new Vector2((int)(source.sprite.X / 64), (int)(source.sprite.X / 64));
+            //Vector2 end = new Vector2((int)(target.sprite.X / 64), (int)(target.sprite.X / 64));
             
             // if the first and last nodes are the same, the path is irrelevant
             if (start == end)
@@ -351,8 +360,8 @@ namespace DigiRuneGameEngine
             // Start by clearing the open and closed lists, resetting state of every node
             ResetNodes();
 
-            SearchNode startNode = searchNodes[start.X, start.Y];
-            SearchNode endNode = searchNodes[end.X, end.Y];
+            SearchNode startNode = searchNodes[(int)start.X, (int)start.Y];
+            SearchNode endNode = searchNodes[(int)end.X, (int)end.Y];
 
             // set the start node's weight (distance travelled) to 0
             // set the start node's distance to goal as the distance between start and end

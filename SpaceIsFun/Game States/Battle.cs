@@ -26,6 +26,8 @@ namespace SpaceIsFun
             bool target1Selected = false;
             bool target2Selected = false;
 
+            Pathfinder pather = new Pathfinder(playerShip.ShipGrid);
+
             // sets up seven energy bars for the ship
             Panel energy1 = new Panel(4, screenHeight - 128, 40, 128 - 8);
             Panel energy2 = new Panel(64 + 4, screenHeight - 128, 40, 128 - 8);
@@ -124,6 +126,16 @@ namespace SpaceIsFun
                         target2 = playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition;
 
                         System.Diagnostics.Debug.WriteLine(target1.ToString() + " " + target2.ToString());
+
+                        pather = new Pathfinder(playerShip.ShipGrid);
+
+                        List<Vector2> path = pather.FindOptimalPath(target1, target2);
+
+                        foreach (Vector2 item in path)
+                        {
+                            System.Diagnostics.Debug.WriteLine(item.ToString());
+                        }
+                        
 
                         target1Selected = false;
 
