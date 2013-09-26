@@ -94,7 +94,7 @@ namespace SpaceIsFun
     /// <summary>
     /// A grid of the ship
     /// </summary>
-    class Grid : Entity
+    public class Grid : Entity
     {
         #region fields
         /// <summary>
