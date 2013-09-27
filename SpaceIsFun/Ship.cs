@@ -314,6 +314,7 @@ namespace SpaceIsFun
                 position = value;
             }
         }
+         
 
         /// <summary>
         /// drawable for the room (this is probably never gonna move)
@@ -396,13 +397,54 @@ namespace SpaceIsFun
             }
         }
 
+         /// <summary>
+        /// parameter for isMannable
+        /// </summary>
+
+        protected bool isMannable;
+
+        public bool IsMannable
+        {
+            get
+            {
+                return isMannable;
+            }
+
+        }
+
+        /// <summary>
+        /// parameter for position
+        /// </summary>
+
+        protected int roomType;
+
+        public int RoomType
+        {
+            get
+            {
+                return roomType;
+            }
+
+        }
+
+        protected int status;
+
+        public int Status
+        {
+            get
+            {
+                return status;
+            }
+            set
+            {
+                status = value;
+            }
+        }
+
         #endregion
 
         #region constructors / destructors
-        public Room()
-        {
-
-        }
+        public Room() { }
 
         /// <summary>
         /// constructor for a room
@@ -417,10 +459,12 @@ namespace SpaceIsFun
             roomTexture = texture;
             roomHighlightTexture = highlightTexture;
             roomPosition = new Vector2(x, y);
+            isMannable = new bool();
+            isMannable = false;
+            roomType = constants.EMPTY_ROOM;
         }
 
         #endregion
-
         #region methods
 
         /// <summary>
@@ -429,8 +473,16 @@ namespace SpaceIsFun
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
+            updateStatus();
+
+
             Sprite.Update(gameTime);
             base.Update(gameTime);
+        }
+
+        virtual void updateStatus()
+        {
+            
         }
 
         /// <summary>
@@ -473,6 +525,284 @@ namespace SpaceIsFun
 
 
     }
+    
+    /// <summary>
+    /// This contains info on rooms that can be manned
+    /// </summary>
+    #region mannedRooms
+
+    class engineRoom : Room
+    {
+        #region fields
+        
+        #endregion
+
+        #region constructors / destructors
+        public engineRoom()
+        {
+        }
+
+        public engineRoom(Texture2D texture, Texture2D highlightTexture, int x, int y)
+        {
+            isMannable = new bool();
+            isMannable = true;
+            roomType = constants.ENGINE_ROOM;
+        }
+        #endregion
+
+        #region methods
+        override protected void updateStatus()
+        {
+            switch (status)
+            {
+                case constants.STATUS_NORMAL:
+
+                    break;
+
+                case constants.STATUS_DAMAGED:
+                    //
+                    break;
+
+                case constants.STATUS_INOPERABLE:
+                    break;
+
+                case constants.STATUS_DISABLED:
+                    break;
+
+                default:
+                    //Normal status
+
+                    break;
+            }
+
+        }
+        #endregion
+    }
+
+    class pilotRoom : Room
+    {
+        #region fields
+
+        #endregion
+
+        #region constructors / destructors
+        public pilotRoom()
+        {
+        }
+
+        public pilotRoom(Texture2D texture, Texture2D highlightTexture, int x, int y)
+        {
+            isMannable = new bool();
+            isMannable = true;
+            roomType = constants.PILOT_ROOM;
+        }
+        #endregion
+
+        #region methods
+
+        #endregion
+    }
+
+    class shieldRoom : Room
+    {
+        #region fields
+
+        #endregion
+
+        #region constructors / destructors
+        public shieldRoom()
+        {
+        }
+
+        public shieldRoom(Texture2D texture, Texture2D highlightTexture, int x, int y)
+        {
+            isMannable = new bool();
+            isMannable = true;
+            roomType = constants.SHIELD_ROOM;
+        }
+        #endregion
+
+        #region methods
+
+        #endregion
+    }
+
+    class weaponRoom : Room
+    {
+        #region fields
+
+        #endregion
+
+        #region constructors / destructors
+        public weaponRoom()
+        {
+        }
+
+        public weaponRoom(Texture2D texture, Texture2D highlightTexture, int x, int y)
+        {
+            isMannable = new bool();
+            isMannable = true;
+            roomType = constants.WEAPONS_ROOM;
+        }
+        #endregion
+
+        #region methods
+
+        #endregion
+    }
+    #endregion
+
+    #region unmannedRooms
+
+    class cloakRoom : Room
+    {
+        #region fields
+
+        #endregion
+
+        #region constructors / destructors
+        public cloakRoom()
+        {
+        }
+
+        public cloakRoom(Texture2D texture, Texture2D highlightTexture, int x, int y)
+        {
+            roomType = constants.CLOAK_ROOM;
+        }
+        #endregion
+
+        #region methods
+
+        #endregion
+    }
+
+    class doorRoom : Room
+    {
+        #region fields
+
+        #endregion
+
+        #region constructors / destructors
+        public doorRoom()
+        {
+        }
+
+        public doorRoom(Texture2D texture, Texture2D highlightTexture, int x, int y)
+        {
+            roomType = constants.DOOR_ROOM;
+        }
+        #endregion
+
+        #region methods
+
+        #endregion
+    }
+
+    class droneRoom : Room
+    {
+        #region fields
+
+        #endregion
+
+        #region constructors / destructors
+        public droneRoom()
+        {
+        }
+        public droneRoom(Texture2D texture, Texture2D highlightTexture, int x, int y)
+        {
+            roomType = constants.DRONE_ROOM;
+        }
+        #endregion
+
+        #region methods
+
+        #endregion
+    }
+
+    class medbayRoom : Room
+    {
+        #region fields
+
+        #endregion
+
+        #region constructors / destructors
+        public medbayRoom()
+        {
+        }
+        public medbayRoom(Texture2D texture, Texture2D highlightTexture, int x, int y)
+        {
+            roomType = constants.MEDBAY_ROOM;
+        }
+        #endregion
+
+        #region methods
+
+        #endregion
+    }
+
+    class O2Room : Room
+    {
+        #region fields
+
+        #endregion
+
+        #region constructors / destructors
+        public O2Room()
+        {
+        }
+        public O2Room(Texture2D texture, Texture2D highlightTexture, int x, int y)
+        {
+            roomType = constants.O2_ROOM;
+        }
+        #endregion
+
+        #region methods
+        #endregion
+    }
+
+    class sensorRoom : Room
+    {
+        #region fields
+
+        #endregion
+
+        #region constructors / destructors
+        public sensorRoom()
+        {
+        }
+        public sensorRoom(Texture2D texture, Texture2D highlightTexture, int x, int y)
+        {
+            roomType = constants.SENSORS_ROOM;
+        }
+        #endregion
+
+        #region methods
+
+        #endregion
+    }
+
+    class teleporterRoom : Room
+    {
+        #region fields
+
+        #endregion
+
+        #region constructors / destructors
+        public teleporterRoom()
+        {
+        }
+        public teleporterRoom(Texture2D texture, Texture2D highlightTexture, int x, int y)
+        {
+            roomType = constants.TELEPORTER_ROOM;
+        }
+        #endregion
+
+        #region methods
+
+        #endregion
+    }
+    #endregion
+
 
     class Crew : Entity
     {
@@ -480,6 +810,9 @@ namespace SpaceIsFun
         #endregion
 
         #region constructors / destructors
+        public Crew()
+        {
+        }
         #endregion
 
         #region methods
@@ -595,6 +928,20 @@ namespace SpaceIsFun
             }
         }
 
+        private int shipO2;
+
+        public int ShipO2
+        {
+            get
+            {
+                return shipO2;
+            }
+            set
+            {
+                shipO2 = value;
+            }
+        }
+
         /// <summary>
         /// the ship's Drawable object
         /// </summary>
@@ -682,6 +1029,9 @@ namespace SpaceIsFun
 
         #region constructors / destructors
 
+        public Ship()
+        {
+        }
         /// <summary>
         /// constructor for a ship object
         /// </summary>
