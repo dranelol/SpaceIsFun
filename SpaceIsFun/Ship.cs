@@ -115,6 +115,21 @@ namespace SpaceIsFun
             }
         }
 
+        private bool isWalkable = true;
+
+        public bool IsWalkable
+        {
+            get
+            {
+                return isWalkable;
+            }
+
+            set
+            {
+                isWalkable = value;
+            }
+        }
+
         /// <summary>
         /// drawable for the grid (this is probably never gonna move)
         /// </summary>
@@ -156,6 +171,37 @@ namespace SpaceIsFun
             }
         }
 
+        private Texture2D highlightTexture;
+
+        public Texture2D HighlightTexture
+        {
+            get
+            {
+                return highlightTexture;
+            }
+
+            set
+            {
+                highlightTexture = value;
+            }
+        }
+
+        private bool highlighted;
+
+        public bool Highlighted
+        {
+            get
+            {
+                return highlighted;
+            }
+
+            set
+            {
+                highlighted = value;
+            }
+        }
+
+
 
         #endregion
 
@@ -165,12 +211,13 @@ namespace SpaceIsFun
         {
         }
 
-        public Grid(Texture2D spriteTexture, Vector2 position, Vector2 gPosition) 
+        public Grid(Texture2D spriteTexture, Texture2D highlight, Vector2 position, Vector2 gPosition) 
             : base()
         {
             gridTexture = spriteTexture;
             sprite = new Drawable(gridTexture, position);
             gridPosition = gPosition;
+            highlightTexture = highlight;
         }
 
         #endregion
@@ -185,8 +232,34 @@ namespace SpaceIsFun
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            if (highlighted == true)
+            {
+                Sprite.SpriteTexture = highlightTexture;
+            }
+
+            if (highlighted == false)
+            {
+                Sprite.SpriteTexture = gridTexture;
+            }
+            
             Sprite.Draw(spriteBatch);
             base.Draw(spriteBatch);
+        }
+
+        /// <summary>
+        /// highlight the grid if its unhighlighted, unhighlight it if its highlighted
+        /// </summary>
+        public void Highlight()
+        {
+            if (highlighted == true)
+            {
+                highlighted = false;
+            }
+
+            else
+            {
+                highlighted = true;
+            }
         }
         #endregion
 
@@ -638,10 +711,16 @@ namespace SpaceIsFun
                 for (int j = 0; j < shipTexture.Bounds.Height/32; j++)
                 {
                     // create a new grid object for i,j
-                    shipGrid[i,j] = new Grid(gridTexture, new Vector2(i*32+position.X, j*32+position.Y), new Vector2(i,j));
+                    shipGrid[i, j] = new Grid(gridTexture, highlightTexture, new Vector2(i * 32 + position.X, j * 32 + position.Y), new Vector2(i, j));
                     
                 }
             }
+
+            ShipGrid[0, 0].IsWalkable = false;
+            ShipGrid[1, 1].IsWalkable = false;
+            ShipGrid[2, 2].IsWalkable = false;
+            ShipGrid[3, 3].IsWalkable = false;
+            ShipGrid[4, 4].IsWalkable = false;
 
         }
 
