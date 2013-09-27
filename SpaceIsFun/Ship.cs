@@ -474,6 +474,19 @@ namespace SpaceIsFun
 
     }
 
+    class Crew : Entity
+    {
+        #region fields
+        #endregion
+
+        #region constructors / destructors
+        #endregion
+
+        #region methods
+        #endregion
+
+    }
+
     /// <summary>
     /// Its a ship!
     /// </summary>
