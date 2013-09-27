@@ -72,10 +72,20 @@ namespace SpaceIsFun
             {
                 #region input handling
 
+
+
                 // if the a key is pressed, transition back to the menu
                 if (currentKeyState.IsKeyDown(Keys.A))
                 {
                     stateMachine.Transition(startMenu.Name);
+                }
+
+                foreach (Grid thing in playerShip.ShipGrid)
+                {
+                    if (thing.IsWalkable == false)
+                    {
+                        thing.Highlighted = true;
+                    }
                 }
 
                 // if the c key is tapped, query to see if the cursor is hovering over the ship
@@ -102,7 +112,13 @@ namespace SpaceIsFun
                             //System.Diagnostics.Debug.WriteLine("Highighted?: " + playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].Highlighted.ToString());
                             if (target1Selected == false)
                             {
-                                target1Selected = true;
+                                if (playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].IsWalkable == true)
+                                {
+                                    target1Selected = true;
+                                }
+
+                                
+                                
                             }
 
                             target1 = playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition;
@@ -123,24 +139,33 @@ namespace SpaceIsFun
 
                     if (target2Selected == false && target1Selected == true)
                     {
-                        target2 = playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition;
-
-                        System.Diagnostics.Debug.WriteLine(target1.ToString() + " " + target2.ToString());
-
-                        pather = new Pathfinder(playerShip.ShipGrid);
-
-                        List<Vector2> path = pather.FindOptimalPath(target1, target2);
-
-                        foreach (Vector2 item in path)
+                        if (playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].IsWalkable == true)
                         {
-                            System.Diagnostics.Debug.WriteLine(item.ToString());
-                        }
+                            target2 = playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition;
+
+                            System.Diagnostics.Debug.WriteLine(target1.ToString() + " " + target2.ToString());
+
+                        
+                        
+                            pather = new Pathfinder(playerShip.ShipGrid);
+
+
+
+                            List<Vector2> path = pather.FindOptimalPath(target1, target2);
+
+                            foreach (Vector2 item in path)
+                            {
+                                Vector2 dumb = new Vector2((item.X / 32), (item.Y / 32));
+                            
+                                System.Diagnostics.Debug.WriteLine(dumb.ToString());
+                            }
                         
 
-                        target1Selected = false;
+                            target1Selected = false;
 
-                        target1 = new Vector2();
-                        target2 = new Vector2();
+                            target1 = new Vector2();
+                            target2 = new Vector2();
+                        }
                     }
                 }
 
