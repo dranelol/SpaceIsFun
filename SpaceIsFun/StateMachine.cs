@@ -68,6 +68,9 @@ namespace SpaceIsFun
         #endregion
 
         #region constructors / destructors
+        public StateMachine()
+        {
+        }
 
         public StateMachine(Game1 thisGame)
         {
