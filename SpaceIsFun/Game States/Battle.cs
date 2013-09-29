@@ -210,7 +210,6 @@ namespace SpaceIsFun
                 #endregion
 
 
-
             };
 
             // when leaving the battle state
