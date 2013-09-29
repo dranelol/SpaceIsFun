@@ -35,6 +35,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="constants.cs" />
     <Compile Include="Drawable.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Game States\Battle.cs" />
