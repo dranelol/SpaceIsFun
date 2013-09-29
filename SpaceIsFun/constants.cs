@@ -28,12 +28,6 @@ namespace SpaceIsFun
         public const int TELEPORTER_ROOM = 10;
         public const int WEAPONS_ROOM = 11;
 
-
-        public const int STATUS_NORMAL = 0;
-        public const int STATUS_DAMAGED = 1;
-        public const int STATUS_INOPERABLE = 2;
-
-        public const int STATUS_DISABLED = 3;
         #endregion
 
         #region skilllevelconsts

@@ -156,7 +156,7 @@ namespace SpaceIsFun
             // initialize the game state machine and states
 
             #region state machine setup
-            stateMachine = new StateMachine(this);
+            stateMachine = new StateMachine();
 
             startMenu = new State { Name = "startMenu" };
             battle = new State { Name = "battle" };
