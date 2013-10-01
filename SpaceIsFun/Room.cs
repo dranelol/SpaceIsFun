@@ -204,6 +204,20 @@ namespace SpaceIsFun
             }
         }
 
+
+        /// <summary>
+        /// parameter for max energy
+        /// </summary>
+        protected int isManned;
+
+        public int IsManned
+        {
+            set
+            {
+                isManned = value;
+            }
+        }
+
         /// <summary>
         /// Declarations for state machines of individual room
         /// </summary>
@@ -433,6 +447,8 @@ namespace SpaceIsFun
         {
             isMannable = new bool();
             isMannable = true;
+            isManned = new int();
+            isManned = 0;
             maxEnergy = currentAvailableEnergy = 2;
             roomType = constants.ENGINE_ROOM;
         }
@@ -458,13 +474,14 @@ namespace SpaceIsFun
         {
             isMannable = new bool();
             isMannable = true;
+            isManned = new int();
+            isManned = 0;
             maxEnergy = currentAvailableEnergy = 1;
             roomType = constants.PILOT_ROOM;
         }
         #endregion
 
         #region methods
-
         #endregion
     }
 
@@ -483,6 +500,8 @@ namespace SpaceIsFun
         {
             isMannable = new bool();
             isMannable = true;
+            isManned = new int();
+            isManned = 0;
             maxEnergy = currentAvailableEnergy = 2;
             roomType = constants.SHIELD_ROOM;
         }
@@ -508,6 +527,8 @@ namespace SpaceIsFun
         {
             isMannable = new bool();
             isMannable = true;
+            isManned = new int();
+            isManned = 0;
             maxEnergy = currentAvailableEnergy = 3;
             roomType = constants.WEAPONS_ROOM;
         }
