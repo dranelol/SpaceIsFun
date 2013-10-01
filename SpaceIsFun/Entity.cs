@@ -10,13 +10,20 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace SpaceIsFun
 {
-    class Entity : Object
+    /// <summary>
+    /// This holds all the info for an entity in our game. Generally, entities are just thought of as "special" objects; they may have a drawable, they may be moved, etc.
+    /// </summary>
+    public class Entity : Object
     {
         #region fields
 
         #endregion
 
         #region constructors / destructors
+
+        /// <summary>
+        /// constructor for an entity
+        /// </summary>
         public Entity()
             : base()
         {
@@ -24,10 +31,19 @@ namespace SpaceIsFun
         #endregion
 
         #region methods
+
+        /// <summary>
+        /// update the entity
+        /// </summary>
+        /// <param name="gameTime">current game time</param>
         virtual public void Update(GameTime gameTime)
         {
         }
 
+        /// <summary>
+        /// draw the entity
+        /// </summary>
+        /// <param name="spriteBatch">main spriteBatch object</param>
         virtual public void Draw(SpriteBatch spriteBatch)
         {
         }
