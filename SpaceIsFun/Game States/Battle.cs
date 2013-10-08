@@ -80,6 +80,11 @@ namespace SpaceIsFun
                     stateMachine.Transition(startMenu.Name);
                 }
 
+                if (currentKeyState.IsKeyDown(Keys.P))
+                {
+                    System.Diagnostics.Debug.WriteLine(playerShip.RoomGridDict.ToString());
+                }
+
                 foreach (Grid thing in playerShip.ShipGrid)
                 {
                     if (thing.IsWalkable == false)

@@ -779,6 +779,8 @@ namespace SpaceIsFun
             ShipGrid[3, 3].IsWalkable = false;
             ShipGrid[4, 4].IsWalkable = false;
 
+            setRoomGridDictionary();
+
         }
 
         #endregion
@@ -885,6 +887,23 @@ namespace SpaceIsFun
 
 
             return ret;
+        }
+
+        private void setRoomGridDictionary()
+        {
+            foreach (Room rL in roomList)
+            {
+                switch (rL.RShape)
+                {
+                    case constants.roomShape.TwoXTwo:
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y]] = rL;
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y]] = rL;
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y + 1]] = rL;
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y + 1]] = rL;
+                        break;
+                }
+            }
+
         }
 
 
