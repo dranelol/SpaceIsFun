@@ -71,24 +71,10 @@ namespace SpaceIsFun
         public float DistanceTraveled;
         
 
-
-
     }
-
-    /*
-     * TODO: 
-     *      -Reimplement
-     * 
-     * 
-     */
-
-
-    
 
     public class Pathfinder
     {
-        
-
         // Array of the walkable nodes
 
         private SearchNode[,] searchNodes;
@@ -138,7 +124,7 @@ namespace SpaceIsFun
                     node.Position = new Vector2(x, y);
 
                     // heuristic for "is this node walkable?"
-                    /*if (map[x,y].BelongsToRoom == true)  
+                    if (map[x,y].Highlighted == false)  
                     { 
                         node.Walkable = true;
                     }
@@ -146,9 +132,9 @@ namespace SpaceIsFun
                     else
                     {
                         node.Walkable = false;
-                    }*/
+                    }
 
-                    node.Walkable = true;
+                    //node.Walkable = true;
                     
                     
                     if (node.Walkable == true)
@@ -319,18 +305,7 @@ namespace SpaceIsFun
 
             // reverse the path, transform into points(grids)
 
-            // ----------------------------------------------------
-            // ----------------------------------------------------
-            // ----------------------------------------------------
-            // ----------------------------------------------------
-            // ----------------------------------------------------
-            // ----------------------------------------------------
-            // ----------------------------------------------------
-            // ----------------------------------------------------
-            // ----------------------------------------------------
-            // ----------------------------------------------------
-            // ----------------------------------------------------
-            // ----------------------------------------------------
+           
 
             for (int i = closedList.Count - 1; i >= 0; i--)
             {

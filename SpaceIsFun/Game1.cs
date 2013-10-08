@@ -87,7 +87,7 @@ namespace SpaceIsFun
         // 1: cursor over player ship
         // 2: cursor over enemy ship
         int shipCursorFocus;
-        
+
         /// <summary>
         /// width of the current screen, in pixels
         /// </summary>
@@ -156,7 +156,7 @@ namespace SpaceIsFun
             // initialize the game state machine and states
 
             #region state machine setup
-            stateMachine = new StateMachine(this);
+            stateMachine = new StateMachine();
 
             startMenu = new State { Name = "startMenu" };
             battle = new State { Name = "battle" };
@@ -186,7 +186,7 @@ namespace SpaceIsFun
             setupStartMenu();
             setupBattle();
             setupPauseState();
-            
+
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace SpaceIsFun
             // load gui elements
 
             skin = new Skin(Content.Load<Texture2D>("uiskin"), System.IO.File.ReadAllText("Content/uiskinmap.txt"));
-            
+
             gui = new Gui(this, skin, new Text(font, Color.White));
 
             // add all text the GUI may be using here
@@ -233,7 +233,7 @@ namespace SpaceIsFun
             gui.AddText("password", new Text(font, Color.TransparentBlack));
             gui.AddText("empty", new Text(font, Color.LightSlateGray));
 
-            
+
         }
 
         /// <summary>
@@ -242,7 +242,7 @@ namespace SpaceIsFun
         /// </summary>
         protected override void UnloadContent()
         {
-            
+
 
         }
 
@@ -301,7 +301,7 @@ namespace SpaceIsFun
             }
 
             #endregion
-            
+
             base.Update(gameTime);
         }
 
@@ -324,17 +324,17 @@ namespace SpaceIsFun
                 spriteBatch.Begin();
                 playerShip.Draw(spriteBatch);
                 spriteBatch.End();
-                
+
             }
 
-            
+
             base.Draw(gameTime);
         }
 
         #endregion
 
         #region state methods
-        
+
         /// <summary>
         /// sets up the game pause state
         /// </summary>
@@ -360,10 +360,10 @@ namespace SpaceIsFun
         #endregion
 
 
-        
+
     }
 
-   
 
-    
+
+
 }

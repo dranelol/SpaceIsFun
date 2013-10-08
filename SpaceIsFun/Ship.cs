@@ -115,6 +115,21 @@ namespace SpaceIsFun
             }
         }
 
+        private bool isWalkable = true;
+
+        public bool IsWalkable
+        {
+            get
+            {
+                return isWalkable;
+            }
+
+            set
+            {
+                isWalkable = value;
+            }
+        }
+
         /// <summary>
         /// drawable for the grid (this is probably never gonna move)
         /// </summary>
@@ -156,6 +171,37 @@ namespace SpaceIsFun
             }
         }
 
+        private Texture2D highlightTexture;
+
+        public Texture2D HighlightTexture
+        {
+            get
+            {
+                return highlightTexture;
+            }
+
+            set
+            {
+                highlightTexture = value;
+            }
+        }
+
+        private bool highlighted;
+
+        public bool Highlighted
+        {
+            get
+            {
+                return highlighted;
+            }
+
+            set
+            {
+                highlighted = value;
+            }
+        }
+
+
 
         #endregion
 
@@ -165,12 +211,13 @@ namespace SpaceIsFun
         {
         }
 
-        public Grid(Texture2D spriteTexture, Vector2 position, Vector2 gPosition) 
+        public Grid(Texture2D spriteTexture, Texture2D highlight, Vector2 position, Vector2 gPosition) 
             : base()
         {
             gridTexture = spriteTexture;
             sprite = new Drawable(gridTexture, position);
             gridPosition = gPosition;
+            highlightTexture = highlight;
         }
 
         #endregion
@@ -185,8 +232,34 @@ namespace SpaceIsFun
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            if (highlighted == true)
+            {
+                Sprite.SpriteTexture = highlightTexture;
+            }
+
+            if (highlighted == false)
+            {
+                Sprite.SpriteTexture = gridTexture;
+            }
+            
             Sprite.Draw(spriteBatch);
             base.Draw(spriteBatch);
+        }
+
+        /// <summary>
+        /// highlight the grid if its unhighlighted, unhighlight it if its highlighted
+        /// </summary>
+        public void Highlight()
+        {
+            if (highlighted == true)
+            {
+                highlighted = false;
+            }
+
+            else
+            {
+                highlighted = true;
+            }
         }
         #endregion
 
@@ -194,40 +267,18 @@ namespace SpaceIsFun
 
 
     }
-    /// <summary>
-    /// This contains all the info of a room on a ship 
-    /// </summary>
-    class Room : Entity
+
+    class Crew : Entity
     {
         #region fields
-        /// <summary>
-        /// grid position of the room's top-left grid (if the room's top-left grid's grid position is (2,2), then this will be (2,2)
-        /// </summary>
-        private Vector2 roomPosition;
 
         /// <summary>
-        /// parameter for roomPosition
-        /// </summary>
-        public Vector2 RoomPosition
-        {
-            get
-            {
-                return roomPosition;
-            }
-
-            set
-            {
-                RoomPosition = value;
-            }
-        }
-
-        /// <summary>
-        /// position of this room's 1,1 in screenspace
+        /// position of the crewman on grid space
         /// </summary>
         private Vector2 position;
 
         /// <summary>
-        /// parameter for position
+        /// Parameter for position
         /// </summary>
         public Vector2 Position
         {
@@ -243,10 +294,55 @@ namespace SpaceIsFun
         }
 
         /// <summary>
-        /// drawable for the room (this is probably never gonna move)
+        /// Max HP of the crewman
+        /// </summary>
+        private int maxHP;
+
+        /// <summary>
+        /// Parameter for max HP
+        /// </summary>
+        public int MaxHP
+        {
+            get
+            {
+                return maxHP;
+            }
+
+            set
+            {
+                maxHP = value;
+            }
+        }
+
+        /// <summary>
+        /// Current HP of the crewman
+        /// </summary>
+        private int currentHP;
+
+        /// <summary>
+        /// Parameter for current HP
+        /// </summary>
+        public int CurrentHP
+        {
+            get
+            {
+                return currentHP;
+            }
+
+            set
+            {
+                currentHP = value;
+            }
+        }
+
+        /// <summary>
+        /// the ship's Drawable object
         /// </summary>
         private Drawable sprite;
 
+        /// <summary>
+        /// parameter for sprite
+        /// </summary>
         public Drawable Sprite
         {
             get
@@ -261,143 +357,141 @@ namespace SpaceIsFun
         }
 
         /// <summary>
-        /// texture for the room
+        /// texture for the crewman
         /// </summary>
-        private Texture2D roomTexture;
+        private Texture2D crewTexture;
 
         /// <summary>
-        /// texture for the room while highlighted
+        /// texture for the crewman while selected
         /// </summary>
-        private Texture2D roomHighlightTexture;
+        private Texture2D crewSelectedTexture;
 
         /// <summary>
-        /// parameter for roomTexture
+        /// parameter for crewTexture
         /// </summary>
-        public Texture2D RoomTexture
+        public Texture2D CrewTexture
         {
             get
             {
-                return roomTexture;
+                return crewTexture;
             }
 
             set
             {
-                roomTexture = value;
+                crewTexture = value;
             }
         }
 
         /// <summary>
-        /// paramter for roomHighlightTexture
+        /// paramter for crewSelectedTexture
         /// </summary>
-        public Texture2D RoomHighlightTexture
+        public Texture2D CrewSelectedTexture
         {
             get
             {
-                return roomHighlightTexture;
+                return crewSelectedTexture;
             }
 
             set
             {
-                roomHighlightTexture = value;
+                crewSelectedTexture = value;
             }
         }
 
         /// <summary>
-        /// whether or not the room is highlighted
+        /// whether or not the crewman is selected
         /// </summary>
-        private bool highlighted;
+        private bool selected;
 
         /// <summary>
-        /// parameter for highlighted
+        /// parameter for selected
         /// </summary>
-        public bool Highlighted
+        public bool Selected
         {
             get
             {
-                return highlighted;
+                return selected;
             }
 
             set
             {
-                highlighted = value;
+                selected = value;
             }
         }
 
         #endregion
 
         #region constructors / destructors
-        public Room()
-        {
-
-        }
-
         /// <summary>
-        /// constructor for a room
+        /// construtor of crewman
         /// </summary>
-        /// <param name="texture">texture for the room</param>
-        /// <param name="highlightTexture">texture for the room when its highlighted</param>
-        /// <param name="x">x-position of the top-left grid position</param>
-        /// <param name="y">y-position of the top-left grid position</param>
-        public Room(Texture2D texture, Texture2D highlightTexture, int x, int y)
+        /// <param name="position">starting position of the crewman</param>
+        /// <param name="crewTexture">texture of the crewman when not selected</param>
+        /// <param name="crewSelectedTexture">texture of the crewman when selected</param>
+        public Crew(Vector2 position, Texture2D crewTexture, Texture2D crewSelectedTexture) : base()
         {
-            position = new Vector2(x * 32, y * 32);
-            roomTexture = texture;
-            roomHighlightTexture = highlightTexture;
-            roomPosition = new Vector2(x, y);
+            maxHP = currentHP = 100;
+            this.position = position;
+
+            this.crewTexture = crewTexture;
+            this.crewSelectedTexture = crewSelectedTexture;
+            this.selected = false;
+
+            sprite = new Drawable(crewTexture, position);
+
         }
 
         #endregion
 
         #region methods
 
-        /// <summary>
-        /// update the room
-        /// </summary>
-        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             Sprite.Update(gameTime);
             base.Update(gameTime);
         }
 
-        /// <summary>
-        /// draw the room
-        /// </summary>
-        /// <param name="spriteBatch">main spriteBatch object</param>
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (highlighted == true)
+            if (selected == true)
             {
-                Sprite.SpriteTexture = roomHighlightTexture;
+                Sprite.SpriteTexture = crewSelectedTexture;
             }
 
-            if (highlighted == false)
+            if (selected == false)
             {
-                Sprite.SpriteTexture = roomTexture;
+                Sprite.SpriteTexture = crewTexture;
             }
 
             Sprite.Draw(spriteBatch);
             base.Draw(spriteBatch);
         }
 
+
         /// <summary>
-        /// highlight the room if its unhighlighted, unhighlight it if its highlighted
+        /// highlight the grid if its unhighlighted, unhighlight it if its highlighted
         /// </summary>
-        public void Highlight()
+        public void Select()
         {
-            if (highlighted == true)
+            if (selected == true)
             {
-                highlighted = false;
+                selected = false;
             }
 
             else
             {
-                highlighted = true;
+                selected = true;
             }
         }
 
-        #endregion
+        
+        public void Move(List<Vector2> path)
+        {
+            //I have a dream that one day this function will exist, that it will tell the sprite where to move, and the sprite will move there as decreed by the mighty A* algorithm given to us by Peter Hart, Nils Nilsson and Bertram Raphael of the hallowed Stanford Research Instituteendregion
+            //sprite.setPath(path);
+        }
 
+        #endregion
 
     }
 
@@ -509,6 +603,20 @@ namespace SpaceIsFun
             }
         }
 
+        private int shipO2;
+
+        public int ShipO2
+        {
+            get
+            {
+                return shipO2;
+            }
+            set
+            {
+                shipO2 = value;
+            }
+        }
+
         /// <summary>
         /// the ship's Drawable object
         /// </summary>
@@ -596,6 +704,9 @@ namespace SpaceIsFun
 
         #region constructors / destructors
 
+        public Ship()
+        {
+        }
         /// <summary>
         /// constructor for a ship object
         /// </summary>
@@ -625,10 +736,16 @@ namespace SpaceIsFun
                 for (int j = 0; j < shipTexture.Bounds.Height/32; j++)
                 {
                     // create a new grid object for i,j
-                    shipGrid[i,j] = new Grid(gridTexture, new Vector2(i*32+position.X, j*32+position.Y), new Vector2(i,j));
+                    shipGrid[i, j] = new Grid(gridTexture, highlightTexture, new Vector2(i * 32 + position.X, j * 32 + position.Y), new Vector2(i, j));
                     
                 }
             }
+
+            ShipGrid[0, 0].IsWalkable = false;
+            ShipGrid[1, 1].IsWalkable = false;
+            ShipGrid[2, 2].IsWalkable = false;
+            ShipGrid[3, 3].IsWalkable = false;
+            ShipGrid[4, 4].IsWalkable = false;
 
         }
 
@@ -737,6 +854,7 @@ namespace SpaceIsFun
 
             return ret;
         }
+
 
         #endregion 
     }
