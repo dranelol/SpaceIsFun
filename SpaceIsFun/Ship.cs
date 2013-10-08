@@ -271,22 +271,6 @@ namespace SpaceIsFun
     class Crew : Entity
     {
         #region fields
-        #endregion
-
-        #region constructors / destructors
-        public Crew()
-        {
-        }
-        #endregion
-
-        #region methods
-        #endregion
-
-    }
-
-    class Crew : Entity
-    {
-        #region fields
 
         /// <summary>
         /// position of the crewman on grid space
