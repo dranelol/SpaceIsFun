@@ -71,19 +71,10 @@ namespace SpaceIsFun
         public float DistanceTraveled;
         
 
-
-
     }
-
-    
-
-
-    
 
     public class Pathfinder
     {
-        
-
         // Array of the walkable nodes
 
         private SearchNode[,] searchNodes;
