@@ -201,6 +201,37 @@ namespace SpaceIsFun
             }
         }
 
+        //Whether or not the individual grid position is on fire.  Will affect room health and oxygen levels.
+        private bool aflame;
+
+        public bool Aflame
+        {
+            get
+            {
+                return aflame;
+            }
+
+            set
+            {
+                aflame = value;
+            }
+        }
+
+        //Whether or not the individual grid position is breached.  Will affect room oxygen levels.
+        private bool hullBreach;
+
+        public bool HullBreach
+        {
+            get
+            {
+                return hullBreach;
+            }
+
+            set
+            {
+                hullBreach = value;
+            }
+        }
 
 
         #endregion
@@ -218,6 +249,8 @@ namespace SpaceIsFun
             sprite = new Drawable(gridTexture, position);
             gridPosition = gPosition;
             highlightTexture = highlight;
+            hullBreach = false;
+            aflame = false;
         }
 
         #endregion
@@ -262,8 +295,6 @@ namespace SpaceIsFun
             }
         }
         #endregion
-
-
 
 
     }
@@ -714,9 +745,10 @@ namespace SpaceIsFun
         /// <param name="gridTexture">texture used to draw the ship's grid</param>
         /// <param name="highlightTexture">texture used to draw the ship's grid when a grid is selected</param>
         /// <param name="position">initial position of the ship's sprite</param>
-        public Ship(Texture2D shipTexture, Texture2D gridTexture, Texture2D highlightTexture, Vector2 position)
+        public Ship(Texture2D shipTexture, Texture2D gridTexture, Texture2D highlightTexture, Vector2 position, List<Room> rList)
             : base()
         {
+            roomList = rList;
             // set some default values 
             maxHP = currentHP = 10;
             energy = 5;

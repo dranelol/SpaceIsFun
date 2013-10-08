@@ -45,5 +45,9 @@ namespace SpaceIsFun
 
         #region eventconsts
         #endregion
+
+        #region enumerators
+        public enum roomShape { TwoXOne, TwoXTwo, ThreeXOne, ThreeXThree, OneXTwo, OneXThree, RRoom, JRoom };
+        #endregion
     }
 }
