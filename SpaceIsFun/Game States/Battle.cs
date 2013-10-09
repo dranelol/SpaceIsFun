@@ -85,6 +85,7 @@ namespace SpaceIsFun
                     System.Diagnostics.Debug.WriteLine(playerShip.RoomGridDict.ToString());
                 }
 
+                /*
                 foreach (Grid thing in playerShip.ShipGrid)
                 {
                     if (thing.IsWalkable == false)
@@ -92,6 +93,7 @@ namespace SpaceIsFun
                         thing.Highlighted = true;
                     }
                 }
+                */
 
                 // if the c key is tapped, query to see if the cursor is hovering over the ship
                 if (currentKeyState.IsKeyDown(Keys.C) && previousKeyState.IsKeyUp(Keys.C))
@@ -103,14 +105,23 @@ namespace SpaceIsFun
                     if (shipHover == true)
                     {
                         System.Diagnostics.Debug.WriteLine("Cursor on ship!");
+                        
 
                         // returns which grid (in ship grid coords) the cursor is hovering over
-                        Vector2 gridHover = playerShip.checkGridHover(currentMouseState);
+                        Vector2 gridHover = playerShip.getGridHover(currentMouseState);
+
 
                         // if gridHover isn't (-1,-1), which means the cursor ISNT on the grid, print messages, and highlight (or un-highlight) that grid 
                         if (gridHover.X != -1 && gridHover.Y != -1)
                         {
                             System.Diagnostics.Debug.WriteLine("Cursor on grid: " + playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition.ToString());
+                            
+
+                            if (playerShip.checkRoomHover(currentMouseState) == true)
+                            {
+                                Room roomHover = playerShip.getRoomHover(currentMouseState);
+                                System.Diagnostics.Debug.WriteLine("Cursor on room: " + roomHover.RoomPosition.ToString());
+                            }
                             // highlight that grid
                             //playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].Highlight();
 
@@ -139,7 +150,7 @@ namespace SpaceIsFun
 
                 if (currentKeyState.IsKeyDown(Keys.V) && previousKeyState.IsKeyUp(Keys.V))
                 {
-                    Vector2 gridHover = playerShip.checkGridHover(currentMouseState);
+                    Vector2 gridHover = playerShip.getGridHover(currentMouseState);
                     System.Diagnostics.Debug.WriteLine("Cursor on grid: " + playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition.ToString());
 
                     if (target2Selected == false && target1Selected == true)

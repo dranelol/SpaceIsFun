@@ -349,8 +349,18 @@ namespace SpaceIsFun
             //ShipGrid[2, 2].IsWalkable = false;
             //ShipGrid[3, 3].IsWalkable = false;
             //ShipGrid[4, 4].IsWalkable = false;
+            
+
+            // we need to move the rooms to align ontop of the ship; probably find a better way to do this in the future
+
+            foreach (Room room in roomList)
+            {
+                room.Sprite.MoveBy(new Vector2(50, 50));
+            }
+
 
             setRoomGridDictionary();
+            setUnwalkableGrids();
 
         }
 
@@ -422,7 +432,7 @@ namespace SpaceIsFun
         /// </summary>
         /// <param name="currentMouseState">current state of the mouse</param>
         /// <returns></returns>
-        public Vector2 checkGridHover(MouseState currentMouseState)
+        public Vector2 getGridHover(MouseState currentMouseState)
         {
             // we know the cursor is within bounds, this will only get called if checkShipHover returns true
 
@@ -440,30 +450,57 @@ namespace SpaceIsFun
             ret.Y = (int)relativeYPos / 32;
 
             return ret;
+        
         }
 
         /// <summary>
-        /// check which room the cursor is currently hovering over, this only should get called if checkShipHover returns TRUE
+        /// check whether or not the cursor is hovering over a room
         /// </summary>
-        /// <param name="gridToCheck"></param>
+        /// <param name="currentMouseState"></param>
         /// <returns></returns>
-        public Room checkRoomHover(MouseState currentMouseState)
+        public bool checkRoomHover(MouseState currentMouseState)
         {
-            Room ret = new Room();
-
             // find the grid we're hovering over
 
-            Vector2 gridHover = checkGridHover(currentMouseState);
+            Vector2 gridHover = getGridHover(currentMouseState);
 
             // convert this point to a grid object
             Grid gridToCheck = shipGrid[(int)gridHover.X, (int)gridHover.Y];
 
             // get the room out of the grid,room dict
+            try
+            {
+                Room checkRoom = roomGridDict[gridToCheck];
+            }
 
-            ret = roomGridDict[gridToCheck];
+            catch (KeyNotFoundException e)
+            {
+                System.Diagnostics.Debug.WriteLine("grid not part of a room");
+                //ret.RoomPosition = new Vector2(-1, -1);
+                //return ret;
+                return false;
+            }
 
 
-            return ret;
+            return true;
+        }
+
+        /// <summary>
+        /// check which room the cursor is currently hovering over, this only should get called if checkRoomHover returns TRUE
+        /// </summary>
+        /// <param name="gridToCheck"></param>
+        /// <returns></returns>
+        public Room getRoomHover(MouseState currentMouseState)
+        {
+            // find the grid we're hovering over
+
+            Vector2 gridHover = getGridHover(currentMouseState);
+
+            // convert this point to a grid object
+            Grid gridToCheck = shipGrid[(int)gridHover.X, (int)gridHover.Y];
+
+            // get the room out of the grid,room dict
+            return roomGridDict[gridToCheck];
         }
 
         /// <summary>
@@ -488,6 +525,28 @@ namespace SpaceIsFun
 
             // TODO: possibly un-associate any un-wanted grids with rooms (weirdly-shaped rooms, for example)
 
+        }
+
+        /// <summary>
+        /// sets every grid that doesnt belong to a room as unwalkable
+        /// </summary>
+        private void setUnwalkableGrids()
+        {
+            for (int i = 0; i < shipGrid.GetLength(0); i++)
+            {
+                for (int j = 0; j < shipGrid.GetLength(1); j++)
+                {
+                    // is this grid in the dictionary of grids  that have rooms?
+                    // if not, make it unwalkable
+
+                    if(!roomGridDict.Keys.Contains(shipGrid[i,j]))
+                    {
+                        //System.Diagnostics.Debug.WriteLine(shipGrid[i, j].GridPosition.ToString());
+                        shipGrid[i, j].IsWalkable = false;
+                        
+                    }
+                }
+            }
         }
 
 

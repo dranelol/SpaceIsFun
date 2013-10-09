@@ -185,12 +185,12 @@ namespace SpaceIsFun
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (highlighted == true)
+            if (isWalkable == false)
             {
                 Sprite.SpriteTexture = highlightTexture;
             }
 
-            if (highlighted == false)
+            if (isWalkable == true)
             {
                 Sprite.SpriteTexture = gridTexture;
             }

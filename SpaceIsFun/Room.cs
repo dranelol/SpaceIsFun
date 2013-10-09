@@ -366,6 +366,7 @@ namespace SpaceIsFun
             position = new Vector2(x * 32, y * 32);
             roomTexture = texture;
             roomHighlightTexture = highlightTexture;
+            sprite = new Drawable(highlightTexture, position);
             roomPosition = new Vector2(x, y);
             isMannable = new bool();
             isMannable = false;

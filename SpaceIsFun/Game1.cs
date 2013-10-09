@@ -206,7 +206,7 @@ namespace SpaceIsFun
             energyBar = Content.Load<Texture2D>("energyBar");
             healthBar = Content.Load<Texture2D>("healthBar");
             gridSprite = Content.Load<Texture2D>("Grid");
-            gridHighlightSprite = Content.Load<Texture2D>("GridHighlight");
+            gridHighlightSprite = Content.Load<Texture2D>("GridNotWalkable");
             energyBarSprite = Content.Load<Texture2D>("energyBar");
             roomSprite = Content.Load<Texture2D>("Room2x2");
             roomHighlightSprite = Content.Load<Texture2D>("Room2x2highlight");
@@ -314,6 +314,7 @@ namespace SpaceIsFun
                     stateMachine.Transition(pauseState.Name);
                 }
             }
+
 
             #endregion
 
