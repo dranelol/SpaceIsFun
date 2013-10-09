@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SpaceIsFun
 {
-    static class constants
+    public static class constants
     {
         /// <summary>
         /// Global constants
@@ -44,6 +44,10 @@ namespace SpaceIsFun
         #endregion
 
         #region eventconsts
+        #endregion
+
+        #region enumerators
+        public enum roomShape { TwoXOne, TwoXTwo, ThreeXOne, ThreeXThree, OneXTwo, OneXThree, RRoom, JRoom };
         #endregion
     }
 }
