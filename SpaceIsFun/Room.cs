@@ -205,6 +205,111 @@ namespace SpaceIsFun
         }
 
         /// <summary>
+        /// parameter for room health
+        /// </summary>
+
+        protected int roomHealth;
+
+        public int RoomHealth
+        {
+            get
+            {
+                return roomHealth;
+            }
+            set
+            {
+                roomHealth = value;
+            }
+        }
+
+        protected bool aflame;
+
+        public bool Aflame
+        {
+            get
+            {
+                return aflame;
+            }
+            set
+            {
+                aflame = value;
+            }
+        }
+
+
+        /// <summary>
+        /// Parameter to determine if hull is breached
+        /// </summary>
+        protected bool hullBreach;
+
+        public bool HullBreach
+        {
+            get
+            {
+                return hullBreach;
+            }
+            set
+            {
+                hullBreach = value;
+            }
+        }
+
+
+        /// <summary>
+        /// Define the shape of the room
+        /// </summary>
+        protected constants.roomShape rShape;
+
+        public constants.roomShape RShape
+        {
+            get
+            {
+                return rShape;
+            }
+            set
+            {
+                rShape = value;
+            }
+        }
+
+        /// <summary>
+        /// Parameter for width of the room
+        /// </summary>
+        protected int width;
+
+        public int Width
+        {
+            get
+            {
+                return width;
+            }
+            set
+            {
+                width = value;
+            }
+        }
+
+
+        /// <summary>
+        /// Parameter for height of the room
+        /// </summary>
+        protected int height;
+
+        public int Height
+        {
+            get
+            {
+                return height;
+            }
+            set
+            {
+                height = value;
+            }
+        }
+
+
+
+        /// <summary>
         /// Declarations for state machines of individual room
         /// </summary>
         StateMachine roomStateMachine;
@@ -223,7 +328,7 @@ namespace SpaceIsFun
         /// <param name="highlightTexture">texture for the room when its highlighted</param>
         /// <param name="x">x-position of the top-left grid position</param>
         /// <param name="y">y-position of the top-left grid position</param>
-        public Room(Texture2D texture, Texture2D highlightTexture, int x, int y)
+        public Room(Texture2D texture, Texture2D highlightTexture, int x, int y, constants.roomShape shape, int w, int h)
         {
             #region room state machine setup
             roomStateMachine = new StateMachine();
@@ -265,6 +370,13 @@ namespace SpaceIsFun
             isMannable = new bool();
             isMannable = false;
             roomType = constants.EMPTY_ROOM;
+            roomHealth = 200;
+
+            rShape = shape;
+            width = w;
+            height = h;
+            aflame = false;
+            hullBreach = false;
         }
 
         #endregion
@@ -409,6 +521,7 @@ namespace SpaceIsFun
         }
 
         #endregion
+
 
 
     }
