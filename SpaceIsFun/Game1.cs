@@ -162,7 +162,6 @@ namespace SpaceIsFun
             battle = new State { Name = "battle" };
             pauseState = new State { Name = "pauseState" };
 
-            stateMachine.Start(startMenu);
 
             startMenu.Transitions.Add(battle.Name, battle);
             startMenu.Transitions.Add(pauseState.Name, pauseState);
@@ -173,6 +172,7 @@ namespace SpaceIsFun
             pauseState.Transitions.Add(startMenu.Name, startMenu);
             pauseState.Transitions.Add(battle.Name, battle);
 
+            stateMachine.Start(startMenu);
             #endregion
 
             // set up any UI elements here
