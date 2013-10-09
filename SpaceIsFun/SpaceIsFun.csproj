@@ -35,6 +35,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Crew.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Drawable.cs" />
     <Compile Include="Entity.cs" />
@@ -42,6 +43,7 @@
     <Compile Include="Game States\StartMenu.cs" />
     <Compile Include="Game States\Overworld.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Grid.cs" />
     <Compile Include="Pathfinder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
