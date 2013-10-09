@@ -748,7 +748,10 @@ namespace SpaceIsFun
         public Ship(Texture2D shipTexture, Texture2D gridTexture, Texture2D highlightTexture, Vector2 position, List<Room> rList)
             : base()
         {
+            roomList = new List<Room>();
+            roomGridDict = new Dictionary<Grid, Room>();
             roomList = rList;
+            System.Diagnostics.Debug.WriteLine("initting ship");
             // set some default values 
             maxHP = currentHP = 10;
             energy = 5;
@@ -773,11 +776,11 @@ namespace SpaceIsFun
                 }
             }
 
-            ShipGrid[0, 0].IsWalkable = false;
-            ShipGrid[1, 1].IsWalkable = false;
-            ShipGrid[2, 2].IsWalkable = false;
-            ShipGrid[3, 3].IsWalkable = false;
-            ShipGrid[4, 4].IsWalkable = false;
+            //ShipGrid[0, 0].IsWalkable = false;
+            //ShipGrid[1, 1].IsWalkable = false;
+            //ShipGrid[2, 2].IsWalkable = false;
+            //ShipGrid[3, 3].IsWalkable = false;
+            //ShipGrid[4, 4].IsWalkable = false;
 
             setRoomGridDictionary();
 
@@ -809,6 +812,11 @@ namespace SpaceIsFun
             foreach (Grid shipgrid in shipGrid)
             {
                 shipgrid.Draw(spriteBatch);
+            }
+
+            foreach (Room shipRoom in roomList)
+            {
+                shipRoom.Draw(spriteBatch);
             }
 
             base.Draw(spriteBatch);
@@ -893,13 +901,13 @@ namespace SpaceIsFun
         {
             foreach (Room rL in roomList)
             {
-                switch (rL.RShape)
+                switch (rL.RoomShape)
                 {
-                    case constants.roomShape.TwoXTwo:
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y + 1]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y + 1]] = rL;
+                    case Globals.roomShape.TwoXTwo:
+                        roomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y]] = rL;
+                        roomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y]] = rL;
+                        roomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y + 1]] = rL;
+                        roomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y + 1]] = rL;
                         break;
                 }
             }
