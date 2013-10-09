@@ -213,9 +213,24 @@ namespace SpaceIsFun
 
             #endregion
 
+            // make list of rooms
+
+            Room room1 = new Room(roomHighlightSprite, roomHighlightSprite, 1, 1, constants.roomShape.TwoXTwo, 2, 2);
+            Room room2 = new Room(roomHighlightSprite, roomHighlightSprite, 3, 1, constants.roomShape.TwoXTwo, 2, 2);
+            Room room3 = new Room(roomHighlightSprite, roomHighlightSprite, 2, 3, constants.roomShape.TwoXTwo, 2, 2);
+            Room room4 = new Room(roomHighlightSprite, roomHighlightSprite, 4, 3, constants.roomShape.TwoXTwo, 2, 2);
+            Room room5 = new Room(roomHighlightSprite, roomHighlightSprite, 3, 5, constants.roomShape.TwoXTwo, 2, 2);
+
+            List<Room> roomList = new List<Room>();
+            roomList.Add(room1);
+            roomList.Add(room2);
+            roomList.Add(room3);
+            roomList.Add(room4);
+            roomList.Add(room5);
+
             // initialize the player's ship
 
-            playerShip = new Ship(shipTexture, gridSprite, gridHighlightSprite, new Vector2(50, 50));
+            playerShip = new Ship(shipTexture, gridSprite, gridHighlightSprite, new Vector2(50, 50), roomList);
 
             // load fonts
 
