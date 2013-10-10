@@ -349,7 +349,10 @@ namespace SpaceIsFun
                     // create a rectangle out of the points
 
                     Point startPoint = new Point();
-                    Point endPoint = new Point();
+
+                    // for both x and y if the end point is "less" than the start point, use the end point's coord as the starting point for the rect
+
+                    // otherwise, use the startpoint's coord
 
                     if (selectRectStart.X > selectRectEnd.X)
                     {
@@ -375,20 +378,11 @@ namespace SpaceIsFun
                     Rectangle drawRect = new Rectangle(startPoint.X, startPoint.Y, Math.Abs(selectRectEnd.X - selectRectStart.X), Math.Abs(selectRectEnd.Y - selectRectStart.Y));
                     
                     // draw the rectangle using pixel lines
-                    
-
-                    // Draw top line 
+                    // top, bottom, left, right
                     spriteBatch.Draw(pixel, new Rectangle(drawRect.X, drawRect.Y, drawRect.Width, 5), Color.Green);
-
-                    // Draw left line 
-                    spriteBatch.Draw(pixel, new Rectangle(drawRect.X, drawRect.Y, 5, drawRect.Height), Color.Green);
-
-                    // Draw right line 
-                    spriteBatch.Draw(pixel, new Rectangle((drawRect.X + drawRect.Width - 5), drawRect.Y, 5, drawRect.Height), Color.Green);
-                    // Draw bottom line 
                     spriteBatch.Draw(pixel, new Rectangle(drawRect.X, drawRect.Y + drawRect.Height - 5, drawRect.Width, 5), Color.Green);
-
-                    
+                    spriteBatch.Draw(pixel, new Rectangle(drawRect.X, drawRect.Y, 5, drawRect.Height), Color.Green);
+                    spriteBatch.Draw(pixel, new Rectangle((drawRect.X + drawRect.Width - 5), drawRect.Y, 5, drawRect.Height), Color.Green);
                 }
 
                 spriteBatch.End();
