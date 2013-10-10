@@ -17,6 +17,14 @@ namespace SpaceIsFun
         /// <summary>
         /// sets up the game battle state
         /// </summary>
+        /// 
+
+
+        bool multiSelecting = false;
+
+        Point selectRectStart = new Point();
+        Point selectRectEnd = new Point();
+
         void setupBattle()
         {
             Vector2 target1 = new Vector2();
@@ -57,7 +65,7 @@ namespace SpaceIsFun
             idleCursor.Transitions.Add(targetWeapon.Name, targetWeapon);
             hasSelectedCrew.Transitions.Add(idleCursor.Name, idleCursor);
 
-            bool multiSelecting = false;
+            
 
             cursorState.Start(idleCursor);
 
@@ -247,17 +255,36 @@ namespace SpaceIsFun
                     // if there is a crew in the current cursor's grid, and we are not multiselecting, select that crew member, transition to hasSelectedCrew
 
                     // else if we are multiselecting: get (x1,y1;x2,y2), select all crew in that area, set multiselecting to false, transition to hasSelectedCrew
+
+
+                    multiSelecting = false;
                 }
 
                 // if we're holding the mouse button down
                 if (previousMouseState.LeftButton == ButtonState.Pressed && currentMouseState.LeftButton == ButtonState.Pressed)
                 {
                     // if we arent multiselecting: set multiselecting to true, start point = previous cursor's position; end point = current cursor's position
+                    if (multiSelecting == false)
+                    {
+                        multiSelecting = true;
+                        selectRectStart.X = previousMouseState.X;
+                        selectRectStart.Y = previousMouseState.Y;
 
+                        selectRectEnd.X = currentMouseState.X;
+                        selectRectEnd.Y = currentMouseState.Y;
+                    }
+
+                    else if (multiSelecting == true)
+                    {
+                        selectRectEnd.X = currentMouseState.X;
+                        selectRectEnd.Y = currentMouseState.Y;
+                    }
                     // else if we are multiselecting: end point = current cursor's position
                 }
                 #endregion
                 #endregion
+
+                
 
 
             };

@@ -80,6 +80,7 @@ namespace SpaceIsFun
         Texture2D energyBarSprite;
         Texture2D roomSprite;
         Texture2D roomHighlightSprite;
+        Texture2D pixel; 
 
         #endregion
 
@@ -210,6 +211,8 @@ namespace SpaceIsFun
             energyBarSprite = Content.Load<Texture2D>("energyBar");
             roomSprite = Content.Load<Texture2D>("Room2x2");
             roomHighlightSprite = Content.Load<Texture2D>("Room2x2highlight");
+            pixel = new Texture2D(GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+            pixel.SetData(new[] { Color.Green });
 
             #endregion
 
@@ -339,9 +342,60 @@ namespace SpaceIsFun
             {
                 spriteBatch.Begin();
                 playerShip.Draw(spriteBatch);
+
+                if (multiSelecting == true)
+                {
+                    System.Diagnostics.Debug.WriteLine("multiselecting");
+                    // create a rectangle out of the points
+
+                    Point startPoint = new Point();
+                    Point endPoint = new Point();
+
+                    if (selectRectStart.X > selectRectEnd.X)
+                    {
+                        startPoint.X = selectRectEnd.X;
+                    }
+
+                    else
+                    {
+                        startPoint.X = selectRectStart.X;
+                    }
+ 
+                    if (selectRectStart.Y > selectRectEnd.Y)
+                    {
+                        startPoint.Y = selectRectEnd.Y;
+                    }
+
+                    else
+                    {
+                        startPoint.Y = selectRectStart.Y;
+                    }
+
+
+                    Rectangle drawRect = new Rectangle(startPoint.X, startPoint.Y, Math.Abs(selectRectEnd.X - selectRectStart.X), Math.Abs(selectRectEnd.Y - selectRectStart.Y));
+                    
+                    // draw the rectangle using pixel lines
+                    
+
+                    // Draw top line 
+                    spriteBatch.Draw(pixel, new Rectangle(drawRect.X, drawRect.Y, drawRect.Width, 5), Color.Green);
+
+                    // Draw left line 
+                    spriteBatch.Draw(pixel, new Rectangle(drawRect.X, drawRect.Y, 5, drawRect.Height), Color.Green);
+
+                    // Draw right line 
+                    spriteBatch.Draw(pixel, new Rectangle((drawRect.X + drawRect.Width - 5), drawRect.Y, 5, drawRect.Height), Color.Green);
+                    // Draw bottom line 
+                    spriteBatch.Draw(pixel, new Rectangle(drawRect.X, drawRect.Y + drawRect.Height - 5, drawRect.Width, 5), Color.Green);
+
+                    
+                }
+
                 spriteBatch.End();
 
             }
+
+
 
 
             base.Draw(gameTime);
