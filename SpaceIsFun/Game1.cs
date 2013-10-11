@@ -345,7 +345,7 @@ namespace SpaceIsFun
 
                 if (multiSelecting == true)
                 {
-                    System.Diagnostics.Debug.WriteLine("multiselecting");
+                    //System.Diagnostics.Debug.WriteLine("multiselecting");
                     // create a rectangle out of the points
 
                     Point startPoint = new Point();
