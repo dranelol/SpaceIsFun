@@ -253,9 +253,69 @@ namespace SpaceIsFun
                 if (previousMouseState.LeftButton == ButtonState.Pressed && currentMouseState.LeftButton == ButtonState.Released)
                 {
                     // if there is a crew in the current cursor's grid, and we are not multiselecting, select that crew member, transition to hasSelectedCrew
-
+                    if (multiSelecting == false)
+                    {
+                        
+                    }
                     // else if we are multiselecting: get (x1,y1;x2,y2), select all crew in that area, set multiselecting to false, transition to hasSelectedCrew
+                    else
+                    {
+                        int x1 = selectRectStart.X;
+                        int y1 = selectRectStart.Y;
+                        int x2 = selectRectEnd.X;
+                        int y2 = selectRectEnd.Y;
 
+                        
+
+                        x1 -= 50;
+                        y1 -= 50;
+                        x2 -= 50;
+                        y2 -= 50;
+
+                        x1 = (x1 / 32);
+                        y1 = (y1 / 32);
+                        x2 = (x2 / 32);
+                        y2 = (y2 / 32);
+
+                        x1 = Math.Max(x1, 0);
+                        y1 = Math.Max(y1, 0);
+
+                        x2 = Math.Min(x2, playerShip.ShipGrid.GetLength(0));
+                        y2 = Math.Min(y2, playerShip.ShipGrid.GetLength(1));
+
+
+                        selectedCrewMembers = new List<Crew>();
+
+                        System.Diagnostics.Debug.WriteLine("x1, y1 {0},{1}", x1, y1);
+                        System.Diagnostics.Debug.WriteLine("x2, y2 {0},{1}", x2, y2);
+
+                        
+                        
+
+                        for (int i = x1; i <= x2 ; i++ )
+                        {
+                            for (int j = y1; j <= y2; j++ )
+                            {
+                                System.Diagnostics.Debug.WriteLine("Selected Grid {0},{1}", i, j);
+
+                               /* foreach (Crew man in crewMembers)
+                                {
+                                    if (man.Position.X == i && man.Position.Y == j)
+                                    {
+                                        //man.Selected = true;
+                                        //selectedCrewMembers.Add(man);
+
+
+
+
+                                    }
+                                }*/
+
+                            }
+                        }
+
+
+                    }
 
                     multiSelecting = false;
                 }
