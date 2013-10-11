@@ -286,7 +286,9 @@ namespace SpaceIsFun
                             {
                                 System.Diagnostics.Debug.WriteLine("Selected Grid {0},{1}", i, j);
 
-                               /* foreach (Crew man in crewMembers)
+                               
+                                //This needs to be commented until the crew lists' location is finalized.
+                                /* foreach (Crew man in crewMembers)
                                 {
                                     if (man.Position.X == i && man.Position.Y == j)
                                     {
