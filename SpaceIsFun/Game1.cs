@@ -8,12 +8,16 @@ using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
 using Ruminate.GUI.Framework;
 using Ruminate.GUI.Content;
+using NUnit.Framework;
+using Rhino.Mocks;
 
-namespace SpaceIsFun
+
+namespace SpaceIsFun 
 {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
+    [TestFixture]
     public partial class Game1 : Game
     {
         #region fields
@@ -144,6 +148,32 @@ namespace SpaceIsFun
         /// related content.  Calling base.Initialize will enumerate through any components
         /// and initialize them as well.
         /// </summary>
+        /// 
+
+        #region dumb testing stuff
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
+        {
+
+        }
+
+        [Test]
+        public void Construct()
+        {
+            int i = 1;
+            int j = 1;
+            Assert.AreEqual(i, j);
+        }
+
+        
+
+        [TestFixtureTearDown]
+        public void TestFixtureTearDown()
+        {
+        }
+
+        #endregion
+
         protected override void Initialize()
         {
             base.Initialize();
@@ -243,13 +273,13 @@ namespace SpaceIsFun
 
             skin = new Skin(Content.Load<Texture2D>("uiskin"), System.IO.File.ReadAllText("Content/uiskinmap.txt"));
 
-            gui = new Gui(this, skin, new Text(font, Color.White));
+            gui = new Gui(this, skin, new Ruminate.GUI.Framework.Text(font, Color.White));
 
             // add all text the GUI may be using here
 
-            gui.AddText("error", new Text(font, Color.Red));
-            gui.AddText("password", new Text(font, Color.TransparentBlack));
-            gui.AddText("empty", new Text(font, Color.LightSlateGray));
+            gui.AddText("error", new Ruminate.GUI.Framework.Text(font, Color.Red));
+            gui.AddText("password", new Ruminate.GUI.Framework.Text(font, Color.TransparentBlack));
+            gui.AddText("empty", new Ruminate.GUI.Framework.Text(font, Color.LightSlateGray));
 
 
         }
