@@ -32,6 +32,7 @@ namespace SpaceIsFun
         /// <summary>
         /// the method delegate for entering the state
         /// </summary>
+
         public delegate void Enter();
 
         /// <summary>

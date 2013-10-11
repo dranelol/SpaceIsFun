@@ -87,7 +87,7 @@ namespace SpaceIsFun
         // 1: cursor over player ship
         // 2: cursor over enemy ship
         int shipCursorFocus;
-        
+
         /// <summary>
         /// width of the current screen, in pixels
         /// </summary>
@@ -156,13 +156,12 @@ namespace SpaceIsFun
             // initialize the game state machine and states
 
             #region state machine setup
-            stateMachine = new StateMachine(this);
+            stateMachine = new StateMachine();
 
             startMenu = new State { Name = "startMenu" };
             battle = new State { Name = "battle" };
             pauseState = new State { Name = "pauseState" };
 
-            stateMachine.Start(startMenu);
 
             startMenu.Transitions.Add(battle.Name, battle);
             startMenu.Transitions.Add(pauseState.Name, pauseState);
@@ -173,6 +172,7 @@ namespace SpaceIsFun
             pauseState.Transitions.Add(startMenu.Name, startMenu);
             pauseState.Transitions.Add(battle.Name, battle);
 
+            stateMachine.Start(startMenu);
             #endregion
 
             // set up any UI elements here
@@ -186,7 +186,7 @@ namespace SpaceIsFun
             setupStartMenu();
             setupBattle();
             setupPauseState();
-            
+
         }
 
         /// <summary>
@@ -206,16 +206,31 @@ namespace SpaceIsFun
             energyBar = Content.Load<Texture2D>("energyBar");
             healthBar = Content.Load<Texture2D>("healthBar");
             gridSprite = Content.Load<Texture2D>("Grid");
-            gridHighlightSprite = Content.Load<Texture2D>("GridHighlight");
+            gridHighlightSprite = Content.Load<Texture2D>("GridNotWalkable");
             energyBarSprite = Content.Load<Texture2D>("energyBar");
             roomSprite = Content.Load<Texture2D>("Room2x2");
             roomHighlightSprite = Content.Load<Texture2D>("Room2x2highlight");
 
             #endregion
 
+            // make list of rooms
+
+            Room room1 = new Room(roomHighlightSprite, roomHighlightSprite, 1, 1, Globals.roomShape.TwoXTwo, 2, 2);
+            Room room2 = new Room(roomHighlightSprite, roomHighlightSprite, 3, 1, Globals.roomShape.TwoXTwo, 2, 2);
+            Room room3 = new Room(roomHighlightSprite, roomHighlightSprite, 2, 3, Globals.roomShape.TwoXTwo, 2, 2);
+            Room room4 = new Room(roomHighlightSprite, roomHighlightSprite, 4, 3, Globals.roomShape.TwoXTwo, 2, 2);
+            Room room5 = new Room(roomHighlightSprite, roomHighlightSprite, 3, 5, Globals.roomShape.TwoXTwo, 2, 2);
+
+            List<Room> roomList = new List<Room>();
+            roomList.Add(room1);
+            roomList.Add(room2);
+            roomList.Add(room3);
+            roomList.Add(room4);
+            roomList.Add(room5);
+
             // initialize the player's ship
 
-            playerShip = new Ship(shipTexture, gridSprite, gridHighlightSprite, new Vector2(50, 50));
+            playerShip = new Ship(shipTexture, gridSprite, gridHighlightSprite, new Vector2(50, 50), roomList);
 
             // load fonts
 
@@ -224,7 +239,7 @@ namespace SpaceIsFun
             // load gui elements
 
             skin = new Skin(Content.Load<Texture2D>("uiskin"), System.IO.File.ReadAllText("Content/uiskinmap.txt"));
-            
+
             gui = new Gui(this, skin, new Text(font, Color.White));
 
             // add all text the GUI may be using here
@@ -233,7 +248,7 @@ namespace SpaceIsFun
             gui.AddText("password", new Text(font, Color.TransparentBlack));
             gui.AddText("empty", new Text(font, Color.LightSlateGray));
 
-            
+
         }
 
         /// <summary>
@@ -242,7 +257,7 @@ namespace SpaceIsFun
         /// </summary>
         protected override void UnloadContent()
         {
-            
+
 
         }
 
@@ -300,8 +315,9 @@ namespace SpaceIsFun
                 }
             }
 
+
             #endregion
-            
+
             base.Update(gameTime);
         }
 
@@ -324,17 +340,17 @@ namespace SpaceIsFun
                 spriteBatch.Begin();
                 playerShip.Draw(spriteBatch);
                 spriteBatch.End();
-                
+
             }
 
-            
+
             base.Draw(gameTime);
         }
 
         #endregion
 
         #region state methods
-        
+
         /// <summary>
         /// sets up the game pause state
         /// </summary>
@@ -360,10 +376,10 @@ namespace SpaceIsFun
         #endregion
 
 
-        
+
     }
 
-   
 
-    
+
+
 }

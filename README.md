@@ -1,1 +1,0 @@
-Team project for CMPS 453 Fall 2013: Space is Fun!
