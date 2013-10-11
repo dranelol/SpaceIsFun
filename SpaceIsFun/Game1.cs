@@ -8,8 +8,9 @@ using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
 using Ruminate.GUI.Framework;
 using Ruminate.GUI.Content;
-using NUnit.Framework;
-using Rhino.Mocks;
+//using NUnit.Framework;
+//using Rhino.Mocks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
 namespace SpaceIsFun 
@@ -17,7 +18,7 @@ namespace SpaceIsFun
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    [TestFixture]
+    /// 
     public partial class Game1 : Game
     {
         #region fields
@@ -141,6 +142,11 @@ namespace SpaceIsFun
 
         #endregion
 
+        public void TestMethod1()
+        {
+            Assert.AreEqual(true, true);
+        }
+
         #region game loop methods
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -149,30 +155,6 @@ namespace SpaceIsFun
         /// and initialize them as well.
         /// </summary>
         /// 
-
-        #region dumb testing stuff
-        [TestFixtureSetUp]
-        public void TestFixtureSetUp()
-        {
-
-        }
-
-        [Test]
-        public void Construct()
-        {
-            int i = 1;
-            int j = 1;
-            Assert.AreEqual(i, j);
-        }
-
-        
-
-        [TestFixtureTearDown]
-        public void TestFixtureTearDown()
-        {
-        }
-
-        #endregion
 
         protected override void Initialize()
         {
