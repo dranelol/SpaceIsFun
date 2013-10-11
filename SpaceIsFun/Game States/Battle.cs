@@ -260,22 +260,10 @@ namespace SpaceIsFun
                     // else if we are multiselecting: get (x1,y1;x2,y2), select all crew in that area, set multiselecting to false, transition to hasSelectedCrew
                     else
                     {
-                        int x1 = selectRectStart.X;
-                        int y1 = selectRectStart.Y;
-                        int x2 = selectRectEnd.X;
-                        int y2 = selectRectEnd.Y;
-
-                        
-
-                        x1 -= 50;
-                        y1 -= 50;
-                        x2 -= 50;
-                        y2 -= 50;
-
-                        x1 = (x1 / 32);
-                        y1 = (y1 / 32);
-                        x2 = (x2 / 32);
-                        y2 = (y2 / 32);
+                        int x1 = (selectRectStart.X -50) / 32;
+                        int y1 = (selectRectStart.Y - 50) / 32;
+                        int x2 = (selectRectEnd.X - 50) / 32;
+                        int y2 = (selectRectEnd.Y - 50) / 32;
 
                         x1 = Math.Max(x1, 0);
                         y1 = Math.Max(y1, 0);
