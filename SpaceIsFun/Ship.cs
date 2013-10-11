@@ -92,7 +92,7 @@ namespace SpaceIsFun
     }
 
 
-   
+
 
     /// <summary>
     /// Its a ship!

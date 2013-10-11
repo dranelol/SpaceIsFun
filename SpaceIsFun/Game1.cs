@@ -126,6 +126,10 @@ namespace SpaceIsFun
             }
         }
 
+        List<Crew> crewMembers;
+        List<Crew> selectedCrewMembers;
+
+
         #endregion
 
         #region constructors / destructors
