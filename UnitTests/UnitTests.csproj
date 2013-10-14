@@ -55,7 +55,7 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="TestingMono">
-      <HintPath>..\TestingMono\TestingMono\bin\WindowsGL\Debug\TestingMono.dll</HintPath>
+      <HintPath>..\SpaceIsFun\TestingMono.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
