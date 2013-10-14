@@ -265,12 +265,29 @@ namespace SpaceIsFun
                         int x2 = (selectRectEnd.X - 50) / 32;
                         int y2 = (selectRectEnd.Y - 50) / 32;
 
+                        // swap points if they need to be
+                        int temp;
+
+                        if (x2 < x1)
+                        {
+                            temp = x2;
+                            x2 = x1;
+                            x1 = temp;
+                        }
+
+                        if (y2 < y1)
+                        {
+                            temp = y2;
+                            y2 = y1;
+                            y1 = temp;
+                        }
+
                         x1 = Math.Max(x1, 0);
                         y1 = Math.Max(y1, 0);
 
-                        x2 = Math.Min(x2, playerShip.ShipGrid.GetLength(0));
-                        y2 = Math.Min(y2, playerShip.ShipGrid.GetLength(1));
-
+                        x2 = Math.Min(x2, playerShip.ShipGrid.GetLength(0)-1);
+                        y2 = Math.Min(y2, playerShip.ShipGrid.GetLength(1)-1);
+                        
 
                         selectedCrewMembers = new List<Crew>();
 

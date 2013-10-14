@@ -146,10 +146,7 @@ namespace SpaceIsFun
 
         #endregion
 
-        public void TestMethod1()
-        {
-            Assert.AreEqual(true, true);
-        }
+        
 
         #region game loop methods
         /// <summary>
