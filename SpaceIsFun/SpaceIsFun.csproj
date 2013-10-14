@@ -72,6 +72,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
+    <Reference Include="TestingMono">
+      <HintPath>..\TestingMono\TestingMono\bin\WindowsGL\Debug\TestingMono.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="C:\Program Files %28x86%29\MonoGame\v3.0\Assemblies\WindowsGL\SDL.dll">

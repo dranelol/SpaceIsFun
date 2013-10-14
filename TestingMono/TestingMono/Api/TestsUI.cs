@@ -12,7 +12,7 @@ namespace TestingMono.Api
 
     public class TestsUi// : DrawableGameComponent
     {
-        private TestFixtureRunner _testFixtureRunner = new TestFixtureRunner();
+        private TestFixtureRunner _testFixtureRunner; 
         private SpriteFont _font;
         Vector2 _previousTouchPosition = new Vector2(0f, 0f);
         private float _yOffset;
@@ -22,9 +22,10 @@ namespace TestingMono.Api
         private float _widestLine;
         private Game game;
 
-        public TestsUi(Game thisGame)// : base(game)
+        public TestsUi(Game game)// : base(game)
         {
-            game = thisGame;
+            this.game = game;
+            _testFixtureRunner = new TestFixtureRunner(game);
         }
 
         public void SetFont(SpriteFont font)

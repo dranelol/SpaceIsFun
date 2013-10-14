@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 #endregion
 
-namespace Testing
+namespace UnitTests
 {
 #if WINDOWS || LINUX
     /// <summary>

@@ -1,10 +1,12 @@
 ﻿using System;
+using Microsoft.Xna.Framework;
 
 namespace TestingMono.Framework
 {
 
     public abstract class TestFixture
     {
+        protected Game game;
         protected Assert Assert = new Assert();
         public abstract void Context();
         public virtual void Setup()
@@ -22,6 +24,7 @@ namespace TestingMono.Framework
 
         public TestFixture()
         {
+            //game = new Game();
             Assert.FailedTest += Assert_FailedTest;
             Assert.PassedTest += Assert_PassedTest;
         }
@@ -60,6 +63,12 @@ namespace TestingMono.Framework
         public void Passed(string methodName)
         {
             Assert_PassedTest(this, new TestEventArgs { TestClass = this.GetType().Name, TestMethod = methodName });
+        }
+
+
+        public void setGame(Game game)
+        {
+            this.game = game;
         }
     }
 }

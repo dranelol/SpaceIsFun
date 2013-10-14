@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using TestingMono.Framework;
+using Microsoft.Xna.Framework;
 
 namespace TestingMono.Api
 {
@@ -10,10 +11,16 @@ namespace TestingMono.Api
     {
         private IList<TestFixture> _testFixtures = new List<TestFixture>();
         private TimeSpan _testDuration;
+        private Game game;
 
         public IList<TestFixture> TestFixtures
         {
             get { return _testFixtures; }
+        }
+
+        public TestFixtureRunner(Game game)
+        {
+            this.game = game;
         }
 
         public List<TestLine> GetTestExecutionTree()
@@ -266,9 +273,15 @@ namespace TestingMono.Api
             foreach (Type type in assembly.GetTypes().Where(type => type.IsSubclassOf(typeof(TestFixture))))
             {
                 object instance = Activator.CreateInstance(type) as TestFixture;
+                
 
                 if (instance != null)
                     testFixtures.Add((TestFixture)instance);
+            }
+
+            foreach (TestFixture test in testFixtures)
+            {
+                test.setGame(game);
             }
 
             return testFixtures;
