@@ -76,7 +76,7 @@ namespace SpaceIsFun
         Ship playerShip;
 
         // definitions for all the textures go here
-
+        #region textures
         Texture2D shipTexture;
         Texture2D energyBar;
         Texture2D healthBar;
@@ -85,8 +85,9 @@ namespace SpaceIsFun
         Texture2D energyBarSprite;
         Texture2D roomSprite;
         Texture2D roomHighlightSprite;
-        Texture2D pixel; 
-
+        Texture2D pixel;
+        Texture2D crewNoAnimate;
+        #endregion
         #endregion
 
         // 0: cursor over no ship
@@ -226,6 +227,8 @@ namespace SpaceIsFun
             roomHighlightSprite = Content.Load<Texture2D>("Room2x2highlight");
             pixel = new Texture2D(GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             pixel.SetData(new[] { Color.Green });
+            crewNoAnimate = Content.Load<Texture2D>("crewNoAnimate");
+
 
             #endregion
 
