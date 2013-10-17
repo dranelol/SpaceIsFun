@@ -181,6 +181,8 @@ namespace SpaceIsFun
 
             sprite = new Drawable(crewTexture, position);
 
+
+
         }
 
         #endregion

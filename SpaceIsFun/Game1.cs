@@ -75,6 +75,7 @@ namespace SpaceIsFun
         /// </summary>
         Ship playerShip;
 
+
         // definitions for all the textures go here
         #region textures
         Texture2D shipTexture;
@@ -201,6 +202,7 @@ namespace SpaceIsFun
             setupStartMenu();
             setupBattle();
             setupPauseState();
+
 
         }
 
@@ -352,12 +354,17 @@ namespace SpaceIsFun
             // draw the GUI
             gui.Draw();
 
-            // if we're in the battle state, or paused in the battle state, draw the ship
+            // if we're in the battle state, or paused in the battle state
             if (stateMachine.CurrentState.Name == battle.Name
                 || stateMachine.CurrentState.Name == pauseState.Name && stateMachine.PreviousState.Name == battle.Name)
             {
                 spriteBatch.Begin();
                 playerShip.Draw(spriteBatch);
+
+                foreach (Crew man in crewMembers)
+                {
+                    man.Draw(spriteBatch);
+                }
 
                 if (multiSelecting == true)
                 {
