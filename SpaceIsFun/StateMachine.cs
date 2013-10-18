@@ -10,10 +10,6 @@ namespace SpaceIsFun
     {
         #region fields
 
-        /// <summary>
-        /// the game object
-        /// </summary>
-        private Game1 Game;
 
         /// <summary>
         /// the current state in execution
@@ -70,11 +66,6 @@ namespace SpaceIsFun
         #region constructors / destructors
         public StateMachine()
         {
-        }
-
-        public StateMachine(Game1 thisGame)
-        {
-            Game = thisGame;
         }
 
         #endregion

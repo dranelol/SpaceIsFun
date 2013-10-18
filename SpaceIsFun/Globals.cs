@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SpaceIsFun
 {
-    public static class constants
+    public static class Globals
     {
         /// <summary>
         /// Global constants

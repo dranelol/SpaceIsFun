@@ -17,6 +17,14 @@ namespace SpaceIsFun
         /// <summary>
         /// sets up the game battle state
         /// </summary>
+        /// 
+
+
+        bool multiSelecting = false;
+
+        Point selectRectStart = new Point();
+        Point selectRectEnd = new Point();
+
         void setupBattle()
         {
             Vector2 target1 = new Vector2();
@@ -47,6 +55,20 @@ namespace SpaceIsFun
             Point currentlySelectedPlayerGrid = new Point(-1, -1);
             Point currentlySelectedEnemyGrid = new Point(-1, -1);
 
+            StateMachine cursorState = new StateMachine();
+
+            State idleCursor = new State { Name = "idleCursor" };
+            State hasSelectedCrew = new State { Name = "hasSelectedCrew" };
+            State targetWeapon = new State { Name = "targetWeapon" };
+
+            idleCursor.Transitions.Add(hasSelectedCrew.Name, hasSelectedCrew);
+            idleCursor.Transitions.Add(targetWeapon.Name, targetWeapon);
+            hasSelectedCrew.Transitions.Add(idleCursor.Name, idleCursor);
+
+            
+
+            cursorState.Start(idleCursor);
+
             // when entering the battle state
             battle.enter += () =>
             {
@@ -72,7 +94,7 @@ namespace SpaceIsFun
             {
                 #region input handling
 
-
+                #region keys
 
                 // if the a key is pressed, transition back to the menu
                 if (currentKeyState.IsKeyDown(Keys.A))
@@ -85,6 +107,7 @@ namespace SpaceIsFun
                     System.Diagnostics.Debug.WriteLine(playerShip.RoomGridDict.ToString());
                 }
 
+                /*
                 foreach (Grid thing in playerShip.ShipGrid)
                 {
                     if (thing.IsWalkable == false)
@@ -92,6 +115,7 @@ namespace SpaceIsFun
                         thing.Highlighted = true;
                     }
                 }
+                */
 
                 // if the c key is tapped, query to see if the cursor is hovering over the ship
                 if (currentKeyState.IsKeyDown(Keys.C) && previousKeyState.IsKeyUp(Keys.C))
@@ -103,14 +127,23 @@ namespace SpaceIsFun
                     if (shipHover == true)
                     {
                         System.Diagnostics.Debug.WriteLine("Cursor on ship!");
+                        
 
                         // returns which grid (in ship grid coords) the cursor is hovering over
-                        Vector2 gridHover = playerShip.checkGridHover(currentMouseState);
+                        Vector2 gridHover = playerShip.getGridHover(currentMouseState);
+
 
                         // if gridHover isn't (-1,-1), which means the cursor ISNT on the grid, print messages, and highlight (or un-highlight) that grid 
                         if (gridHover.X != -1 && gridHover.Y != -1)
                         {
                             System.Diagnostics.Debug.WriteLine("Cursor on grid: " + playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition.ToString());
+                            
+
+                            if (playerShip.checkRoomHover(currentMouseState) == true)
+                            {
+                                Room roomHover = playerShip.getRoomHover(currentMouseState);
+                                System.Diagnostics.Debug.WriteLine("Cursor on room: " + roomHover.RoomPosition.ToString());
+                            }
                             // highlight that grid
                             //playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].Highlight();
 
@@ -139,7 +172,7 @@ namespace SpaceIsFun
 
                 if (currentKeyState.IsKeyDown(Keys.V) && previousKeyState.IsKeyUp(Keys.V))
                 {
-                    Vector2 gridHover = playerShip.checkGridHover(currentMouseState);
+                    Vector2 gridHover = playerShip.getGridHover(currentMouseState);
                     System.Diagnostics.Debug.WriteLine("Cursor on grid: " + playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition.ToString());
 
                     if (target2Selected == false && target1Selected == true)
@@ -212,7 +245,113 @@ namespace SpaceIsFun
                         }
                     }
                 }
+
                 #endregion
+
+                #region mouse
+                // if we were previously holding the mouse button down, but now its released
+                if (previousMouseState.LeftButton == ButtonState.Pressed && currentMouseState.LeftButton == ButtonState.Released)
+                {
+                    // if there is a crew in the current cursor's grid, and we are not multiselecting, select that crew member, transition to hasSelectedCrew
+                    if (multiSelecting == false)
+                    {
+                        
+                    }
+                    // else if we are multiselecting: get (x1,y1;x2,y2), select all crew in that area, set multiselecting to false, transition to hasSelectedCrew
+                    else
+                    {
+                        int x1 = (selectRectStart.X -50) / 32;
+                        int y1 = (selectRectStart.Y - 50) / 32;
+                        int x2 = (selectRectEnd.X - 50) / 32;
+                        int y2 = (selectRectEnd.Y - 50) / 32;
+
+                        // swap points if they need to be
+                        int temp;
+
+                        if (x2 < x1)
+                        {
+                            temp = x2;
+                            x2 = x1;
+                            x1 = temp;
+                        }
+
+                        if (y2 < y1)
+                        {
+                            temp = y2;
+                            y2 = y1;
+                            y1 = temp;
+                        }
+
+                        x1 = Math.Max(x1, 0);
+                        y1 = Math.Max(y1, 0);
+
+                        x2 = Math.Min(x2, playerShip.ShipGrid.GetLength(0)-1);
+                        y2 = Math.Min(y2, playerShip.ShipGrid.GetLength(1)-1);
+                        
+
+                        selectedCrewMembers = new List<Crew>();
+
+                        System.Diagnostics.Debug.WriteLine("x1, y1 {0},{1}", x1, y1);
+                        System.Diagnostics.Debug.WriteLine("x2, y2 {0},{1}", x2, y2);
+
+                        
+                        
+
+                        for (int i = x1; i <= x2 ; i++ )
+                        {
+                            for (int j = y1; j <= y2; j++ )
+                            {
+                                System.Diagnostics.Debug.WriteLine("Selected Grid {0},{1}", i, j);
+
+                               
+                                //This needs to be commented until the crew lists' location is finalized.
+                                /* foreach (Crew man in crewMembers)
+                                {
+                                    if (man.Position.X == i && man.Position.Y == j)
+                                    {
+                                        //man.Selected = true;
+                                        //selectedCrewMembers.Add(man);
+
+
+
+
+                                    }
+                                }*/
+
+                            }
+                        }
+
+
+                    }
+
+                    multiSelecting = false;
+                }
+
+                // if we're holding the mouse button down
+                if (previousMouseState.LeftButton == ButtonState.Pressed && currentMouseState.LeftButton == ButtonState.Pressed)
+                {
+                    // if we arent multiselecting: set multiselecting to true, start point = previous cursor's position; end point = current cursor's position
+                    if (multiSelecting == false)
+                    {
+                        multiSelecting = true;
+                        selectRectStart.X = previousMouseState.X;
+                        selectRectStart.Y = previousMouseState.Y;
+
+                        selectRectEnd.X = currentMouseState.X;
+                        selectRectEnd.Y = currentMouseState.Y;
+                    }
+
+                    else if (multiSelecting == true)
+                    {
+                        selectRectEnd.X = currentMouseState.X;
+                        selectRectEnd.Y = currentMouseState.Y;
+                    }
+                    // else if we are multiselecting: end point = current cursor's position
+                }
+                #endregion
+                #endregion
+
+                
 
 
             };
