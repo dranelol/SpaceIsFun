@@ -895,11 +895,81 @@ namespace SpaceIsFun
             {
                 switch (rL.RShape)
                 {
+                    // Case for a 2 by 2 room.
+                    // x x
+                    // x x
                     case constants.roomShape.TwoXTwo:
                         RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y]] = rL;
                         RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y]] = rL;
                         RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y + 1]] = rL;
                         RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y + 1]] = rL;
+                        break;
+
+                    // Case for a 3 by 3 room
+                    // x x x
+                    // x x x
+                    // x x x
+                    case constants.roomShape.ThreeXThree:
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y]] = rL;
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y]] = rL;
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 2, (int)rL.RoomPosition.Y]] = rL;
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y + 1]] = rL;
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y + 2]] = rL;
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y + 1]] = rL;
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y + 2]] = rL;
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 2, (int)rL.RoomPosition.Y + 1]] = rL;
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 2, (int)rL.RoomPosition.Y + 2]] = rL;
+                        break;
+
+                    // Case for a 1 by 3 room.
+                    // x x x
+                    case constants.roomShape.OneXThree:
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y]] = rL;
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y]] = rL;
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 2, (int)rL.RoomPosition.Y]] = rL;
+                        break;
+
+                    // Case for a 1 by 2 room
+                    // x x
+                    case constants.roomShape.OneXTwo:
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y]] = rL;
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y]] = rL;
+                        break;
+
+                    // Case for a 3 by 1 room
+                    // x
+                    // x
+                    // x
+                    case constants.roomShape.ThreeXOne:
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y]] = rL;
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y + 1]] = rL;
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y + 2]] = rL;
+                        break;
+
+                    // Case for a 2 by 1 room
+                    // x
+                    // x
+                    case constants.roomShape.TwoXOne:
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y]] = rL;
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y + 1]] = rL;
+                        break;
+
+                    // Case for a J-shaped room
+                    //   x
+                    // x x
+                    case constants.roomShape.JRoom:
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y]] = rL;
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y + 1]] = rL;
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y + 1]] = rL;
+                        break;
+
+                    // Case for an R-shaped room
+                    // x x
+                    // x
+                    case constants.roomShape.RRoom:
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y]] = rL;
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y]] = rL;
+                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y + 1]] = rL;
                         break;
                 }
             }
