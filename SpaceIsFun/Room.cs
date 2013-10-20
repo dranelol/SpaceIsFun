@@ -321,7 +321,22 @@ namespace SpaceIsFun
             }
         }
 
+        /// <summary>
+        /// Parameter for O2 of the room
+        /// </summary>
+        protected int roomO2;
 
+        public int RoomO2
+        {
+            get
+            {
+                return roomO2;
+            }
+            set
+            {
+                roomO2 = value;
+            }
+        }
 
         /// <summary>
         /// Declarations for state machines of individual room
@@ -459,6 +474,7 @@ namespace SpaceIsFun
                 {
                     roomStateMachine.Transition(damaged.Name);
                 }
+
             };
 
             normal.leave += () =>
@@ -535,6 +551,10 @@ namespace SpaceIsFun
             };
         }
 
+        public string getStatus()
+        {
+            return roomStateMachine.CurrentState.Name;
+        }
         #endregion
 
 
@@ -549,7 +569,6 @@ namespace SpaceIsFun
     class engineRoom : Room
     {
         #region fields
-
         #endregion
 
         #region constructors / destructors
@@ -569,7 +588,6 @@ namespace SpaceIsFun
         #endregion
 
         #region methods
-
         #endregion
     }
 
@@ -596,6 +614,7 @@ namespace SpaceIsFun
         #endregion
 
         #region methods
+        
         #endregion
     }
 
@@ -622,7 +641,6 @@ namespace SpaceIsFun
         #endregion
 
         #region methods
-
         #endregion
     }
 
@@ -649,7 +667,6 @@ namespace SpaceIsFun
         #endregion
 
         #region methods
-
         #endregion
     }
     #endregion
@@ -678,7 +695,6 @@ namespace SpaceIsFun
         #endregion
 
         #region methods
-
         #endregion
     }
 
@@ -701,7 +717,6 @@ namespace SpaceIsFun
         #endregion
 
         #region methods
-
         #endregion
     }
 
@@ -723,7 +738,6 @@ namespace SpaceIsFun
         #endregion
 
         #region methods
-
         #endregion
     }
 
@@ -745,7 +759,6 @@ namespace SpaceIsFun
         #endregion
 
         #region methods
-
         #endregion
     }
 
@@ -788,7 +801,6 @@ namespace SpaceIsFun
         #endregion
 
         #region methods
-
         #endregion
     }
 
@@ -810,7 +822,6 @@ namespace SpaceIsFun
         #endregion
 
         #region methods
-
         #endregion
     }
 
