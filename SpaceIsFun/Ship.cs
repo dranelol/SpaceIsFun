@@ -647,6 +647,16 @@ namespace SpaceIsFun
         /// <param name="gameTime"></param>
         override public void Update(GameTime gameTime)
         {
+            //update the shield
+            /*if (roomList[0].getStatus() != "inoperable" || roomList[0].getStatus() != "disabled")
+            {
+
+            }
+            //update the O2
+            if (roomList[1].getStatus() != "inoperable" || roomList[1].getStatus() != "disabled")
+            {
+
+            }*/
             base.Update(gameTime);
         }
 

@@ -204,6 +204,20 @@ namespace SpaceIsFun
             }
         }
 
+
+        /// <summary>
+        /// parameter for max energy
+        /// </summary>
+        protected int isManned;
+
+        public int IsManned
+        {
+            set
+            {
+                isManned = value;
+            }
+        }
+
         /// <summary>
         /// parameter for room health
         /// </summary>
@@ -307,7 +321,22 @@ namespace SpaceIsFun
             }
         }
 
+        /// <summary>
+        /// Parameter for O2 of the room
+        /// </summary>
+        protected int roomO2;
 
+        public int RoomO2
+        {
+            get
+            {
+                return roomO2;
+            }
+            set
+            {
+                roomO2 = value;
+            }
+        }
 
         /// <summary>
         /// Declarations for state machines of individual room
@@ -445,6 +474,7 @@ namespace SpaceIsFun
                 {
                     roomStateMachine.Transition(damaged.Name);
                 }
+
             };
 
             normal.leave += () =>
@@ -521,6 +551,10 @@ namespace SpaceIsFun
             };
         }
 
+        public string getStatus()
+        {
+            return roomStateMachine.CurrentState.Name;
+        }
         #endregion
 
 
@@ -535,7 +569,6 @@ namespace SpaceIsFun
     class engineRoom : Room
     {
         #region fields
-
         #endregion
 
         #region constructors / destructors
@@ -547,13 +580,14 @@ namespace SpaceIsFun
         {
             isMannable = new bool();
             isMannable = true;
+            isManned = new int();
+            isManned = 0;
             maxEnergy = currentAvailableEnergy = 2;
             roomType = Globals.ENGINE_ROOM;
         }
         #endregion
 
         #region methods
-
         #endregion
     }
 
@@ -572,13 +606,15 @@ namespace SpaceIsFun
         {
             isMannable = new bool();
             isMannable = true;
+            isManned = new int();
+            isManned = 0;
             maxEnergy = currentAvailableEnergy = 1;
             roomType = Globals.PILOT_ROOM;
         }
         #endregion
 
         #region methods
-
+        
         #endregion
     }
 
@@ -597,13 +633,14 @@ namespace SpaceIsFun
         {
             isMannable = new bool();
             isMannable = true;
+            isManned = new int();
+            isManned = 0;
             maxEnergy = currentAvailableEnergy = 2;
             roomType = Globals.SHIELD_ROOM;
         }
         #endregion
 
         #region methods
-
         #endregion
     }
 
@@ -622,13 +659,14 @@ namespace SpaceIsFun
         {
             isMannable = new bool();
             isMannable = true;
+            isManned = new int();
+            isManned = 0;
             maxEnergy = currentAvailableEnergy = 3;
             roomType = Globals.WEAPONS_ROOM;
         }
         #endregion
 
         #region methods
-
         #endregion
     }
     #endregion
@@ -657,7 +695,6 @@ namespace SpaceIsFun
         #endregion
 
         #region methods
-
         #endregion
     }
 
@@ -680,7 +717,6 @@ namespace SpaceIsFun
         #endregion
 
         #region methods
-
         #endregion
     }
 
@@ -702,7 +738,6 @@ namespace SpaceIsFun
         #endregion
 
         #region methods
-
         #endregion
     }
 
@@ -724,7 +759,6 @@ namespace SpaceIsFun
         #endregion
 
         #region methods
-
         #endregion
     }
 
@@ -767,7 +801,6 @@ namespace SpaceIsFun
         #endregion
 
         #region methods
-
         #endregion
     }
 
@@ -789,7 +822,6 @@ namespace SpaceIsFun
         #endregion
 
         #region methods
-
         #endregion
     }
 
