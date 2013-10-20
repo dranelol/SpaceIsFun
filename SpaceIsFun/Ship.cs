@@ -91,425 +91,8 @@ namespace SpaceIsFun
 
     }
 
-    /// <summary>
-    /// A grid of the ship
-    /// </summary>
-    public class Grid : Entity
-    {
-        #region fields
-        /// <summary>
-        /// x,y position of the grid on the ship (ie, top left grid will be 1,1)
-        /// </summary>
-        private Vector2 gridPosition;
 
-        public Vector2 GridPosition
-        {
-            get
-            {
-                return gridPosition;
-            }
 
-            set
-            {
-                gridPosition = value;
-            }
-        }
-
-        private bool isWalkable = true;
-
-        public bool IsWalkable
-        {
-            get
-            {
-                return isWalkable;
-            }
-
-            set
-            {
-                isWalkable = value;
-            }
-        }
-
-        /// <summary>
-        /// drawable for the grid (this is probably never gonna move)
-        /// </summary>
-        private Drawable sprite;
-
-        public Drawable Sprite
-        {
-            get
-            {
-                return sprite;
-            }
-
-            set
-            {
-                sprite = value;
-            }
-        }
-
-        
-
-        /// <summary>
-        /// texture for a grid object
-        /// </summary>
-        private Texture2D gridTexture;
-
-        /// <summary>
-        /// parameter for gridTexture
-        /// </summary>
-        public Texture2D GridTexture
-        {
-            get
-            {
-                return gridTexture;
-            }
-
-            set
-            {
-                gridTexture = value;
-            }
-        }
-
-        private Texture2D highlightTexture;
-
-        public Texture2D HighlightTexture
-        {
-            get
-            {
-                return highlightTexture;
-            }
-
-            set
-            {
-                highlightTexture = value;
-            }
-        }
-
-        private bool highlighted;
-
-        public bool Highlighted
-        {
-            get
-            {
-                return highlighted;
-            }
-
-            set
-            {
-                highlighted = value;
-            }
-        }
-
-
-
-        #endregion
-
-        #region constructors / destructors
-        public Grid()
-            : base()
-        {
-        }
-
-        public Grid(Texture2D spriteTexture, Texture2D highlight, Vector2 position, Vector2 gPosition) 
-            : base()
-        {
-            gridTexture = spriteTexture;
-            sprite = new Drawable(gridTexture, position);
-            gridPosition = gPosition;
-            highlightTexture = highlight;
-        }
-
-        #endregion
-
-        #region methods
-
-        public override void Update(GameTime gameTime)
-        {
-            Sprite.Update(gameTime);
-            base.Update(gameTime);
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            if (highlighted == true)
-            {
-                Sprite.SpriteTexture = highlightTexture;
-            }
-
-            if (highlighted == false)
-            {
-                Sprite.SpriteTexture = gridTexture;
-            }
-            
-            Sprite.Draw(spriteBatch);
-            base.Draw(spriteBatch);
-        }
-
-        /// <summary>
-        /// highlight the grid if its unhighlighted, unhighlight it if its highlighted
-        /// </summary>
-        public void Highlight()
-        {
-            if (highlighted == true)
-            {
-                highlighted = false;
-            }
-
-            else
-            {
-                highlighted = true;
-            }
-        }
-        #endregion
-
-
-
-
-    }
-
-    class Crew : Entity
-    {
-        #region fields
-        #endregion
-
-        #region constructors / destructors
-        public Crew()
-        {
-        }
-        #endregion
-
-        #region methods
-        #endregion
-
-    }
-
-    class Crew : Entity
-    {
-        #region fields
-
-        /// <summary>
-        /// position of the crewman on grid space
-        /// </summary>
-        private Vector2 position;
-
-        /// <summary>
-        /// Parameter for position
-        /// </summary>
-        public Vector2 Position
-        {
-            get
-            {
-                return position;
-            }
-
-            set
-            {
-                position = value;
-            }
-        }
-
-        /// <summary>
-        /// Max HP of the crewman
-        /// </summary>
-        private int maxHP;
-
-        /// <summary>
-        /// Parameter for max HP
-        /// </summary>
-        public int MaxHP
-        {
-            get
-            {
-                return maxHP;
-            }
-
-            set
-            {
-                maxHP = value;
-            }
-        }
-
-        /// <summary>
-        /// Current HP of the crewman
-        /// </summary>
-        private int currentHP;
-
-        /// <summary>
-        /// Parameter for current HP
-        /// </summary>
-        public int CurrentHP
-        {
-            get
-            {
-                return currentHP;
-            }
-
-            set
-            {
-                currentHP = value;
-            }
-        }
-
-        /// <summary>
-        /// the ship's Drawable object
-        /// </summary>
-        private Drawable sprite;
-
-        /// <summary>
-        /// parameter for sprite
-        /// </summary>
-        public Drawable Sprite
-        {
-            get
-            {
-                return sprite;
-            }
-
-            set
-            {
-                sprite = value;
-            }
-        }
-
-        /// <summary>
-        /// texture for the crewman
-        /// </summary>
-        private Texture2D crewTexture;
-
-        /// <summary>
-        /// texture for the crewman while selected
-        /// </summary>
-        private Texture2D crewSelectedTexture;
-
-        /// <summary>
-        /// parameter for crewTexture
-        /// </summary>
-        public Texture2D CrewTexture
-        {
-            get
-            {
-                return crewTexture;
-            }
-
-            set
-            {
-                crewTexture = value;
-            }
-        }
-
-        /// <summary>
-        /// paramter for crewSelectedTexture
-        /// </summary>
-        public Texture2D CrewSelectedTexture
-        {
-            get
-            {
-                return crewSelectedTexture;
-            }
-
-            set
-            {
-                crewSelectedTexture = value;
-            }
-        }
-
-        /// <summary>
-        /// whether or not the crewman is selected
-        /// </summary>
-        private bool selected;
-
-        /// <summary>
-        /// parameter for selected
-        /// </summary>
-        public bool Selected
-        {
-            get
-            {
-                return selected;
-            }
-
-            set
-            {
-                selected = value;
-            }
-        }
-
-        #endregion
-
-        #region constructors / destructors
-        /// <summary>
-        /// construtor of crewman
-        /// </summary>
-        /// <param name="position">starting position of the crewman</param>
-        /// <param name="crewTexture">texture of the crewman when not selected</param>
-        /// <param name="crewSelectedTexture">texture of the crewman when selected</param>
-        public Crew(Vector2 position, Texture2D crewTexture, Texture2D crewSelectedTexture) : base()
-        {
-            maxHP = currentHP = 100;
-            this.position = position;
-
-            this.crewTexture = crewTexture;
-            this.crewSelectedTexture = crewSelectedTexture;
-            this.selected = false;
-
-            sprite = new Drawable(crewTexture, position);
-
-        }
-
-        #endregion
-
-        #region methods
-
-        public override void Update(GameTime gameTime)
-        {
-            Sprite.Update(gameTime);
-            base.Update(gameTime);
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            if (selected == true)
-            {
-                Sprite.SpriteTexture = crewSelectedTexture;
-            }
-
-            if (selected == false)
-            {
-                Sprite.SpriteTexture = crewTexture;
-            }
-
-            Sprite.Draw(spriteBatch);
-            base.Draw(spriteBatch);
-        }
-
-
-        /// <summary>
-        /// highlight the grid if its unhighlighted, unhighlight it if its highlighted
-        /// </summary>
-        public void Select()
-        {
-            if (selected == true)
-            {
-                selected = false;
-            }
-
-            else
-            {
-                selected = true;
-            }
-        }
-
-        
-        public void Move(List<Vector2> path)
-        {
-            //I have a dream that one day this function will exist, that it will tell the sprite where to move, and the sprite will move there as decreed by the mighty A* algorithm given to us by Peter Hart, Nils Nilsson and Bertram Raphael of the hallowed Stanford Research Instituteendregion
-            //sprite.setPath(path);
-        }
-
-        #endregion
-
-    }
 
     /// <summary>
     /// Its a ship!
@@ -697,7 +280,7 @@ namespace SpaceIsFun
         }
 
         /// <summary>
-        /// relation between rooms and their grid objects
+        /// relation between grids and their respective rooms
         /// </summary>
         private Dictionary<Grid, Room> roomGridDict;
 
@@ -730,9 +313,13 @@ namespace SpaceIsFun
         /// <param name="gridTexture">texture used to draw the ship's grid</param>
         /// <param name="highlightTexture">texture used to draw the ship's grid when a grid is selected</param>
         /// <param name="position">initial position of the ship's sprite</param>
-        public Ship(Texture2D shipTexture, Texture2D gridTexture, Texture2D highlightTexture, Vector2 position)
+        public Ship(Texture2D shipTexture, Texture2D gridTexture, Texture2D highlightTexture, Vector2 position, List<Room> rList)
             : base()
         {
+            roomList = new List<Room>();
+            roomGridDict = new Dictionary<Grid, Room>();
+            roomList = rList;
+            System.Diagnostics.Debug.WriteLine("initting ship");
             // set some default values 
             maxHP = currentHP = 10;
             energy = 5;
@@ -757,11 +344,23 @@ namespace SpaceIsFun
                 }
             }
 
-            ShipGrid[0, 0].IsWalkable = false;
-            ShipGrid[1, 1].IsWalkable = false;
-            ShipGrid[2, 2].IsWalkable = false;
-            ShipGrid[3, 3].IsWalkable = false;
-            ShipGrid[4, 4].IsWalkable = false;
+            //ShipGrid[0, 0].IsWalkable = false;
+            //ShipGrid[1, 1].IsWalkable = false;
+            //ShipGrid[2, 2].IsWalkable = false;
+            //ShipGrid[3, 3].IsWalkable = false;
+            //ShipGrid[4, 4].IsWalkable = false;
+            
+
+            // we need to move the rooms to align ontop of the ship; probably find a better way to do this in the future
+
+            foreach (Room room in roomList)
+            {
+                room.Sprite.MoveBy(new Vector2(50, 50));
+            }
+
+
+            setRoomGridDictionary();
+            setUnwalkableGrids();
 
         }
 
@@ -791,6 +390,12 @@ namespace SpaceIsFun
             foreach (Grid shipgrid in shipGrid)
             {
                 shipgrid.Draw(spriteBatch);
+            }
+
+            // for each room on the ship, draw
+            foreach (Room shipRoom in roomList)
+            {
+                shipRoom.Draw(spriteBatch);
             }
 
             base.Draw(spriteBatch);
@@ -827,7 +432,7 @@ namespace SpaceIsFun
         /// </summary>
         /// <param name="currentMouseState">current state of the mouse</param>
         /// <returns></returns>
-        public Vector2 checkGridHover(MouseState currentMouseState)
+        public Vector2 getGridHover(MouseState currentMouseState)
         {
             // we know the cursor is within bounds, this will only get called if checkShipHover returns true
 
@@ -845,31 +450,105 @@ namespace SpaceIsFun
             ret.Y = (int)relativeYPos / 32;
 
             return ret;
+        
         }
 
         /// <summary>
-        /// check which room the cursor is currently hovering over, this only should get called if checkShipHover returns TRUE
+        /// check whether or not the cursor is hovering over a room
         /// </summary>
-        /// <param name="gridToCheck"></param>
+        /// <param name="currentMouseState"></param>
         /// <returns></returns>
-        public Room checkRoomHover(MouseState currentMouseState)
+        public bool checkRoomHover(MouseState currentMouseState)
         {
-            Room ret = new Room();
-
             // find the grid we're hovering over
 
-            Vector2 gridHover = checkGridHover(currentMouseState);
+            Vector2 gridHover = getGridHover(currentMouseState);
 
             // convert this point to a grid object
             Grid gridToCheck = shipGrid[(int)gridHover.X, (int)gridHover.Y];
 
             // get the room out of the grid,room dict
+            try
+            {
+                Room checkRoom = roomGridDict[gridToCheck];
+            }
 
-            ret = roomGridDict[gridToCheck];
+            catch (KeyNotFoundException e)
+            {
+                System.Diagnostics.Debug.WriteLine("grid not part of a room");
+                //ret.RoomPosition = new Vector2(-1, -1);
+                //return ret;
+                return false;
+            }
 
 
-            return ret;
+            return true;
         }
+
+        /// <summary>
+        /// check which room the cursor is currently hovering over, this only should get called if checkRoomHover returns TRUE
+        /// </summary>
+        /// <param name="gridToCheck"></param>
+        /// <returns></returns>
+        public Room getRoomHover(MouseState currentMouseState)
+        {
+            // find the grid we're hovering over
+
+            Vector2 gridHover = getGridHover(currentMouseState);
+
+            // convert this point to a grid object
+            Grid gridToCheck = shipGrid[(int)gridHover.X, (int)gridHover.Y];
+
+            // get the room out of the grid,room dict
+            return roomGridDict[gridToCheck];
+        }
+
+        /// <summary>
+        ///  initializes the relationship between grids and their rooms; this is called in the ship constructor ONCE, and only after all other initialization logic has occured
+        /// </summary>
+        private void setRoomGridDictionary()
+        {
+            foreach (Room rL in roomList)
+            {
+                switch (rL.RoomShape)
+                {
+                    case Globals.roomShape.TwoXTwo:
+                        roomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y]] = rL;
+                        roomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y]] = rL;
+                        roomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y + 1]] = rL;
+                        roomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y + 1]] = rL;
+                        break;
+
+                    // TODO: fill in other cases
+                }
+            }
+
+            // TODO: possibly un-associate any un-wanted grids with rooms (weirdly-shaped rooms, for example)
+
+        }
+
+        /// <summary>
+        /// sets every grid that doesnt belong to a room as unwalkable
+        /// </summary>
+        private void setUnwalkableGrids()
+        {
+            for (int i = 0; i < shipGrid.GetLength(0); i++)
+            {
+                for (int j = 0; j < shipGrid.GetLength(1); j++)
+                {
+                    // is this grid in the dictionary of grids  that have rooms?
+                    // if not, make it unwalkable
+
+                    if(!roomGridDict.Keys.Contains(shipGrid[i,j]))
+                    {
+                        //System.Diagnostics.Debug.WriteLine(shipGrid[i, j].GridPosition.ToString());
+                        shipGrid[i, j].IsWalkable = false;
+                        
+                    }
+                }
+            }
+        }
+
 
         #endregion 
     }

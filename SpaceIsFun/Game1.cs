@@ -8,12 +8,17 @@ using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
 using Ruminate.GUI.Framework;
 using Ruminate.GUI.Content;
+//using NUnit.Framework;
+//using Rhino.Mocks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace SpaceIsFun
+
+namespace SpaceIsFun 
 {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
+    /// 
     public partial class Game1 : Game
     {
         #region fields
@@ -80,6 +85,7 @@ namespace SpaceIsFun
         Texture2D energyBarSprite;
         Texture2D roomSprite;
         Texture2D roomHighlightSprite;
+        Texture2D pixel; 
 
         #endregion
 
@@ -120,6 +126,10 @@ namespace SpaceIsFun
             }
         }
 
+        List<Crew> crewMembers;
+        List<Crew> selectedCrewMembers;
+
+
         #endregion
 
         #region constructors / destructors
@@ -136,6 +146,8 @@ namespace SpaceIsFun
 
         #endregion
 
+        
+
         #region game loop methods
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -143,6 +155,8 @@ namespace SpaceIsFun
         /// related content.  Calling base.Initialize will enumerate through any components
         /// and initialize them as well.
         /// </summary>
+        /// 
+
         protected override void Initialize()
         {
             base.Initialize();
@@ -162,7 +176,6 @@ namespace SpaceIsFun
             battle = new State { Name = "battle" };
             pauseState = new State { Name = "pauseState" };
 
-            stateMachine.Start(startMenu);
 
             startMenu.Transitions.Add(battle.Name, battle);
             startMenu.Transitions.Add(pauseState.Name, pauseState);
@@ -173,6 +186,7 @@ namespace SpaceIsFun
             pauseState.Transitions.Add(startMenu.Name, startMenu);
             pauseState.Transitions.Add(battle.Name, battle);
 
+            stateMachine.Start(startMenu);
             #endregion
 
             // set up any UI elements here
@@ -206,16 +220,33 @@ namespace SpaceIsFun
             energyBar = Content.Load<Texture2D>("energyBar");
             healthBar = Content.Load<Texture2D>("healthBar");
             gridSprite = Content.Load<Texture2D>("Grid");
-            gridHighlightSprite = Content.Load<Texture2D>("GridHighlight");
+            gridHighlightSprite = Content.Load<Texture2D>("GridNotWalkable");
             energyBarSprite = Content.Load<Texture2D>("energyBar");
             roomSprite = Content.Load<Texture2D>("Room2x2");
             roomHighlightSprite = Content.Load<Texture2D>("Room2x2highlight");
+            pixel = new Texture2D(GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+            pixel.SetData(new[] { Color.Green });
 
             #endregion
 
+            // make list of rooms
+
+            Room room1 = new Room(roomHighlightSprite, roomHighlightSprite, 1, 1, Globals.roomShape.TwoXTwo, 2, 2);
+            Room room2 = new Room(roomHighlightSprite, roomHighlightSprite, 3, 1, Globals.roomShape.TwoXTwo, 2, 2);
+            Room room3 = new Room(roomHighlightSprite, roomHighlightSprite, 2, 3, Globals.roomShape.TwoXTwo, 2, 2);
+            Room room4 = new Room(roomHighlightSprite, roomHighlightSprite, 4, 3, Globals.roomShape.TwoXTwo, 2, 2);
+            Room room5 = new Room(roomHighlightSprite, roomHighlightSprite, 3, 5, Globals.roomShape.TwoXTwo, 2, 2);
+
+            List<Room> roomList = new List<Room>();
+            roomList.Add(room1);
+            roomList.Add(room2);
+            roomList.Add(room3);
+            roomList.Add(room4);
+            roomList.Add(room5);
+
             // initialize the player's ship
 
-            playerShip = new Ship(shipTexture, gridSprite, gridHighlightSprite, new Vector2(50, 50));
+            playerShip = new Ship(shipTexture, gridSprite, gridHighlightSprite, new Vector2(50, 50), roomList);
 
             // load fonts
 
@@ -225,13 +256,13 @@ namespace SpaceIsFun
 
             skin = new Skin(Content.Load<Texture2D>("uiskin"), System.IO.File.ReadAllText("Content/uiskinmap.txt"));
 
-            gui = new Gui(this, skin, new Text(font, Color.White));
+            gui = new Gui(this, skin, new Ruminate.GUI.Framework.Text(font, Color.White));
 
             // add all text the GUI may be using here
 
-            gui.AddText("error", new Text(font, Color.Red));
-            gui.AddText("password", new Text(font, Color.TransparentBlack));
-            gui.AddText("empty", new Text(font, Color.LightSlateGray));
+            gui.AddText("error", new Ruminate.GUI.Framework.Text(font, Color.Red));
+            gui.AddText("password", new Ruminate.GUI.Framework.Text(font, Color.TransparentBlack));
+            gui.AddText("empty", new Ruminate.GUI.Framework.Text(font, Color.LightSlateGray));
 
 
         }
@@ -300,6 +331,7 @@ namespace SpaceIsFun
                 }
             }
 
+
             #endregion
 
             base.Update(gameTime);
@@ -323,9 +355,54 @@ namespace SpaceIsFun
             {
                 spriteBatch.Begin();
                 playerShip.Draw(spriteBatch);
+
+                if (multiSelecting == true)
+                {
+                    //System.Diagnostics.Debug.WriteLine("multiselecting");
+                    // create a rectangle out of the points
+
+                    Point startPoint = new Point();
+
+                    // for both x and y if the end point is "less" than the start point, use the end point's coord as the starting point for the rect
+
+                    // otherwise, use the startpoint's coord
+
+                    if (selectRectStart.X > selectRectEnd.X)
+                    {
+                        startPoint.X = selectRectEnd.X;
+                    }
+
+                    else
+                    {
+                        startPoint.X = selectRectStart.X;
+                    }
+ 
+                    if (selectRectStart.Y > selectRectEnd.Y)
+                    {
+                        startPoint.Y = selectRectEnd.Y;
+                    }
+
+                    else
+                    {
+                        startPoint.Y = selectRectStart.Y;
+                    }
+
+
+                    Rectangle drawRect = new Rectangle(startPoint.X, startPoint.Y, Math.Abs(selectRectEnd.X - selectRectStart.X), Math.Abs(selectRectEnd.Y - selectRectStart.Y));
+                    
+                    // draw the rectangle using pixel lines
+                    // top, bottom, left, right
+                    spriteBatch.Draw(pixel, new Rectangle(drawRect.X, drawRect.Y, drawRect.Width, 5), Color.Green);
+                    spriteBatch.Draw(pixel, new Rectangle(drawRect.X, drawRect.Y + drawRect.Height - 5, drawRect.Width, 5), Color.Green);
+                    spriteBatch.Draw(pixel, new Rectangle(drawRect.X, drawRect.Y, 5, drawRect.Height), Color.Green);
+                    spriteBatch.Draw(pixel, new Rectangle((drawRect.X + drawRect.Width - 5), drawRect.Y, 5, drawRect.Height), Color.Green);
+                }
+
                 spriteBatch.End();
 
             }
+
+
 
 
             base.Draw(gameTime);

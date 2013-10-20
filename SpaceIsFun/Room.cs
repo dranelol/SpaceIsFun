@@ -219,6 +219,111 @@ namespace SpaceIsFun
         }
 
         /// <summary>
+        /// parameter for room health
+        /// </summary>
+
+        protected int roomHealth;
+
+        public int RoomHealth
+        {
+            get
+            {
+                return roomHealth;
+            }
+            set
+            {
+                roomHealth = value;
+            }
+        }
+
+        protected bool aflame;
+
+        public bool Aflame
+        {
+            get
+            {
+                return aflame;
+            }
+            set
+            {
+                aflame = value;
+            }
+        }
+
+
+        /// <summary>
+        /// Parameter to determine if hull is breached
+        /// </summary>
+        protected bool hullBreach;
+
+        public bool HullBreach
+        {
+            get
+            {
+                return hullBreach;
+            }
+            set
+            {
+                hullBreach = value;
+            }
+        }
+
+
+        /// <summary>
+        /// Define the shape of the room
+        /// </summary>
+        protected Globals.roomShape roomShape;
+
+        public Globals.roomShape RoomShape
+        {
+            get
+            {
+                return roomShape;
+            }
+            set
+            {
+                roomShape = value;
+            }
+        }
+
+        /// <summary>
+        /// Parameter for width of the room
+        /// </summary>
+        protected int width;
+
+        public int Width
+        {
+            get
+            {
+                return width;
+            }
+            set
+            {
+                width = value;
+            }
+        }
+
+
+        /// <summary>
+        /// Parameter for height of the room
+        /// </summary>
+        protected int height;
+
+        public int Height
+        {
+            get
+            {
+                return height;
+            }
+            set
+            {
+                height = value;
+            }
+        }
+
+
+
+        /// <summary>
         /// Declarations for state machines of individual room
         /// </summary>
         StateMachine roomStateMachine;
@@ -237,7 +342,7 @@ namespace SpaceIsFun
         /// <param name="highlightTexture">texture for the room when its highlighted</param>
         /// <param name="x">x-position of the top-left grid position</param>
         /// <param name="y">y-position of the top-left grid position</param>
-        public Room(Texture2D texture, Texture2D highlightTexture, int x, int y)
+        public Room(Texture2D texture, Texture2D highlightTexture, int x, int y, Globals.roomShape shape, int w, int h)
         {
             #region room state machine setup
             roomStateMachine = new StateMachine();
@@ -275,10 +380,18 @@ namespace SpaceIsFun
             position = new Vector2(x * 32, y * 32);
             roomTexture = texture;
             roomHighlightTexture = highlightTexture;
+            sprite = new Drawable(highlightTexture, position);
             roomPosition = new Vector2(x, y);
             isMannable = new bool();
             isMannable = false;
-            roomType = constants.EMPTY_ROOM;
+            roomType = Globals.EMPTY_ROOM;
+            roomHealth = 200;
+
+            roomShape = shape;
+            width = w;
+            height = h;
+            aflame = false;
+            hullBreach = false;
         }
 
         #endregion
@@ -425,6 +538,7 @@ namespace SpaceIsFun
         #endregion
 
 
+
     }
 
     /// <summary>
@@ -450,7 +564,7 @@ namespace SpaceIsFun
             isManned = new int();
             isManned = 0;
             maxEnergy = currentAvailableEnergy = 2;
-            roomType = constants.ENGINE_ROOM;
+            roomType = Globals.ENGINE_ROOM;
         }
         #endregion
 
@@ -477,7 +591,7 @@ namespace SpaceIsFun
             isManned = new int();
             isManned = 0;
             maxEnergy = currentAvailableEnergy = 1;
-            roomType = constants.PILOT_ROOM;
+            roomType = Globals.PILOT_ROOM;
         }
         #endregion
 
@@ -503,7 +617,7 @@ namespace SpaceIsFun
             isManned = new int();
             isManned = 0;
             maxEnergy = currentAvailableEnergy = 2;
-            roomType = constants.SHIELD_ROOM;
+            roomType = Globals.SHIELD_ROOM;
         }
         #endregion
 
@@ -530,7 +644,7 @@ namespace SpaceIsFun
             isManned = new int();
             isManned = 0;
             maxEnergy = currentAvailableEnergy = 3;
-            roomType = constants.WEAPONS_ROOM;
+            roomType = Globals.WEAPONS_ROOM;
         }
         #endregion
 
@@ -559,7 +673,7 @@ namespace SpaceIsFun
         public cloakRoom(Texture2D texture, Texture2D highlightTexture, int x, int y)
         {
             maxEnergy = currentAvailableEnergy = 1;
-            roomType = constants.CLOAK_ROOM;
+            roomType = Globals.CLOAK_ROOM;
         }
         #endregion
 
@@ -582,7 +696,7 @@ namespace SpaceIsFun
         public doorRoom(Texture2D texture, Texture2D highlightTexture, int x, int y)
         {
             maxEnergy = currentAvailableEnergy = 1;
-            roomType = constants.DOOR_ROOM;
+            roomType = Globals.DOOR_ROOM;
         }
         #endregion
 
@@ -604,7 +718,7 @@ namespace SpaceIsFun
         public droneRoom(Texture2D texture, Texture2D highlightTexture, int x, int y)
         {
             maxEnergy = currentAvailableEnergy = 1;
-            roomType = constants.DRONE_ROOM;
+            roomType = Globals.DRONE_ROOM;
         }
         #endregion
 
@@ -626,7 +740,7 @@ namespace SpaceIsFun
         public medbayRoom(Texture2D texture, Texture2D highlightTexture, int x, int y)
         {
             maxEnergy = currentAvailableEnergy = 1;
-            roomType = constants.MEDBAY_ROOM;
+            roomType = Globals.MEDBAY_ROOM;
         }
         #endregion
 
@@ -648,7 +762,7 @@ namespace SpaceIsFun
         public O2Room(Texture2D texture, Texture2D highlightTexture, int x, int y)
         {
             maxEnergy = currentAvailableEnergy = 1;
-            roomType = constants.O2_ROOM;
+            roomType = Globals.O2_ROOM;
         }
         #endregion
 
@@ -669,7 +783,7 @@ namespace SpaceIsFun
         public sensorRoom(Texture2D texture, Texture2D highlightTexture, int x, int y)
         {
             maxEnergy = currentAvailableEnergy = 1;
-            roomType = constants.SENSORS_ROOM;
+            roomType = Globals.SENSORS_ROOM;
         }
         #endregion
 
@@ -691,7 +805,7 @@ namespace SpaceIsFun
         public teleporterRoom(Texture2D texture, Texture2D highlightTexture, int x, int y)
         {
             maxEnergy = currentAvailableEnergy = 1;
-            roomType = constants.TELEPORTER_ROOM;
+            roomType = Globals.TELEPORTER_ROOM;
         }
         #endregion
 
