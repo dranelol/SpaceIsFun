@@ -365,10 +365,10 @@ namespace SpaceIsFun
                 spriteBatch.Begin();
                 playerShip.Draw(spriteBatch);
 
-                foreach (Crew man in crewMembers)
-                {
-                    man.Draw(spriteBatch);
-                }
+                //foreach (Crew man in crewMembers)
+                //{
+                //    man.Draw(spriteBatch);
+                //}
 
                 if (multiSelecting == true)
                 {

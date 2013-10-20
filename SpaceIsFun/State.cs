@@ -60,14 +60,11 @@ namespace SpaceIsFun
         /// event called on state update
         /// </summary>
         public event Update update;
-<<<<<<< HEAD
-        int i = 1;
-=======
+
 
         /// <summary>
         /// the function executed on state enter
         /// </summary>
->>>>>>> 9b46a4a82a416b94c83847dfeecd8ad9a173b6fe
         internal void execEnter()
         {
             System.Diagnostics.Debug.WriteLine("entering: " + name);
