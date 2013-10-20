@@ -296,6 +296,10 @@ namespace SpaceIsFun
 
             // update input managers
 
+
+
+            System.Diagnostics.Debug.WriteLine(gameTime.ElapsedGameTime.TotalMilliseconds.ToString());
+
             previousKeyState = currentKeyState;
             previousMouseState = currentMouseState;
 
