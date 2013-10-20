@@ -78,13 +78,286 @@ namespace SpaceIsFun
             }
         }
 
+        private bool charged;
+        /// if the weapon is charged
+        /// end
+
+        ///paramater for charged
+        public bool Charged
+        {
+            get
+            {
+                return charged;
+            }
+
+            set
+            {
+                charged = value;
+            }
+        }
+
+        private bool is_charging;
+        /// if the weapon is charged
+        /// end
+
+        ///paramater for charged
+        public bool Is_charging
+        {
+            get
+            {
+                return is_charging;
+            }
+
+            set
+            {
+                is_charging = value;
+            }
+        }
+
+        //an int for weapon damage
+        private int damage;
+
+        //paramater for damage
+        public int Damage
+        {
+            get
+            {
+                return damage;
+            }
+
+            set
+            {
+                damage = value;
+            }
+        }
+
+        //an int for current charge, will be used with game time updated to track if a weapon is charged
+        private int charge;
+
+        //paramater for charge
+        public int Charge
+        {
+            get
+            {
+                return charge;
+            }
+
+            set
+            {
+                charge = value;
+            }
+        }
+
+        private int requiredPower;
+
+        public int RequiredPower
+        {
+            get
+            {
+                return requiredPower;
+            }
+
+            set
+            {
+                requiredPower = value;
+            }
+        }
+
+        private bool enoughPower;
+        //used to see if there is enough power to use the weapon
+
+        public bool EnoughPower
+        {
+            get
+            {
+                return enoughPower;
+            }
+
+            set
+            {
+                enoughPower = value;
+            }
+
+        }
+
+
+        private int currentTarget;
+        //these are used to see if which list index is the current target
+        public int CurrentTarget
+        {
+            get
+            {
+                return currentTarget;
+            }
+
+            set
+            {
+                currentTarget = value;
+            }
+        }
+
+        //a list of rooms that can be targeted, indexes are equivalent to the number of the room in constant.cs
+        //list[index] is changed to 1 if the room is targeted
+        private List<int> targeted_room = new List<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+        private enum weap_states { disabled, charging, ready };
+        //unused for now
+
+        //state machine and state declarations
+        StateMachine weaponStateMachine;
+        State ready, disabled, charging;
+
+        /// <summary>
+        /// This an enumeration of strings that represent the different weapon states
+        /// </summary>
+
         #endregion
 
         #region constructors / destructors
 
+        //a generic constructor
+        public Weapon() { }
+        //declaration of the weapon state machine
+
+        public Weapon(Texture2D skin, int x, int y, int dmg, int time_to_charge, int power)
+        {
+
+            weaponStateMachine = new StateMachine();
+
+            ///block for declaration of new states for the weapon
+            disabled = new State { Name = "diabled" };
+            charging = new State { Name = "charging" };
+            ready = new State { Name = "ready" };
+
+            //next blocks are transitions available for each state
+            disabled.Transitions.Add(charging.Name, charging);
+            disabled.Transitions.Add(ready.Name, ready);
+
+            charging.Transitions.Add(disabled.Name, disabled);
+            charging.Transitions.Add(ready.Name, ready);
+
+            ready.Transitions.Add(disabled.Name, disabled);
+            ready.Transitions.Add(charging.Name, charging);
+
+
+            set_disabled();
+            set_charging();
+            set_ready();
+
+            //int x will be x coordinate
+            //int y will be y coordinate
+            damage = dmg;
+            timeToCharge = time_to_charge;
+            is_charging = false;
+            weaponStateMachine.Start(disabled);
+            int charge = 0;
+            if (power >= requiredPower)
+                enoughPower = true;
+
+
+        }
+
+
         #endregion
 
         #region methods
+
+        void set_disabled()
+        {
+
+            disabled.enter += () =>
+            {
+            };
+            disabled.update += (GameTime gameTime) =>
+            {
+                if (readyToFire == false && is_charging == true)
+                {
+                    weaponStateMachine.Transition(charging.Name);
+                }
+            };
+
+            disabled.leave += () =>
+            { };
+
+        }
+
+        void set_charging()
+        {
+            charging.enter += () => { };
+            start_charging();
+            charging.update += (GameTime gameTime) =>
+            {
+                //not sure if this will actually work.
+                charge += (int)gameTime.ElapsedGameTime.Milliseconds;
+                if (charge == timeToCharge)
+                    readyToFire = true;
+                if (readyToFire == true)
+                {
+                    weaponStateMachine.Transition(ready.Name);
+                }
+
+                else if (readyToFire == false && is_charging == false)
+                    weaponStateMachine.Transition(disabled.Name);
+            };
+
+            charging.leave += () => { };
+        }
+
+        void set_ready()
+        {
+            ready.enter += () => { };
+
+
+            ready.update += (GameTime gameTime) =>
+            {
+
+                if (readyToFire == false && is_charging == true)
+                {
+                    weaponStateMachine.Transition(charging.Name);
+                }
+
+                else if (readyToFire == false && is_charging == false)
+                {
+                    weaponStateMachine.Transition(disabled.Name);
+                }
+            };
+
+        }
+
+        void start_charging()
+        {
+            if (enoughPower == true)
+                is_charging = true;
+
+        }
+
+        void set_target(int targetIndex)
+        {
+            if (targetIndex > targeted_room.Count)
+            {
+                Console.WriteLine("You passed an invalid index here");
+                return; //throw some exception here
+            }
+
+            aimedAtTarget = true;
+
+            if (targetIndex != currentTarget)
+                targeted_room[currentTarget] = 0;
+
+            targeted_room[targetIndex] = 1;
+
+        }
+
+        void launch_weapon(int target)
+        {
+            if (weaponStateMachine.CurrentState == ready)
+            {
+
+                //write some code here to actually pass damage to another ship
+
+            }
+        }
+
 
         #endregion
 
