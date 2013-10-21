@@ -572,6 +572,48 @@ namespace SpaceIsFun
                 roomGridDict = value;
             }
         }
+
+        /// <summary>
+        /// how wide the grid list is
+        /// </summary>
+        private int gridWidth;
+
+        /// <summary>
+        /// parameter for gridWidth
+        /// </summary>
+        public int GridWidth
+        {
+            get
+            {
+                return gridWidth;
+            }
+
+            set
+            {
+                gridWidth = value;
+            }
+        }
+
+        /// <summary>
+        /// how high the grid list is
+        /// </summary>
+        private int gridHeight;
+
+        /// <summary>
+        /// parameter for gridWidth
+        /// </summary>
+        public int GridHeight
+        {
+            get
+            {
+                return gridHeight;
+            }
+
+            set
+            {
+                gridHeight = value;
+            }
+        }
         #endregion
 
         #region constructors / destructors
@@ -601,8 +643,8 @@ namespace SpaceIsFun
             // create the ship's drawable
             sprite = new Drawable(shipTexture, position);
             // create the ship's grid; each grid is 32-wide, so we get the amount of grids needed by dividing the ship's sprite up into 32x32 chunks
-            int gridWidth = shipTexture.Bounds.Width / 32;
-            int gridHeight = shipTexture.Bounds.Height / 32;
+            gridWidth = shipTexture.Bounds.Width / 32;
+            gridHeight = shipTexture.Bounds.Height / 32;
             shipGrid = new Grid[gridWidth, gridHeight];
 
             // iterate over the ship sprite's width

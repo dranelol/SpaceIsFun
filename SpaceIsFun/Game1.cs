@@ -88,6 +88,8 @@ namespace SpaceIsFun
         Texture2D roomHighlightSprite;
         Texture2D pixel;
         Texture2D crewNoAnimate;
+
+        Drawable testDrawable;
         #endregion
         #endregion
 
@@ -230,6 +232,7 @@ namespace SpaceIsFun
             pixel = new Texture2D(GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             pixel.SetData(new[] { Color.Green });
             crewNoAnimate = Content.Load<Texture2D>("crewNoAnimate");
+            
 
 
             #endregion
@@ -248,6 +251,9 @@ namespace SpaceIsFun
             roomList.Add(room3);
             roomList.Add(room4);
             roomList.Add(room5);
+
+            testDrawable = new Drawable(energyBarSprite, new Vector2(room1.Position.X + 50, room2.Position.Y + 50));
+            
 
             // initialize the player's ship
 
@@ -298,7 +304,7 @@ namespace SpaceIsFun
 
 
 
-            System.Diagnostics.Debug.WriteLine(gameTime.ElapsedGameTime.TotalMilliseconds.ToString());
+            //System.Diagnostics.Debug.WriteLine(gameTime.ElapsedGameTime.TotalMilliseconds.ToString());
 
             previousKeyState = currentKeyState;
             previousMouseState = currentMouseState;
@@ -343,6 +349,8 @@ namespace SpaceIsFun
 
             #endregion
 
+            testDrawable.Update(gameTime);
+            System.Diagnostics.Debug.WriteLine(testDrawable.Position2D.ToString());
             base.Update(gameTime);
         }
 
@@ -412,13 +420,15 @@ namespace SpaceIsFun
                     spriteBatch.Draw(pixel, new Rectangle((drawRect.X + drawRect.Width - 5), drawRect.Y, 5, drawRect.Height), Color.Green);
                 }
 
+                testDrawable.Draw(spriteBatch);
+
                 spriteBatch.End();
 
             }
 
 
 
-
+            
             base.Draw(gameTime);
         }
 

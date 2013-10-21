@@ -31,6 +31,10 @@ namespace SpaceIsFun
 
             Vector2 target2 = new Vector2();
 
+            Vector2 target1Screen = new Vector2();
+            Vector2 target2Screen = new Vector2();
+            
+
             bool target1Selected = false;
             bool target2Selected = false;
 
@@ -155,11 +159,10 @@ namespace SpaceIsFun
                                     target1Selected = true;
                                 }
 
-                                
-                                
                             }
 
                             target1 = playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition;
+                            target1Screen = new Vector2(currentMouseState.X, currentMouseState.Y);
                             
 
                         }
@@ -172,37 +175,53 @@ namespace SpaceIsFun
 
                 if (currentKeyState.IsKeyDown(Keys.V) && previousKeyState.IsKeyUp(Keys.V))
                 {
-                    Vector2 gridHover = playerShip.getGridHover(currentMouseState);
-                    System.Diagnostics.Debug.WriteLine("Cursor on grid: " + playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition.ToString());
-
-                    if (target2Selected == false && target1Selected == true)
+                    bool shipHover = playerShip.checkShipHover(currentMouseState);
+                    if (shipHover == true)
                     {
-                        if (playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].IsWalkable == true)
+                        Vector2 gridHover = playerShip.getGridHover(currentMouseState);
+                        //System.Diagnostics.Debug.WriteLine("Cursor on grid: " + playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition.ToString());
+
+                        if (target2Selected == false && target1Selected == true)
                         {
-                            target2 = playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition;
-
-                            System.Diagnostics.Debug.WriteLine(target1.ToString() + " " + target2.ToString());
-
-                        
-                        
-                            pather = new Pathfinder(playerShip.ShipGrid);
-
-
-
-                            List<Vector2> path = pather.FindOptimalPath(target1, target2);
-
-                            foreach (Vector2 item in path)
+                            if (playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].IsWalkable == true)
                             {
-                                Vector2 dumb = new Vector2((item.X / 32), (item.Y / 32));
-                            
-                                System.Diagnostics.Debug.WriteLine(dumb.ToString());
+                                target2 = playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition;
+                                target2Screen = new Vector2(currentMouseState.X, currentMouseState.Y);
+
+                                System.Diagnostics.Debug.WriteLine(target1.ToString() + " " + target2.ToString());
+
+
+
+                                pather = new Pathfinder(playerShip.ShipGrid);
+
+
+
+                                List<Vector2> path = pather.FindOptimalPath(target1, target2);
+
+                                foreach (Vector2 item in path)
+                                {
+                                    Vector2 dumb = new Vector2((item.X / 32), (item.Y / 32));
+
+                                    System.Diagnostics.Debug.WriteLine(dumb.ToString());
+                                }
+
+                                double c = Math.Sqrt(Math.Pow((double)(target2Screen.X - target1Screen.X), 2d) + Math.Pow((double)(target2Screen.Y - target1Screen.Y), 2d));
+
+                                System.Diagnostics.Debug.WriteLine(c.ToString());
+
+                                List<Vector2> pathList = new List<Vector2>();
+
+                                pathList.Add(target2Screen);
+
+                                testDrawable.setPath(pathList);
+                                
+
+
+                                target1Selected = false;
+
+                                target1 = new Vector2();
+                                target2 = new Vector2();
                             }
-                        
-
-                            target1Selected = false;
-
-                            target1 = new Vector2();
-                            target2 = new Vector2();
                         }
                     }
                 }

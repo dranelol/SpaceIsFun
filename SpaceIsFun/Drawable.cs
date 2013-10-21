@@ -164,6 +164,69 @@ namespace SpaceIsFun
 
         #endregion
 
+        /// <summary>
+        /// whether or not the drawable is moving
+        /// </summary>
+        private bool moving;
+
+        /// <summary>
+        /// paramter for moving
+        /// </summary>
+        public bool Moving
+        {
+            get
+            {
+                return moving;
+            }
+
+            set
+            {
+                moving = value;
+            }
+        }
+
+        /// <summary>
+        /// whether or not the drawable is moving along a path
+        /// </summary>
+        private bool pathing;
+
+        /// <summary>
+        /// parameter for pathing
+        /// </summary>
+        public bool Pathing
+        {
+            get
+            {
+                return pathing;
+            }
+
+            set
+            {
+                pathing = value;
+            }
+        }
+
+        /// <summary>
+        /// path of the drawable
+        /// </summary>
+        private List<Vector2> path;
+
+        /// <summary>
+        /// parameter for path
+        /// </summary>
+        public List<Vector2> Path
+        {
+            get
+            {
+                return path;
+            }
+
+            set
+            {
+                path = value;
+            }
+        }
+
         #region constructors / destructors
 
         /// <summary>
@@ -178,6 +241,10 @@ namespace SpaceIsFun
             position2D = position;
             width = spriteTexture.Bounds.Width;
             height = spriteTexture.Bounds.Height;
+            path = new List<Vector2>();
+            frame = 0;
+            speed = 2;
+            
         }
 
         #endregion
@@ -205,9 +272,62 @@ namespace SpaceIsFun
         /// <param name="gameTime">current game time</param>
         public void Update(GameTime gameTime)
         {
-            // if we're at our current target, and still pathing, check if path is empty
-            // if path is not empty, pop path and update new target
-            // if path is empty, stop moving, stop pathing, set target to null (-1,-1 maybe?)
+            if(pathing == true)
+            {
+                // find the distance to target
+                double c = Math.Sqrt(Math.Pow((double)(target.X - position2D.X), 2d) + Math.Pow((double)(target.Y - position2D.Y), 2d));
+
+                System.Diagnostics.Debug.WriteLine("target: " + target.ToString());
+
+                // if distance to target is less than speed, we're at our destination
+                if (c < (double)speed)
+                {
+                    // so, move to destination
+                    MoveTo(new Vector2(target.X, target.Y));
+                    // if path is not empty, pop path and update new target
+                    if (path.Count != 0)
+                    {
+                        target = path[0];
+                        path.RemoveAt(0);
+                    }
+
+                    // if path is empty, stop moving, stop pathing, set target to null
+                    else
+                    {
+                        pathing = false;
+                        moving = false;
+                        target = new Vector2();
+                    }
+                }
+
+                // else, we need to move along the delta
+                else
+                {
+                    // get the movement delta
+
+                    double alpha = Math.Asin((target.Y - position2D.Y) / c);
+
+                    // alpha is the angle between c and (x2-x1)
+
+                    double Y = speed * Math.Sin(alpha);
+
+                    double theta = 90d - alpha;
+
+                    double X = speed * Math.Sin(theta);
+
+                    MoveBy(new Vector2((float)X, (float)Y));
+
+                }
+
+            }
+
+
+
+
+
+
+            
+            
 
 
             // if we have a current target, figure out how much to move by and move
@@ -251,6 +371,21 @@ namespace SpaceIsFun
         {
             position2D = newPosition;
         }
+
+        /// <summary>
+        /// sets the drawable's path
+        /// </summary>
+        /// <param name="path"></param>
+        public void setPath(List<Vector2> path)
+        {
+            this.path = path;
+            pathing = true;
+            moving = true;
+            target = path[0];
+            path.RemoveAt(0);
+        }
+
+        
 
         #endregion
 
