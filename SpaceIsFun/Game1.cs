@@ -22,8 +22,6 @@ namespace SpaceIsFun
     public partial class Game1 : Game
     {
         #region fields
-        #region game definitions
-        // don't expect many of these to stay; they will most likely be abstracted out to their respective game states
 
         /// <summary>
         /// manager for the graphics device
@@ -62,6 +60,8 @@ namespace SpaceIsFun
 
         State startMenu, battle, pauseState;
 
+        
+
         /// <summary>
         /// the GUI object
         /// </summary>
@@ -90,7 +90,6 @@ namespace SpaceIsFun
         Texture2D crewNoAnimate;
 
         Drawable testDrawable;
-        #endregion
         #endregion
 
         // 0: cursor over no ship

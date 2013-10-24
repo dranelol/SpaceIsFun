@@ -69,8 +69,6 @@ namespace SpaceIsFun
             idleCursor.Transitions.Add(targetWeapon.Name, targetWeapon);
             hasSelectedCrew.Transitions.Add(idleCursor.Name, idleCursor);
 
-            
-
             cursorState.Start(idleCursor);
 
             // when entering the battle state
@@ -274,7 +272,7 @@ namespace SpaceIsFun
                     // if there is a crew in the current cursor's grid, and we are not multiselecting, select that crew member, transition to hasSelectedCrew
                     if (multiSelecting == false)
                     {
-                        
+                        //cursorState.Transition(hasSelectedCrew.Name);
                     }
                     // else if we are multiselecting: get (x1,y1;x2,y2), select all crew in that area, set multiselecting to false, transition to hasSelectedCrew
                     else
@@ -340,6 +338,8 @@ namespace SpaceIsFun
                             }
                         }
 
+                        cursorState.Transition(hasSelectedCrew.Name);
+
 
                     }
 
@@ -367,9 +367,14 @@ namespace SpaceIsFun
                     }
                     // else if we are multiselecting: end point = current cursor's position
                 }
-                #endregion
-                #endregion
 
+                if (cursorState.CurrentState.Name == hasSelectedCrew.Name && previousMouseState.RightButton == ButtonState.Released && currentMouseState.RightButton == ButtonState.Pressed)
+                {
+                    // if we've right clicked, and we have crew selected
+
+                }
+                #endregion
+                #endregion
 
                 playerShip.Update(gameTime);
 
