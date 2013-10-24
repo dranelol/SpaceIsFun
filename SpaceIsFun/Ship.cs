@@ -216,7 +216,9 @@ namespace SpaceIsFun
         #region constructors / destructors
 
         //a generic constructor
-        public Weapon() { }
+        public Weapon() 
+        { 
+        }
         //declaration of the weapon state machine
 
         public Weapon(Texture2D skin, int x, int y, int dmg, int time_to_charge, int power)
@@ -264,10 +266,10 @@ namespace SpaceIsFun
 
         void set_disabled()
         {
-
             disabled.enter += () =>
             {
             };
+
             disabled.update += (GameTime gameTime) =>
             {
                 if (readyToFire == false && is_charging == true)
@@ -277,14 +279,19 @@ namespace SpaceIsFun
             };
 
             disabled.leave += () =>
-            { };
+            { 
+            };
 
         }
 
         void set_charging()
         {
-            charging.enter += () => { };
+            charging.enter += () => 
+            { 
+            };
+
             start_charging();
+
             charging.update += (GameTime gameTime) =>
             {
                 //not sure if this will actually work.
@@ -300,12 +307,16 @@ namespace SpaceIsFun
                     weaponStateMachine.Transition(disabled.Name);
             };
 
-            charging.leave += () => { };
+            charging.leave += () => 
+            { 
+            };
         }
 
         void set_ready()
         {
-            ready.enter += () => { };
+            ready.enter += () => 
+            {
+            };
 
 
             ready.update += (GameTime gameTime) =>

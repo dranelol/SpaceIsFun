@@ -130,7 +130,7 @@ namespace SpaceIsFun
         }
 
         List<Crew> crewMembers;
-        List<Crew> selectedCrewMembers;
+        
 
 
         #endregion
@@ -198,6 +198,10 @@ namespace SpaceIsFun
 
 
             #endregion
+
+            // set up game objects
+
+            crewMembers = new List<Crew>();
 
             // set up each game state
             setupStartMenu();
@@ -349,7 +353,7 @@ namespace SpaceIsFun
             #endregion
 
             testDrawable.Update(gameTime);
-            System.Diagnostics.Debug.WriteLine(testDrawable.Position2D.ToString());
+            
             base.Update(gameTime);
         }
 

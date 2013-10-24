@@ -277,7 +277,7 @@ namespace SpaceIsFun
                 // find the distance to target
                 //double c = Math.Sqrt(Math.Pow((double)(target.X - position2D.X), 2d) + Math.Pow((double)(target.Y - position2D.Y), 2d));
                 Vector2 delta = new Vector2(target.X - position2D.X, target.Y - position2D.Y);
-                System.Diagnostics.Debug.WriteLine("target: " + target.ToString());
+                //System.Diagnostics.Debug.WriteLine("target: " + target.ToString());
 
                 // if distance to target is less than speed, we're at our destination
                 if (delta.Length() <= (double)speed)

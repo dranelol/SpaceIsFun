@@ -16,7 +16,10 @@ namespace SpaceIsFun
     public class Entity : Object
     {
         #region fields
-
+        /// <summary>
+        /// unique ID of this entity, set by the entity manager
+        /// </summary>
+        public int UID;
         #endregion
 
         #region constructors / destructors

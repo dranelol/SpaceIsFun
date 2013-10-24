@@ -33,6 +33,7 @@ namespace SpaceIsFun
 
             Vector2 target1Screen = new Vector2();
             Vector2 target2Screen = new Vector2();
+            List<Crew> selectedCrewMembers;
             
 
             bool target1Selected = false;
@@ -68,10 +69,13 @@ namespace SpaceIsFun
             idleCursor.Transitions.Add(hasSelectedCrew.Name, hasSelectedCrew);
             idleCursor.Transitions.Add(targetWeapon.Name, targetWeapon);
             hasSelectedCrew.Transitions.Add(idleCursor.Name, idleCursor);
+            hasSelectedCrew.Transitions.Add(hasSelectedCrew.Name, hasSelectedCrew);
 
             cursorState.Start(idleCursor);
 
+            #region battle state methods
             // when entering the battle state
+            #region battle state enter
             battle.enter += () =>
             {
                 // adds all the energy bars to the gui
@@ -89,9 +93,13 @@ namespace SpaceIsFun
                     energy1.AddWidget(energyBar1 = new Image(0, (128 - 16 - 8 - 8) - i * 16, energyBarSprite));
                     energyBarTest.Add(energyBar1);
                 }
+
+                
             };
 
+            #endregion
             // when updating the battle state
+            #region battle state update
             battle.update += (GameTime gameTime) =>
             {
                 #region input handling
@@ -274,7 +282,7 @@ namespace SpaceIsFun
                     {
                         //cursorState.Transition(hasSelectedCrew.Name);
                     }
-                    // else if we are multiselecting: get (x1,y1;x2,y2), select all crew in that area, set multiselecting to false, transition to hasSelectedCrew
+                    // else if we are multiselecting: get (x1,y1;x2,y2), select all crew in that area, set multiselecting to false, transition to hasSelectedCrew if any crew were selected
                     else
                     {
                         int x1 = (selectRectStart.X -50) / 32;
@@ -304,15 +312,11 @@ namespace SpaceIsFun
 
                         x2 = Math.Min(x2, playerShip.ShipGrid.GetLength(0)-1);
                         y2 = Math.Min(y2, playerShip.ShipGrid.GetLength(1)-1);
-                        
 
                         selectedCrewMembers = new List<Crew>();
 
                         System.Diagnostics.Debug.WriteLine("x1, y1 {0},{1}", x1, y1);
                         System.Diagnostics.Debug.WriteLine("x2, y2 {0},{1}", x2, y2);
-
-                        
-                        
 
                         for (int i = x1; i <= x2 ; i++ )
                         {
@@ -320,27 +324,22 @@ namespace SpaceIsFun
                             {
                                 System.Diagnostics.Debug.WriteLine("Selected Grid {0},{1}", i, j);
 
-                               
-                                //This needs to be commented until the crew lists' location is finalized.
-                                /* foreach (Crew man in crewMembers)
+                                foreach (Crew man in crewMembers)
                                 {
                                     if (man.Position.X == i && man.Position.Y == j)
                                     {
-                                        //man.Selected = true;
-                                        //selectedCrewMembers.Add(man);
-
-
-
+                                        man.Selected = true;
+                                        selectedCrewMembers.Add(man);
 
                                     }
-                                }*/
-
+                                }
                             }
                         }
 
-                        cursorState.Transition(hasSelectedCrew.Name);
-
-
+                        if (selectedCrewMembers.Count > 0)
+                        {
+                            cursorState.Transition(hasSelectedCrew.Name);
+                        }
                     }
 
                     multiSelecting = false;
@@ -368,9 +367,11 @@ namespace SpaceIsFun
                     // else if we are multiselecting: end point = current cursor's position
                 }
 
-                if (cursorState.CurrentState.Name == hasSelectedCrew.Name && previousMouseState.RightButton == ButtonState.Released && currentMouseState.RightButton == ButtonState.Pressed)
+                if (previousMouseState.RightButton == ButtonState.Released && currentMouseState.RightButton == ButtonState.Pressed)
                 {
-                    // if we've right clicked, and we have crew selected
+                    // if we've rightclicked
+
+                    
 
                 }
                 #endregion
@@ -385,8 +386,10 @@ namespace SpaceIsFun
 
 
             };
+            #endregion
 
             // when leaving the battle state
+            #region battle state leave
             battle.leave += () =>
             {
 
@@ -399,6 +402,87 @@ namespace SpaceIsFun
                 gui.RemoveWidget(energy6);
                 gui.RemoveWidget(energy7);
             };
+            #endregion
+            #endregion
+
+            #region idle cursor state methods
+            idleCursor.enter += () =>
+            {
+            };
+
+            idleCursor.update += (GameTime gameTime) =>
+            {
+                #region input handling
+
+                #region mouse
+                if (previousMouseState.RightButton == ButtonState.Released && currentMouseState.RightButton == ButtonState.Pressed)
+                {
+                    // if we've rightclicked
+                }
+
+                #endregion
+                #endregion
+            };
+
+            idleCursor.leave += () =>
+            {
+            };
+            #endregion
+
+            #region selected crew cursor state methods
+            hasSelectedCrew.enter += () =>
+            {
+            };
+
+            hasSelectedCrew.update += (GameTime gameTime) =>
+            {
+                #region input handling
+
+                #region mouse
+                if (previousMouseState.RightButton == ButtonState.Released && currentMouseState.RightButton == ButtonState.Pressed)
+                {
+                    // if we've rightclicked
+
+                    // move the crew
+                }
+
+                #endregion
+                #endregion
+            };
+
+            hasSelectedCrew.leave += () =>
+            {
+            };
+            #endregion
+
+            #region weapon target cursor state methods
+            targetWeapon.enter += () =>
+            {
+            };
+
+            targetWeapon.update += (GameTime gameTime) =>
+            {
+                #region input handling
+
+                #region mouse
+                if (previousMouseState.RightButton == ButtonState.Released && currentMouseState.RightButton == ButtonState.Pressed)
+                {
+                    // if we've rightclicked
+
+                    // select weapon target
+
+                }
+
+                #endregion
+                #endregion
+            };
+
+            targetWeapon.leave += () =>
+            {
+            };
+            #endregion
+
+
         }
 
     }
