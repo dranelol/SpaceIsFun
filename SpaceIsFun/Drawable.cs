@@ -275,12 +275,12 @@ namespace SpaceIsFun
             if(pathing == true)
             {
                 // find the distance to target
-                double c = Math.Sqrt(Math.Pow((double)(target.X - position2D.X), 2d) + Math.Pow((double)(target.Y - position2D.Y), 2d));
-
+                //double c = Math.Sqrt(Math.Pow((double)(target.X - position2D.X), 2d) + Math.Pow((double)(target.Y - position2D.Y), 2d));
+                Vector2 delta = new Vector2(target.X - position2D.X, target.Y - position2D.Y);
                 System.Diagnostics.Debug.WriteLine("target: " + target.ToString());
 
                 // if distance to target is less than speed, we're at our destination
-                if (c < (double)speed)
+                if (delta.Length() <= (double)speed)
                 {
                     // so, move to destination
                     MoveTo(new Vector2(target.X, target.Y));
@@ -304,7 +304,8 @@ namespace SpaceIsFun
                 else
                 {
                     // get the movement delta
-
+                    #region old movement code
+                    /*
                     double alpha = Math.Asin((target.Y - position2D.Y) / c);
 
                     // alpha is the angle between c and (x2-x1)
@@ -316,7 +317,12 @@ namespace SpaceIsFun
                     double X = speed * Math.Sin(theta);
 
                     MoveBy(new Vector2((float)X, (float)Y));
+                     */
+                    #endregion
 
+                    delta.Normalize();
+                    delta = delta * speed;
+                    MoveBy(delta);
                 }
 
             }

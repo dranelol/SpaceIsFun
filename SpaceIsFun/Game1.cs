@@ -252,7 +252,7 @@ namespace SpaceIsFun
             roomList.Add(room4);
             roomList.Add(room5);
 
-            testDrawable = new Drawable(energyBarSprite, new Vector2(room1.Position.X + 50, room2.Position.Y + 50));
+            testDrawable = new Drawable(energyBarSprite, new Vector2(room3.Position.X + 50, room3.Position.Y + 50));
             
 
             // initialize the player's ship
