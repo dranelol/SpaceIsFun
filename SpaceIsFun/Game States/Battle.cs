@@ -245,6 +245,22 @@ namespace SpaceIsFun
                         }
                     }
                 }
+                //a test to see if my states work -Peter
+                if(currentKeyState.IsKeyDown(Keys.Y)==true)
+                {
+                    playerShip.Default_weap.EnoughPower = true;
+                    playerShip.Default_weap.start_charging();
+                    playerShip.Default_weap.weaponStateMachine.Update(gameTime);
+                    System.Diagnostics.Debug.WriteLine(playerShip.Default_weap.weaponStateMachine.CurrentState.Name);
+                }
+
+                //a test to see if my states work -Peter
+                if (currentKeyState.IsKeyDown(Keys.U) == true)
+                {
+                    playerShip.Default_weap.deactivate_weap();
+                    playerShip.Default_weap.weaponStateMachine.Update(gameTime);
+                    System.Diagnostics.Debug.WriteLine(playerShip.Default_weap.weaponStateMachine.CurrentState.Name);
+                }
 
                 #endregion
 
@@ -353,10 +369,10 @@ namespace SpaceIsFun
 
 
                 playerShip.Update(gameTime);
-                foreach (Crew man in crewMembers)
-                {
-                    man.Update(gameTime);
-                }
+          //      foreach (Crew man in crewMembers)
+            //    {
+            //        man.Update(gameTime);
+            //    }
 
 
             };
