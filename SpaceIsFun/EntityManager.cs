@@ -13,18 +13,13 @@ namespace SpaceIsFun
     {
         protected Dictionary<int, Entity> objects = new Dictionary<int, Entity>();
 
-        public Dictionary<int,Entity> Objects
-        {
-            get
-            {
-                return objects;
-            }
+        protected List<Entity> addList = new List<Entity>();
 
-            set
-            {
-                objects = value;
-            }
-        }
+        protected List<Entity> deleteList = new List<Entity>();
+
+
+
+
 
         //singleton implementation
 
@@ -51,11 +46,19 @@ namespace SpaceIsFun
         private Random rng;
 
         /// <summary>
+        /// the last unique identifier assigned
+        /// </summary>
+        private int UIDcurrent = 0;
+
+        /// <summary>
         /// initializes the object manager
         /// </summary>
         public void Initialize()
         {
             rng = new Random();
+            objects.Clear();
+            addList.Clear();
+            deleteList.Clear();
 
         }
 
@@ -65,7 +68,31 @@ namespace SpaceIsFun
         /// <param name="gameTime">current game time</param>
         public void Update(GameTime gameTime)
         {
-            
+            // add any objects that need to be added
+            foreach (Entity entity in addList)
+            {
+                objects.Add(entity.UID, entity);
+                entity.Initialize();
+                entity.LoadContent();
+            }
+
+            addList.Clear();
+
+            // delete any objects that need to be deleted
+            foreach (Entity entity in deleteList)
+            {
+                // call GC
+
+                // remove from objects list
+                objects.Remove(entity.UID);
+            }
+
+            deleteList.Clear();
+
+            foreach(Entity entity in objects.Values)
+            {
+                entity.Update(gameTime);
+            }
         }
 
         /// <summary>
@@ -74,18 +101,35 @@ namespace SpaceIsFun
         /// <param name="spriteBatch">main spriteBatch object</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            
+            foreach (Entity entity in objects.Values)
+            {
+                entity.Draw(spriteBatch);
+            }
         }
 
         /// <summary>
-        /// adds an entity to the entitymanager
+        /// adds an object to the object manager
         /// </summary>
-        /// <param name="toAdd">entity to add to the entitymanager</param>
-        public void AddEntity(Entity toAdd)
+        /// <param name="toAdd"></param>
+        /// <returns>returns the UID of the object added</returns>
+        public int AddEntity(Entity toAdd)
         {
-            // create unique ID 
+            // for now, just increment the unique ID till there isnt a dictionary key collision
+            while(objects.ContainsKey(UIDcurrent) == true)
+            {
+                UIDcurrent++;
+            }
 
-            
+            toAdd.UID = UIDcurrent;
+            addList.Add(toAdd);
+            return UIDcurrent;
+        }
+
+        public void DeleteEntity(int uid)
+        {
+            Entity toDelete = RetrieveEntity(uid);
+
+            deleteList.Add(toDelete);
         }
 
         /// <summary>

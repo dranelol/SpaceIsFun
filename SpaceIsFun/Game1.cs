@@ -60,8 +60,6 @@ namespace SpaceIsFun
 
         State startMenu, battle, pauseState;
 
-        
-
         /// <summary>
         /// the GUI object
         /// </summary>
@@ -448,6 +446,9 @@ namespace SpaceIsFun
             pauseState.enter += () =>
             {
             };
+
+            
+
 
             // when updating the pause state
             pauseState.update += (GameTime gameTime) =>

@@ -71,6 +71,8 @@ namespace SpaceIsFun
             hasSelectedCrew.Transitions.Add(idleCursor.Name, idleCursor);
             hasSelectedCrew.Transitions.Add(hasSelectedCrew.Name, hasSelectedCrew);
 
+            
+
             cursorState.Start(idleCursor);
 
             #region battle state methods

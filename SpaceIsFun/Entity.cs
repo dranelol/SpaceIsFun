@@ -36,6 +36,20 @@ namespace SpaceIsFun
         #region methods
 
         /// <summary>
+        /// inits the entity
+        /// </summary>
+        virtual public void Initialize()
+        {
+        }
+
+        /// <summary>
+        /// loads any content the entity may need
+        /// </summary>
+        virtual public void LoadContent()
+        {
+        }
+
+        /// <summary>
         /// update the entity
         /// </summary>
         /// <param name="gameTime">current game time</param>
