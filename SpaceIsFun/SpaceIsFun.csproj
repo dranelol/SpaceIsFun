@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Crew.cs" />
+    <Compile Include="EntityManager.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Drawable.cs" />
     <Compile Include="Entity.cs" />
