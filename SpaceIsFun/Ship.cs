@@ -661,7 +661,16 @@ namespace SpaceIsFun
         /// <param name="gridTexture">texture used to draw the ship's grid</param>
         /// <param name="highlightTexture">texture used to draw the ship's grid when a grid is selected</param>
         /// <param name="position">initial position of the ship's sprite</param>
-        public Ship(Texture2D shipTexture, Texture2D gridTexture, Texture2D highlightTexture, Vector2 position, List<Room> rList)
+        public Ship(Texture2D shipTexture, 
+                    Texture2D gridTexture, 
+                    Texture2D highlightTexture, 
+                    Vector2 position, 
+                    List<Room> rList,
+                    List<int> roomUIDs,
+                    List<int> gridUIDs,
+                    List<int> weaponUIDs)
+
+
             : base()
         {
             roomList = new List<Room>();

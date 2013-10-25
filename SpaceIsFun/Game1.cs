@@ -243,6 +243,39 @@ namespace SpaceIsFun
 
             #endregion
 
+            
+
+            testDrawable = new Drawable(energyBarSprite, new Vector2(room3.Position.X + 50, room3.Position.Y + 50));
+
+            #region player ship construction
+
+            Vector2 playerShipStartPosition = new Vector2(50,50);
+            List<int> gridUIDs = new List<int>();
+            List<int> roomUIDs = new List<int>();
+            List<int> weaponUIDs = new List<int>();
+
+            // initialize the player's ship
+
+            // TODO: initialize all objects for a ship outside of the ship itself
+            // pass in the UIDs of the grids, rooms, and weapons attributed with this ship
+
+            // grid creation for the player ship
+            for (int i = 0; i < shipTexture.Bounds.Width / 32; i++)
+            {
+                // in each column, iterate over the ship sprite's height
+                for (int j = 0; j < shipTexture.Bounds.Height / 32; j++)
+                {
+                    // create a new grid object for i,j
+                    //shipGrid[i, j] = new Grid(gridTexture, highlightTexture, new Vector2(i * 32 + position.X, j * 32 + position.Y), new Vector2(i, j));
+                    int UID = GridManager.AddEntity(new Grid(gridSprite,
+                                                             gridHighlightSprite,
+                                                             new Vector2(i * 32 + playerShipStartPosition.X,
+                                                                         j * 32 + playerShipStartPosition.Y),
+                                                             new Vector2(i, j)));
+                    gridUIDs.Add(UID);
+                }
+            }
+
             // make list of rooms
 
             Room room1 = new Room(roomHighlightSprite, roomHighlightSprite, 1, 1, Globals.roomShape.TwoXTwo, 2, 2);
@@ -258,14 +291,11 @@ namespace SpaceIsFun
             roomList.Add(room4);
             roomList.Add(room5);
 
-            testDrawable = new Drawable(energyBarSprite, new Vector2(room3.Position.X + 50, room3.Position.Y + 50));
             
-            
-
-            // initialize the player's ship
 
             playerShip = new Ship(shipTexture, gridSprite, gridHighlightSprite, new Vector2(50, 50), roomList);
 
+            #endregion
             // load fonts
 
             font = Content.Load<SpriteFont>("Calibri");
