@@ -73,6 +73,13 @@ namespace SpaceIsFun
         /// </summary>
         Ship playerShip;
 
+        // game object managers
+
+        EntityManager RoomManager;
+        EntityManager GridManager;
+        EntityManager CrewManager;
+        EntityManager WeaponManager;
+
 
         // definitions for all the textures go here
         #region textures
