@@ -44,7 +44,20 @@ namespace SpaceIsFun
             }
         }
         */
+
+        /// <summary>
+        /// random number generator for use in generating unique IDs
+        /// </summary>
         private Random rng;
+
+        /// <summary>
+        /// initializes the object manager
+        /// </summary>
+        public void Initialize()
+        {
+            rng = new Random();
+
+        }
 
         /// <summary>
         /// update the objects in the entity manager
