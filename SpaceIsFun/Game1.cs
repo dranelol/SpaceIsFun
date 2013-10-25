@@ -79,7 +79,7 @@ namespace SpaceIsFun
         EntityManager GridManager;
         EntityManager CrewManager;
         EntityManager WeaponManager;
-
+        EntityManager ShipManager;
 
         // definitions for all the textures go here
         #region textures
@@ -259,6 +259,7 @@ namespace SpaceIsFun
             roomList.Add(room5);
 
             testDrawable = new Drawable(energyBarSprite, new Vector2(room3.Position.X + 50, room3.Position.Y + 50));
+            
             
 
             // initialize the player's ship
