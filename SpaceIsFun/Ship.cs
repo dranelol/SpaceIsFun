@@ -198,18 +198,20 @@ namespace SpaceIsFun
 
         //a list of rooms that can be targeted, indexes are equivalent to the number of the room in constant.cs
         //list[index] is changed to 1 if the room is targeted
-        private List<int> targeted_room = new List<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        
 
         private enum weap_states { disabled, charging, ready };
         //unused for now
 
         //state machine and state declarations
-        StateMachine weaponStateMachine;
-        State ready, disabled, charging;
+       public StateMachine weaponStateMachine;
+       public State ready, disabled, charging;
 
         /// <summary>
         /// This an enumeration of strings that represent the different weapon states
         /// </summary>
+        /// 
+        List<Weapon> weapon_list = new List<Weapon>();
 
         #endregion
 
@@ -227,7 +229,7 @@ namespace SpaceIsFun
             weaponStateMachine = new StateMachine();
 
             ///block for declaration of new states for the weapon
-            disabled = new State { Name = "diabled" };
+            disabled = new State { Name = "disabled" };
             charging = new State { Name = "charging" };
             ready = new State { Name = "ready" };
 
@@ -251,8 +253,9 @@ namespace SpaceIsFun
             damage = dmg;
             timeToCharge = time_to_charge;
             is_charging = false;
+            currentTarget = -1;
             weaponStateMachine.Start(disabled);
-            int charge = 0;
+            charge = 0;
             if (power >= requiredPower)
                 enoughPower = true;
 
@@ -268,6 +271,8 @@ namespace SpaceIsFun
         {
             disabled.enter += () =>
             {
+                charge = 0;
+                currentTarget = -1;
             };
 
             disabled.update += (GameTime gameTime) =>
@@ -296,7 +301,7 @@ namespace SpaceIsFun
             {
                 //not sure if this will actually work.
                 charge += (int)gameTime.ElapsedGameTime.Milliseconds;
-                if (charge == timeToCharge)
+                if (charge >= timeToCharge)
                     readyToFire = true;
                 if (readyToFire == true)
                 {
@@ -333,40 +338,41 @@ namespace SpaceIsFun
                 }
             };
 
+            ready.leave += () => { };
+
         }
 
-        void start_charging()
+        public void start_charging()
         {
             if (enoughPower == true)
                 is_charging = true;
 
         }
 
-        void set_target(int targetIndex)
+       public void set_target(int targetIndex)
         {
-            if (targetIndex > targeted_room.Count)
-            {
-                Console.WriteLine("You passed an invalid index here");
-                return; //throw some exception here
-            }
 
-            aimedAtTarget = true;
-
-            if (targetIndex != currentTarget)
-                targeted_room[currentTarget] = 0;
-
-            targeted_room[targetIndex] = 1;
+            currentTarget = targetIndex;
 
         }
 
-        void launch_weapon(int target)
+        public void launch_weapon(int target)
         {
-            if (weaponStateMachine.CurrentState == ready)
+            if (weaponStateMachine.CurrentState == ready && currentTarget!=-1)
             {
 
-                //write some code here to actually pass damage to another ship
+                //fire
+                
 
             }
+
+           
+        }
+
+        public void deactivate_weap()
+        {
+            ReadyToFire = false;
+            Is_charging = false;
         }
 
 
@@ -584,6 +590,7 @@ namespace SpaceIsFun
             }
         }
 
+
         /// <summary>
         /// how wide the grid list is
         /// </summary>
@@ -602,6 +609,21 @@ namespace SpaceIsFun
             set
             {
                 gridWidth = value;
+            }
+        }
+
+        private Weapon default_weap;
+
+        public Weapon Default_weap
+        {
+            get
+            {
+                return default_weap;
+            }
+
+            set
+            {
+                default_weap = value;
             }
         }
 
@@ -657,6 +679,10 @@ namespace SpaceIsFun
             gridWidth = shipTexture.Bounds.Width / 32;
             gridHeight = shipTexture.Bounds.Height / 32;
             shipGrid = new Grid[gridWidth, gridHeight];
+
+            Default_weap = new Weapon(gridTexture, 0, 0, 2, 10, 3);
+
+           // defaultWep = new Weapon(0, 0, 3, 10, 2);
 
             // iterate over the ship sprite's width
             for (int i = 0; i < shipTexture.Bounds.Width/32; i++)
