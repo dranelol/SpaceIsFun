@@ -381,12 +381,7 @@ namespace SpaceIsFun
 
                 playerShip.Update(gameTime);
 
-                //foreach (Crew man in crewMembers)
-                //{
-                //    man.Update(gameTime);
-                //}
-
-
+                
             };
             #endregion
 

@@ -147,8 +147,6 @@ namespace SpaceIsFun
 
         #endregion
 
-        
-
         #region game loop methods
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -464,11 +462,5 @@ namespace SpaceIsFun
 
         #endregion
 
-
-
     }
-
-
-
-
 }

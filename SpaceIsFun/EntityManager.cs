@@ -17,10 +17,6 @@ namespace SpaceIsFun
 
         protected List<Entity> deleteList = new List<Entity>();
 
-
-
-
-
         //singleton implementation
 
         /*

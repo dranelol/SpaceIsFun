@@ -13,20 +13,23 @@ namespace SpaceIsFun
         /// 
 
 
-        #region roomtypeconsts
+        #region room types
 
-        public const int EMPTY_ROOM = 0;
-        public const int CLOAK_ROOM = 1;
-        public const int DOOR_ROOM = 2;
-        public const int DRONE_ROOM = 3;
-        public const int ENGINE_ROOM = 4;
-        public const int MEDBAY_ROOM = 5;
-        public const int O2_ROOM = 6;
-        public const int PILOT_ROOM = 7;
-        public const int SENSORS_ROOM = 8;
-        public const int SHIELD_ROOM = 9;
-        public const int TELEPORTER_ROOM = 10;
-        public const int WEAPONS_ROOM = 11;
+        public enum roomType
+        {
+            EMPTY_ROOM,
+            CLOAK_ROOM,
+            DOOR_ROOM,
+            DRONE_ROOM, 
+            ENGINE_ROOM, 
+            MEDBAY_ROOM, 
+            O2_ROOM, 
+            PILOT_ROOM, 
+            SENSORS_ROOM, 
+            SHIELD_ROOM, 
+            TELEPORTER_ROOM,
+            WEAPONS_ROOM 
+        };
 
         #endregion
 
@@ -47,7 +50,17 @@ namespace SpaceIsFun
         #endregion
 
         #region enumerators
-        public enum roomShape { TwoXOne, TwoXTwo, ThreeXOne, ThreeXThree, OneXTwo, OneXThree, RRoom, JRoom };
+        public enum roomShape 
+        { 
+            TwoXOne, 
+            TwoXTwo, 
+            ThreeXOne, 
+            ThreeXThree, 
+            OneXTwo, 
+            OneXThree, 
+            RRoom, 
+            JRoom 
+        };
         #endregion
     }
 }
