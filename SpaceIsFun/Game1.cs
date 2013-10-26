@@ -71,16 +71,16 @@ namespace SpaceIsFun
         /// <summary>
         /// the player's ship object in battle
         /// </summary>
-        Ship playerShip;
+        //Ship playerShip;
         int playerShipUID;
 
         // game object managers
 
-        EntityManager RoomManager;
-        EntityManager GridManager;
-        EntityManager CrewManager;
-        EntityManager WeaponManager;
-        EntityManager ShipManager;
+        EntityManager RoomManager = new EntityManager();
+        EntityManager GridManager = new EntityManager();
+        EntityManager CrewManager = new EntityManager();
+        EntityManager WeaponManager = new EntityManager();
+        EntityManager ShipManager = new EntityManager();
 
         // definitions for all the textures go here
         #region textures
@@ -168,51 +168,11 @@ namespace SpaceIsFun
         {
             base.Initialize();
 
-            // initialize the state of all input managers
-            currentKeyState = Keyboard.GetState();
-            currentMouseState = Mouse.GetState();
-            previousKeyState = Keyboard.GetState();
-            previousMouseState = Mouse.GetState();
+            // init managers
 
-            // initialize the game state machine and states
+            
 
-            #region state machine setup
-            stateMachine = new StateMachine();
-
-            startMenu = new State { Name = "startMenu" };
-            battle = new State { Name = "battle" };
-            pauseState = new State { Name = "pauseState" };
-
-
-            startMenu.Transitions.Add(battle.Name, battle);
-            startMenu.Transitions.Add(pauseState.Name, pauseState);
-
-            battle.Transitions.Add(startMenu.Name, startMenu);
-            battle.Transitions.Add(pauseState.Name, pauseState);
-
-            pauseState.Transitions.Add(startMenu.Name, startMenu);
-            pauseState.Transitions.Add(battle.Name, battle);
-
-            stateMachine.Start(startMenu);
-            #endregion
-
-            // set up any UI elements here
-
-            #region ui setup
-
-
-            #endregion
-
-            // set up game objects
-
-            crewMembers = new List<Crew>();
-
-            // set up each game state
-            setupStartMenu();
-            setupBattle();
-            setupPauseState();
-
-
+            
         }
 
         /// <summary>
@@ -268,11 +228,11 @@ namespace SpaceIsFun
                 {
                     // create a new grid object for i,j
                     //shipGrid[i, j] = new Grid(gridTexture, highlightTexture, new Vector2(i * 32 + position.X, j * 32 + position.Y), new Vector2(i, j));
-                    int UID = GridManager.AddEntity(new Grid(gridSprite,
-                                                             gridHighlightSprite,
-                                                             new Vector2(i * 32 + playerShipStartPosition.X,
-                                                                         j * 32 + playerShipStartPosition.Y),
-                                                             new Vector2(i, j)));
+                    Grid toAdd = new Grid(gridSprite, gridHighlightSprite,
+                               new Vector2(i * 32 + playerShipStartPosition.X, j * 32 + playerShipStartPosition.Y),
+                               new Vector2(i, j));
+
+                    int UID = GridManager.AddEntity(toAdd);
                     gridUIDs.Add(UID);
                 }
             }
@@ -302,8 +262,8 @@ namespace SpaceIsFun
                 roomTypes[i] = false;
             }
 
-
-            playerShipUID = ShipManager.AddEntity(new Ship(shipTexture, gridSprite, gridHighlightSprite, new Vector2(50, 50), roomUIDs, gridUIDs, weaponUIDs, roomTypes,0));
+            Ship playerShip = new Ship(shipTexture, gridSprite, gridHighlightSprite, new Vector2(50, 50), roomUIDs, gridUIDs, weaponUIDs, roomTypes, 0);
+            playerShipUID = ShipManager.AddEntity(playerShip);
 
             //playerShip = new Ship(shipTexture, gridSprite, gridHighlightSprite, new Vector2(50, 50), roomUIDs, gridUIDs, weaponUIDs, roomTypes);
 
@@ -324,6 +284,54 @@ namespace SpaceIsFun
             gui.AddText("password", new Ruminate.GUI.Framework.Text(font, Color.TransparentBlack));
             gui.AddText("empty", new Ruminate.GUI.Framework.Text(font, Color.LightSlateGray));
 
+
+            #region stuff from initialize
+
+            // initialize the state of all input managers
+            currentKeyState = Keyboard.GetState();
+            currentMouseState = Mouse.GetState();
+            previousKeyState = Keyboard.GetState();
+            previousMouseState = Mouse.GetState();
+
+            // initialize the game state machine and states
+
+            #region state machine setup
+            stateMachine = new StateMachine();
+
+            startMenu = new State { Name = "startMenu" };
+            battle = new State { Name = "battle" };
+            pauseState = new State { Name = "pauseState" };
+
+
+            startMenu.Transitions.Add(battle.Name, battle);
+            startMenu.Transitions.Add(pauseState.Name, pauseState);
+
+            battle.Transitions.Add(startMenu.Name, startMenu);
+            battle.Transitions.Add(pauseState.Name, pauseState);
+
+            pauseState.Transitions.Add(startMenu.Name, startMenu);
+            pauseState.Transitions.Add(battle.Name, battle);
+
+            stateMachine.Start(startMenu);
+            #endregion
+
+            // set up any UI elements here
+
+            #region ui setup
+
+
+            #endregion
+
+            // set up game objects
+
+            crewMembers = new List<Crew>();
+
+            // set up each game state
+            setupStartMenu();
+            setupBattle(playerShipUID);
+            setupPauseState();
+
+            #endregion
 
         }
 
@@ -418,7 +426,7 @@ namespace SpaceIsFun
                 || stateMachine.CurrentState.Name == pauseState.Name && stateMachine.PreviousState.Name == battle.Name)
             {
                 spriteBatch.Begin();
-                playerShip.Draw(spriteBatch);
+                ShipManager.Draw(spriteBatch);
 
 
 

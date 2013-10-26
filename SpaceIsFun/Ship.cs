@@ -768,8 +768,8 @@ namespace SpaceIsFun
             }
             */
 
-            setRoomGridDictionary();
-            setUnwalkableGrids();
+            //setRoomGridDictionary();
+            //setUnwalkableGrids();
 
         }
 
@@ -806,16 +806,10 @@ namespace SpaceIsFun
             sprite.Draw(spriteBatch);
 
             // for each grid on the ship, draw its sprite
-            foreach (Grid shipgrid in shipGrid)
-            {
-                shipgrid.Draw(spriteBatch);
-            }
+            
 
             // for each room on the ship, draw
-            foreach (Room shipRoom in roomList)
-            {
-                shipRoom.Draw(spriteBatch);
-            }
+            
 
             base.Draw(spriteBatch);
         }

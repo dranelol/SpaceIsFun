@@ -65,6 +65,7 @@ namespace SpaceIsFun
         /// <param name="gameTime">current game time</param>
         public void Update(GameTime gameTime)
         {
+            /*
             // add any objects that need to be added
             foreach (Entity entity in addList)
             {
@@ -85,7 +86,7 @@ namespace SpaceIsFun
             }
 
             deleteList.Clear();
-
+            */
             foreach(Entity entity in objects.Values)
             {
                 entity.Update(gameTime);
@@ -118,15 +119,18 @@ namespace SpaceIsFun
             }
 
             toAdd.UID = UIDcurrent;
-            addList.Add(toAdd);
+            //addList.Add(toAdd);
+
+            objects.Add(UIDcurrent,toAdd);
+
             return UIDcurrent;
         }
 
         public void DeleteEntity(int uid)
         {
-            Entity toDelete = RetrieveEntity(uid);
-
-            deleteList.Add(toDelete);
+            //Entity toDelete = RetrieveEntity(uid);
+            objects.Remove(uid);
+            //deleteList.Add(toDelete);
         }
 
         /// <summary>

@@ -25,7 +25,7 @@ namespace SpaceIsFun
         Point selectRectStart = new Point();
         Point selectRectEnd = new Point();
 
-        void setupBattle()
+        void setupBattle(int playerUID)
         {
             Vector2 target1 = new Vector2();
 
@@ -38,6 +38,9 @@ namespace SpaceIsFun
 
             bool target1Selected = false;
             bool target2Selected = false;
+
+            Ship playerShip = (Ship)ShipManager.RetrieveEntity(playerUID);
+
 
             Pathfinder pather = new Pathfinder(playerShip.ShipGrid, GridManager);
 
@@ -119,16 +122,7 @@ namespace SpaceIsFun
                     System.Diagnostics.Debug.WriteLine(playerShip.RoomGridDict.ToString());
                 }
 
-                /*
-                foreach (Grid thing in playerShip.ShipGrid)
-                {
-                    if (thing.IsWalkable == false)
-                    {
-                        thing.Highlighted = true;
-                    }
-                }
-                */
-
+                #region keys.c
                 // if the c key is tapped, query to see if the cursor is hovering over the ship
                 if (currentKeyState.IsKeyDown(Keys.C) && previousKeyState.IsKeyUp(Keys.C))
                 {
@@ -187,6 +181,9 @@ namespace SpaceIsFun
 
                 }
 
+                #endregion
+
+                #region keys.v
                 // second target for pathfinder checking 
 
                 if (currentKeyState.IsKeyDown(Keys.V) && previousKeyState.IsKeyUp(Keys.V))
@@ -206,19 +203,16 @@ namespace SpaceIsFun
 
                         if (target2Selected == false && target1Selected == true)
                         {
-
-                            if (playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].IsWalkable == true)
+                            Grid thisGrid = (Grid)GridManager.RetrieveEntity(thisShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y]);
+                            if (thisGrid.IsWalkable == true)
                             {
-                                target2 = playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition;
+                                
+                                target2 = thisGrid.GridPosition;
                                 target2Screen = new Vector2(currentMouseState.X, currentMouseState.Y);
 
                                 System.Diagnostics.Debug.WriteLine(target1.ToString() + " " + target2.ToString());
 
-
-
-                                pather = new Pathfinder(playerShip.ShipGrid);
-
-
+                                pather = new Pathfinder(thisShip.ShipGrid, GridManager);
 
                                 List<Vector2> path = pather.FindOptimalPath(target1, target2);
 
@@ -237,10 +231,6 @@ namespace SpaceIsFun
 
                                 pathList.Add(target2Screen);
 
-                                testDrawable.setPath(pathList);
-                                
-
-
                                 target1Selected = false;
 
                                 target1 = new Vector2();
@@ -250,6 +240,9 @@ namespace SpaceIsFun
                     }
                 }
 
+                #endregion
+
+                #region keys.e
                 // if the e key is tapped, try to lose energy if possible
                 if (currentKeyState.IsKeyDown(Keys.E) == true && previousKeyState.IsKeyUp(Keys.E) == true)
                 {
@@ -270,6 +263,9 @@ namespace SpaceIsFun
 
                 }
 
+                #endregion
+
+                #region keys.f
                 // if the f key is tapped, try to gain energy if possibile
                 if (currentKeyState.IsKeyDown(Keys.R) == true && previousKeyState.IsKeyUp(Keys.R) == true)
                 {
@@ -288,6 +284,10 @@ namespace SpaceIsFun
                         }
                     }
                 }
+
+                #endregion
+
+                #region weapons testing: keys.y, keys.u
                 //a test to see if my states work -Peter
                 if(currentKeyState.IsKeyDown(Keys.Y)==true)
                 {
@@ -304,6 +304,8 @@ namespace SpaceIsFun
                     playerShip.Default_weap.weaponStateMachine.Update(gameTime);
                     System.Diagnostics.Debug.WriteLine(playerShip.Default_weap.weaponStateMachine.CurrentState.Name);
                 }
+
+                #endregion
 
                 #endregion
 
