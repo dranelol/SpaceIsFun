@@ -374,7 +374,7 @@ namespace SpaceIsFun
         /// <param name="highlightTexture">texture for the room when its highlighted</param>
         /// <param name="x">x-position of the top-left grid position</param>
         /// <param name="y">y-position of the top-left grid position</param>
-        public Room(Texture2D texture, Texture2D highlightTexture, int x, int y, Globals.roomShape shape, Globals.roomType type, int w, int h)
+        public Room(Texture2D texture, Texture2D highlightTexture, int x, int y, Vector2 shipOffset, Globals.roomShape shape, Globals.roomType type, int w, int h)
         {
             #region room state machine setup
             roomStateMachine = new StateMachine();
@@ -409,7 +409,7 @@ namespace SpaceIsFun
             setupInoperable();
             setupDisabled();
 
-            position = new Vector2(x * 32, y * 32);
+            position = new Vector2((x * 32) + shipOffset.X, (y * 32) + shipOffset.Y);
             roomTexture = texture;
             roomHighlightTexture = highlightTexture;
             sprite = new Drawable(highlightTexture, position);

@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.Reflection;
 
 
 namespace SpaceIsFun
@@ -136,6 +137,11 @@ namespace SpaceIsFun
         public Entity RetrieveEntity(int UID)
         {
             return objects[UID];
+        }
+
+        public Dictionary<int,Entity>.KeyCollection RetrieveKeys()
+        {
+            return objects.Keys;
         }
 
 

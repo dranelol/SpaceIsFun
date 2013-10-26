@@ -39,7 +39,7 @@ namespace SpaceIsFun
             bool target1Selected = false;
             bool target2Selected = false;
 
-            Pathfinder pather = new Pathfinder(playerShip.ShipGrid);
+            Pathfinder pather = new Pathfinder(playerShip.ShipGrid, GridManager);
 
             // sets up seven energy bars for the ship
             Panel energy1 = new Panel(4, screenHeight - 128, 40, 128 - 8);
@@ -133,43 +133,51 @@ namespace SpaceIsFun
                 if (currentKeyState.IsKeyDown(Keys.C) && previousKeyState.IsKeyUp(Keys.C))
                 {
                     // returns whether or not the cursor is hovering over the player's ship
-                    bool shipHover = playerShip.checkShipHover(currentMouseState);
+                    int shipUID = checkShipHover(currentMouseState);
+                    
+
 
                     // if the cursor is hovering over the player's ship, print a message and figure out which room the cursor is in
-                    if (shipHover == true)
+                    if (shipUID == playerShipUID)
                     {
-                        System.Diagnostics.Debug.WriteLine("Cursor on ship!");
+                        System.Diagnostics.Debug.WriteLine("Cursor on player ship!");
                         
 
                         // returns which grid (in ship grid coords) the cursor is hovering over
-                        Vector2 gridHover = playerShip.getGridHover(currentMouseState);
+                        Vector2 gridHover = getGridHover(currentMouseState, shipUID);
 
 
                         // if gridHover isn't (-1,-1), which means the cursor ISNT on the grid, print messages, and highlight (or un-highlight) that grid 
                         if (gridHover.X != -1 && gridHover.Y != -1)
                         {
-                            System.Diagnostics.Debug.WriteLine("Cursor on grid: " + playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition.ToString());
+                            Ship thisShip = (Ship)ShipManager.RetrieveEntity(shipUID);
+
+                            int gridUID = thisShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y];
+
+                            Grid thisGrid = (Grid)GridManager.RetrieveEntity(gridUID);
+
+                            System.Diagnostics.Debug.WriteLine("Cursor on grid: " + thisGrid.GridPosition.ToString());
                             
-
-                            if (playerShip.checkRoomHover(currentMouseState) == true)
+                            if (checkRoomHover(currentMouseState, shipUID) == true)
                             {
-                                Room roomHover = playerShip.getRoomHover(currentMouseState);
-                                System.Diagnostics.Debug.WriteLine("Cursor on room: " + roomHover.RoomPosition.ToString());
-                            }
-                            // highlight that grid
-                            //playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].Highlight();
+                                int roomUID = getRoomHover(currentMouseState, shipUID);
 
-                            //System.Diagnostics.Debug.WriteLine("Highighted?: " + playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].Highlighted.ToString());
+                                Room thisRoom = (Room)RoomManager.RetrieveEntity(roomUID);
+
+                                System.Diagnostics.Debug.WriteLine("Cursor on room: " + thisRoom.RoomPosition.ToString());
+                            }
+
+                            //highlight the grid
                             if (target1Selected == false)
                             {
-                                if (playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].IsWalkable == true)
+                                if (thisGrid.IsWalkable == true)
                                 {
                                     target1Selected = true;
                                 }
 
                             }
 
-                            target1 = playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition;
+                            target1 = thisGrid.GridPosition;
                             target1Screen = new Vector2(currentMouseState.X, currentMouseState.Y);
                             
 
@@ -183,14 +191,22 @@ namespace SpaceIsFun
 
                 if (currentKeyState.IsKeyDown(Keys.V) && previousKeyState.IsKeyUp(Keys.V))
                 {
-                    bool shipHover = playerShip.checkShipHover(currentMouseState);
-                    if (shipHover == true)
+                    // returns whether or not the cursor is hovering over the player's ship
+                    int shipUID = checkShipHover(currentMouseState);
+
+
+
+                    // if the cursor is hovering over the player's ship, print a message and figure out which room the cursor is in
+                    if (shipUID == playerShipUID)
                     {
-                        Vector2 gridHover = playerShip.getGridHover(currentMouseState);
-                        //System.Diagnostics.Debug.WriteLine("Cursor on grid: " + playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition.ToString());
+                        // returns which grid (in ship grid coords) the cursor is hovering over
+                        Vector2 gridHover = getGridHover(currentMouseState, shipUID);
+
+                        Ship thisShip = (Ship)ShipManager.RetrieveEntity(shipUID);
 
                         if (target2Selected == false && target1Selected == true)
                         {
+
                             if (playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].IsWalkable == true)
                             {
                                 target2 = playerShip.ShipGrid[(int)gridHover.X, (int)gridHover.Y].GridPosition;

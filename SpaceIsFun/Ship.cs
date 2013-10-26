@@ -506,6 +506,8 @@ namespace SpaceIsFun
             }
         }
 
+        
+
         /// <summary>
         /// the ship's Drawable object
         /// </summary>
@@ -530,12 +532,12 @@ namespace SpaceIsFun
         /// <summary>
         /// the 2D Grid array holding the grid objects attributed to the ship
         /// </summary>
-        private Grid[,] shipGrid;
+        private int[,] shipGrid;
 
         /// <summary>
         /// parameter for shipGrid
         /// </summary>
-        public Grid[,] ShipGrid
+        public int[,] ShipGrid
         {
             get
             {
@@ -551,12 +553,12 @@ namespace SpaceIsFun
         /// <summary>
         /// the list of rooms for a ship
         /// </summary>
-        private List<Room> roomList;
+        private bool[] roomList;
 
         /// <summary>
         /// parameter for roomList
         /// </summary>
-        public List<Room> RoomList
+        public bool[] RoomList
         {
             get
             {
@@ -570,14 +572,14 @@ namespace SpaceIsFun
         }
 
         /// <summary>
-        /// relation between grids and their respective rooms
+        /// relation between grids and their respective rooms: key gridUID, value roomUID
         /// </summary>
-        private Dictionary<Grid, Room> roomGridDict;
+        private Dictionary<int, int> roomGridDict;
 
         /// <summary>
         /// parameter for roomGridList
         /// </summary>
-        public Dictionary<Grid, Room> RoomGridDict
+        public Dictionary<int, int> RoomGridDict
         {
             get
             {
@@ -647,6 +649,70 @@ namespace SpaceIsFun
                 gridHeight = value;
             }
         }
+
+        private List<int> roomUIDList;
+
+        public List<int> RoomUIDList
+        {
+            get
+            {
+                return roomUIDList;
+            }
+
+            set
+            {
+                roomUIDList = value;
+            }
+        }
+
+        private List<int> gridUIDList;
+
+        public List<int> GridUIDList
+        {
+            get
+            {
+                return gridUIDList;
+            }
+
+            set
+            {
+                gridUIDList = value;
+            }
+        }
+
+        private List<int> weaponUIDList;
+
+        public List<int> WeaponUIDList
+        {
+            get
+            {
+                return weaponUIDList;
+            }
+
+            set
+            {
+                weaponUIDList = value;
+            }
+        }
+
+        /// <summary>
+        /// faction owner of this ship; for now 0=player, 1=enemy
+        /// </summary>
+        private int owner;
+
+        public int Owner
+        {
+            get
+            {
+                return owner;
+            }
+
+            set
+            {
+                owner = value;
+            }
+        }
+
         #endregion
 
         #region constructors / destructors
@@ -664,18 +730,18 @@ namespace SpaceIsFun
         public Ship(Texture2D shipTexture, 
                     Texture2D gridTexture, 
                     Texture2D highlightTexture, 
-                    Vector2 position, 
-                    List<Room> rList,
+                    Vector2 position,
                     List<int> roomUIDs,
                     List<int> gridUIDs,
-                    List<int> weaponUIDs)
+                    List<int> weaponUIDs,
+                    bool[] roomTypes,
+                    int owner)
 
 
             : base()
         {
-            roomList = new List<Room>();
-            roomGridDict = new Dictionary<Grid, Room>();
-            roomList = rList;
+            roomList = new bool[11];
+            roomGridDict = new Dictionary<int,int>();
             System.Diagnostics.Debug.WriteLine("initting ship");
             // set some default values 
             maxHP = currentHP = 10;
@@ -687,38 +753,20 @@ namespace SpaceIsFun
             // create the ship's grid; each grid is 32-wide, so we get the amount of grids needed by dividing the ship's sprite up into 32x32 chunks
             gridWidth = shipTexture.Bounds.Width / 32;
             gridHeight = shipTexture.Bounds.Height / 32;
-            shipGrid = new Grid[gridWidth, gridHeight];
+            shipGrid = new int[gridWidth, gridHeight];
 
             Default_weap = new Weapon(gridTexture, 0, 0, 2, 10, 3);
 
-           // defaultWep = new Weapon(0, 0, 3, 10, 2);
-
-            // iterate over the ship sprite's width
-            for (int i = 0; i < shipTexture.Bounds.Width/32; i++)
-            {
-                // in each column, iterate over the ship sprite's height
-                for (int j = 0; j < shipTexture.Bounds.Height/32; j++)
-                {
-                    // create a new grid object for i,j
-                    shipGrid[i, j] = new Grid(gridTexture, highlightTexture, new Vector2(i * 32 + position.X, j * 32 + position.Y), new Vector2(i, j));
-                    
-                }
-            }
-
-            //ShipGrid[0, 0].IsWalkable = false;
-            //ShipGrid[1, 1].IsWalkable = false;
-            //ShipGrid[2, 2].IsWalkable = false;
-            //ShipGrid[3, 3].IsWalkable = false;
-            //ShipGrid[4, 4].IsWalkable = false;
+            this.owner = owner;
             
 
             // we need to move the rooms to align ontop of the ship; probably find a better way to do this in the future
-
+            /*
             foreach (Room room in roomList)
             {
                 room.Sprite.MoveBy(new Vector2(50, 50));
             }
-
+            */
 
             setRoomGridDictionary();
             setUnwalkableGrids();
@@ -772,222 +820,13 @@ namespace SpaceIsFun
             base.Draw(spriteBatch);
         }
 
-        /// <summary>
-        /// check whether or not the cursor is current hovering over this ship
-        /// </summary>
-        /// <param name="currentMouseState">current state of the mouse</param>
-        /// <returns></returns>
-        public bool checkShipHover(MouseState currentMouseState)
-        {
-
-            // if the cursor is between the sprite's topleft and bottomright corners
-            if (((currentMouseState.X > sprite.Position2D.X)
-                    && (currentMouseState.X < sprite.Position2D.X + sprite.Width)
-                  && ((currentMouseState.Y > sprite.Position2D.Y)
-                    && (currentMouseState.Y < sprite.Position2D.Y + sprite.Height))))
-             {
-                // our mouse cursor should be within the bounds of the ship
-                //System.Diagnostics.Debug.WriteLine("Cursor on the ship!");
-                return true;
-             }
-
-            else
-            {
-                return false;
-            }
-
-        }
-
-        /// <summary>
-        /// check which grid the cursor is currently hovering over; note: this only should get called if checkShipHover returns TRUE
-        /// </summary>
-        /// <param name="currentMouseState">current state of the mouse</param>
-        /// <returns></returns>
-        public Vector2 getGridHover(MouseState currentMouseState)
-        {
-            // we know the cursor is within bounds, this will only get called if checkShipHover returns true
-
-            Vector2 ret = new Vector2();
-
-            // x position relative to the ship
-            float relativeXPos = currentMouseState.X - sprite.Position2D.X;
-            // y position relative to the ship
-            float relativeYPos = currentMouseState.Y - sprite.Position2D.Y;
-
-            // grid x position relative to the ship
-            ret.X = (int)relativeXPos / 32;
-
-            // grid y position relative to the ship
-            ret.Y = (int)relativeYPos / 32;
-
-            return ret;
         
-        }
 
-        /// <summary>
-        /// check whether or not the cursor is hovering over a room
-        /// </summary>
-        /// <param name="currentMouseState"></param>
-        /// <returns></returns>
-        public bool checkRoomHover(MouseState currentMouseState)
-        {
-            // find the grid we're hovering over
+        
 
-            Vector2 gridHover = getGridHover(currentMouseState);
+        
 
-            // convert this point to a grid object
-            Grid gridToCheck = shipGrid[(int)gridHover.X, (int)gridHover.Y];
-
-            // get the room out of the grid,room dict
-            try
-            {
-                Room checkRoom = roomGridDict[gridToCheck];
-            }
-
-            catch (KeyNotFoundException e)
-            {
-                System.Diagnostics.Debug.WriteLine("grid not part of a room");
-                //ret.RoomPosition = new Vector2(-1, -1);
-                //return ret;
-                return false;
-            }
-
-
-            return true;
-        }
-
-        /// <summary>
-        /// check which room the cursor is currently hovering over, this only should get called if checkRoomHover returns TRUE
-        /// </summary>
-        /// <param name="gridToCheck"></param>
-        /// <returns></returns>
-        public Room getRoomHover(MouseState currentMouseState)
-        {
-            // find the grid we're hovering over
-
-            Vector2 gridHover = getGridHover(currentMouseState);
-
-            // convert this point to a grid object
-            Grid gridToCheck = shipGrid[(int)gridHover.X, (int)gridHover.Y];
-
-            // get the room out of the grid,room dict
-            return roomGridDict[gridToCheck];
-        }
-
-        /// <summary>
-        ///  initializes the relationship between grids and their rooms; this is called in the ship constructor ONCE, and only after all other initialization logic has occured
-        /// </summary>
-        private void setRoomGridDictionary()
-        {
-            foreach (Room rL in roomList)
-            {
-                switch (rL.RoomShape)
-                {
-                    // Case for a 2 by 2 room.
-                    // x x
-                    // x x
-                    case Globals.roomShape.TwoXTwo:
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y + 1]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y + 1]] = rL;
-                        break;
-
-                    // Case for a 3 by 3 room
-                    // x x x
-                    // x x x
-                    // x x x
-                    case Globals.roomShape.ThreeXThree:
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 2, (int)rL.RoomPosition.Y]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y + 1]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y + 2]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y + 1]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y + 2]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 2, (int)rL.RoomPosition.Y + 1]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 2, (int)rL.RoomPosition.Y + 2]] = rL;
-                        break;
-
-                    // Case for a 1 by 3 room.
-                    // x x x
-                    case Globals.roomShape.OneXThree:
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 2, (int)rL.RoomPosition.Y]] = rL;
-                        break;
-
-                    // Case for a 1 by 2 room
-                    // x x
-                    case Globals.roomShape.OneXTwo:
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y]] = rL;
-                        break;
-
-                    // Case for a 3 by 1 room
-                    // x
-                    // x
-                    // x
-                    case Globals.roomShape.ThreeXOne:
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y + 1]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y + 2]] = rL;
-                        break;
-
-                    // Case for a 2 by 1 room
-                    // x
-                    // x
-                    case Globals.roomShape.TwoXOne:
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y + 1]] = rL;
-                        break;
-
-                    // Case for a J-shaped room
-                    //   x
-                    // x x
-                    case Globals.roomShape.JRoom:
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y + 1]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y + 1]] = rL;
-                        break;
-
-                    // Case for an R-shaped room
-                    // x x
-                    // x
-                    case Globals.roomShape.RRoom:
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X + 1, (int)rL.RoomPosition.Y]] = rL;
-                        RoomGridDict[ShipGrid[(int)rL.RoomPosition.X, (int)rL.RoomPosition.Y + 1]] = rL;
-                        break;
-
-                }
-            }
-
-            // TODO: possibly un-associate any un-wanted grids with rooms (weirdly-shaped rooms, for example)
-
-        }
-
-        /// <summary>
-        /// sets every grid that doesnt belong to a room as unwalkable
-        /// </summary>
-        private void setUnwalkableGrids()
-        {
-            for (int i = 0; i < shipGrid.GetLength(0); i++)
-            {
-                for (int j = 0; j < shipGrid.GetLength(1); j++)
-                {
-                    // is this grid in the dictionary of grids  that have rooms?
-                    // if not, make it unwalkable
-
-                    if(!roomGridDict.Keys.Contains(shipGrid[i,j]))
-                    {
-                        //System.Diagnostics.Debug.WriteLine(shipGrid[i, j].GridPosition.ToString());
-                        shipGrid[i, j].IsWalkable = false;
-                        
-                    }
-                }
-            }
-        }
+        
 
 
         #endregion 

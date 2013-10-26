@@ -13,7 +13,7 @@ namespace SpaceIsFun
     /// <summary>
     /// This holds all the info for an entity in our game. Generally, entities are just thought of as "special" objects; they may have a drawable, they may be moved, etc.
     /// </summary>
-    public class Entity : Object
+    public abstract class Entity : Object
     {
         #region fields
         /// <summary>

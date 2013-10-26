@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Ruminate.GUI.Framework;
 using Ruminate.GUI.Content;
 
+
 namespace SpaceIsFun
 {
     /// <summary>
@@ -92,14 +93,14 @@ namespace SpaceIsFun
         /// <summary>
         /// Constructor
         /// </summary>
-        public Pathfinder(Grid[,] map)
+        public Pathfinder(int[,] map, EntityManager manager)
         {
             mapWidth = map.GetLength(0);
             mapHeight = map.GetLength(1);
 
             System.Diagnostics.Debug.WriteLine(mapWidth.ToString() + ", " + mapHeight.ToString());
             
-            InitSearchNodes(map);
+            InitSearchNodes(map, manager);
 
             // instead of units, i want to path with source grid and target grid
 
@@ -111,7 +112,7 @@ namespace SpaceIsFun
         /// This function initializes the map's search tiles
         /// Precondition: 
         /// </summary>
-        private void InitSearchNodes(Grid[,] map)
+        private void InitSearchNodes(int[,] map, EntityManager manager)
         {
             searchNodes = new SearchNode[mapWidth, mapHeight];
 
@@ -124,7 +125,10 @@ namespace SpaceIsFun
                     node.Position = new Vector2(x, y);
 
                     // heuristic for "is this node walkable?"
-                    if (map[x,y].Highlighted == false)  
+
+                    Grid grid = (Grid)manager.RetrieveEntity(map[x, y]);
+
+                    if (grid.Highlighted == false)  
                     { 
                         node.Walkable = true;
                     }
