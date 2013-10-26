@@ -374,7 +374,7 @@ namespace SpaceIsFun
         /// <param name="highlightTexture">texture for the room when its highlighted</param>
         /// <param name="x">x-position of the top-left grid position</param>
         /// <param name="y">y-position of the top-left grid position</param>
-        public Room(Texture2D texture, Texture2D highlightTexture, int x, int y, Globals.roomShape shape, int w, int h)
+        public Room(Texture2D texture, Texture2D highlightTexture, int x, int y, Globals.roomShape shape, Globals.roomType type, int w, int h)
         {
             #region room state machine setup
             roomStateMachine = new StateMachine();
@@ -416,7 +416,7 @@ namespace SpaceIsFun
             roomPosition = new Vector2(x, y);
             isMannable = new bool();
             isMannable = false;
-            roomType = (int)Globals.roomType.EMPTY_ROOM;
+            roomType = (int)type;
             roomHealth = 200;
 
             roomShape = shape;

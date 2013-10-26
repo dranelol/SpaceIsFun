@@ -276,17 +276,25 @@ namespace SpaceIsFun
                 }
             }
 
-            // make list of rooms
+            // create rooms, add them to the manager, pass their UIDs to the ship
+            int roomUID = RoomManager.AddEntity( new Room( roomHighlightSprite, roomHighlightSprite, 1, 1, Globals.roomShape.OneXThree, Globals.roomType.EMPTY_ROOM, 3, 1));
+            roomUIDs.Add(roomUID);
+            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 1, 2, Globals.roomShape.TwoXOne, Globals.roomType.EMPTY_ROOM, 1, 2));
+            roomUIDs.Add(roomUID);
+            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 2, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+            roomUIDs.Add(roomUID);
+            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 0, 4, Globals.roomShape.ThreeXThree, Globals.roomType.EMPTY_ROOM, 3, 3));
+            roomUIDs.Add(roomUID);
+            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 4, Globals.roomShape.RRoom, Globals.roomType.EMPTY_ROOM, 2, 2));
+            roomUIDs.Add(roomUID);
+            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 5, Globals.roomShape.JRoom, Globals.roomType.EMPTY_ROOM, 2, 2));
+            roomUIDs.Add(roomUID);
+            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 5, 4, Globals.roomShape.OneXTwo, Globals.roomType.EMPTY_ROOM, 2, 1));
+            roomUIDs.Add(roomUID);
+            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 7, 3, Globals.roomShape.ThreeXOne, Globals.roomType.EMPTY_ROOM, 1, 3));
+            roomUIDs.Add(roomUID);
 
-            Room room1 = new Room(roomHighlightSprite, roomHighlightSprite, 1, 1, Globals.roomShape.OneXThree, 3, 1);
-            Room room2 = new Room(roomHighlightSprite, roomHighlightSprite, 1, 2, Globals.roomShape.TwoXOne, 1, 2);
-            Room room3 = new Room(roomHighlightSprite, roomHighlightSprite, 3, 2, Globals.roomShape.TwoXTwo, 2, 2);
-            Room room4 = new Room(roomHighlightSprite, roomHighlightSprite, 0, 4, Globals.roomShape.ThreeXThree, 3, 3);
-            Room room5 = new Room(roomHighlightSprite, roomHighlightSprite, 3, 4, Globals.roomShape.RRoom, 2, 2);
-            Room room6 = new Room(roomHighlightSprite, roomHighlightSprite, 3, 5, Globals.roomShape.JRoom, 2, 2);
-            Room room7 = new Room(roomHighlightSprite, roomHighlightSprite, 5, 4, Globals.roomShape.OneXTwo, 2, 1);
-            Room room8 = new Room(roomHighlightSprite, roomHighlightSprite, 7, 3, Globals.roomShape.ThreeXOne, 1, 3);
-
+            /*
             List<Room> roomList = new List<Room>();
             roomList.Add(room1);
             roomList.Add(room2);
@@ -296,7 +304,7 @@ namespace SpaceIsFun
             roomList.Add(room6);
             roomList.Add(room7);
             roomList.Add(room8);
-
+            */
             
 
             playerShip = new Ship(shipTexture, gridSprite, gridHighlightSprite, new Vector2(50, 50), roomList);
