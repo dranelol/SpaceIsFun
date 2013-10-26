@@ -735,6 +735,7 @@ namespace SpaceIsFun
                     List<int> gridUIDs,
                     List<int> weaponUIDs,
                     bool[] roomTypes,
+                    int[,] shipGrid,
                     int owner)
 
 
@@ -753,11 +754,15 @@ namespace SpaceIsFun
             // create the ship's grid; each grid is 32-wide, so we get the amount of grids needed by dividing the ship's sprite up into 32x32 chunks
             gridWidth = shipTexture.Bounds.Width / 32;
             gridHeight = shipTexture.Bounds.Height / 32;
-            shipGrid = new int[gridWidth, gridHeight];
-
+            //this.shipGrid = new int[gridWidth, gridHeight];
+            this.shipGrid = shipGrid;
             Default_weap = new Weapon(gridTexture, 0, 0, 2, 10, 3);
 
             this.owner = owner;
+
+            roomUIDList = roomUIDs;
+            gridUIDList = gridUIDs;
+            weaponUIDList = weaponUIDs;
             
 
             // we need to move the rooms to align ontop of the ship; probably find a better way to do this in the future

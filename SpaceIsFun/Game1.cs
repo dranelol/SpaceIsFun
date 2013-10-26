@@ -214,7 +214,9 @@ namespace SpaceIsFun
             List<int> gridUIDs = new List<int>();
             List<int> roomUIDs = new List<int>();
             List<int> weaponUIDs = new List<int>();
-
+            int gridWidth = shipTexture.Bounds.Width / 32;
+            int gridHeight = shipTexture.Bounds.Height / 32;
+            int [,] shipGrid = new int[gridWidth, gridHeight];
             // initialize the player's ship
 
             // TODO: initialize all objects for a ship outside of the ship itself
@@ -234,25 +236,14 @@ namespace SpaceIsFun
 
                     int UID = GridManager.AddEntity(toAdd);
                     gridUIDs.Add(UID);
+                    shipGrid[i, j] = UID;
                 }
             }
 
             // create rooms, add them to the manager, pass their UIDs to the ship
-            int roomUID = RoomManager.AddEntity( new Room( roomHighlightSprite, roomHighlightSprite, 1, 1, playerShipStartPosition, Globals.roomShape.OneXThree, Globals.roomType.EMPTY_ROOM, 3, 1));
-            roomUIDs.Add(roomUID);
-            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 1, 2, playerShipStartPosition, Globals.roomShape.TwoXOne, Globals.roomType.EMPTY_ROOM, 1, 2));
+            int roomUID = RoomManager.AddEntity( new Room( roomHighlightSprite, roomHighlightSprite, 1, 1, playerShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2,2));
             roomUIDs.Add(roomUID);
             roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 2, playerShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
-            roomUIDs.Add(roomUID);
-            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 0, 4, playerShipStartPosition, Globals.roomShape.ThreeXThree, Globals.roomType.EMPTY_ROOM, 3, 3));
-            roomUIDs.Add(roomUID);
-            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 4, playerShipStartPosition, Globals.roomShape.RRoom, Globals.roomType.EMPTY_ROOM, 2, 2));
-            roomUIDs.Add(roomUID);
-            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 5, playerShipStartPosition, Globals.roomShape.JRoom, Globals.roomType.EMPTY_ROOM, 2, 2));
-            roomUIDs.Add(roomUID);
-            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 5, 4, playerShipStartPosition, Globals.roomShape.OneXTwo, Globals.roomType.EMPTY_ROOM, 2, 1));
-            roomUIDs.Add(roomUID);
-            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 7, 3, playerShipStartPosition, Globals.roomShape.ThreeXOne, Globals.roomType.EMPTY_ROOM, 1, 3));
             roomUIDs.Add(roomUID);
 
             bool[] roomTypes = new bool[11];
@@ -262,8 +253,11 @@ namespace SpaceIsFun
                 roomTypes[i] = false;
             }
 
-            Ship playerShip = new Ship(shipTexture, gridSprite, gridHighlightSprite, new Vector2(50, 50), roomUIDs, gridUIDs, weaponUIDs, roomTypes, 0);
+            Ship playerShip = new Ship(shipTexture, gridSprite, gridHighlightSprite, new Vector2(50, 50), roomUIDs, gridUIDs, weaponUIDs, roomTypes, shipGrid, 0);
             playerShipUID = ShipManager.AddEntity(playerShip);
+
+            setRoomGridDictionary(playerShipUID);
+            setUnwalkableGrids(playerShipUID);
 
             //playerShip = new Ship(shipTexture, gridSprite, gridHighlightSprite, new Vector2(50, 50), roomUIDs, gridUIDs, weaponUIDs, roomTypes);
 
@@ -361,6 +355,7 @@ namespace SpaceIsFun
 
             //System.Diagnostics.Debug.WriteLine(gameTime.ElapsedGameTime.TotalMilliseconds.ToString());
 
+            
 
             previousKeyState = currentKeyState;
             previousMouseState = currentMouseState;
@@ -427,6 +422,8 @@ namespace SpaceIsFun
             {
                 spriteBatch.Begin();
                 ShipManager.Draw(spriteBatch);
+                GridManager.Draw(spriteBatch);
+                RoomManager.Draw(spriteBatch);
 
 
 
@@ -517,7 +514,7 @@ namespace SpaceIsFun
         /// <summary>
         ///  initializes the relationship between grids and their rooms; this is called once before ship construction
         /// </summary>
-        public Dictionary<int,int> setRoomGridDictionary(int shipUID)
+        public void setRoomGridDictionary(int shipUID)
         {
             Ship thisShip = (Ship)ShipManager.RetrieveEntity(shipUID);
 
@@ -525,14 +522,19 @@ namespace SpaceIsFun
 
             foreach (int key in thisShip.RoomUIDList)
             {
+                System.Diagnostics.Debug.WriteLine("key of room: " + key.ToString());
                 Room room = (Room)RoomManager.RetrieveEntity(key);
-
+                System.Diagnostics.Debug.WriteLine("position of room: " + room.RoomPosition.ToString());
                 switch (room.RoomShape)
                 {
                     // Case for a 2 by 2 room.
                     // x x
                     // x x
                     case Globals.roomShape.TwoXTwo:
+                        System.Diagnostics.Debug.WriteLine(thisShip.ShipGrid[(int)room.RoomPosition.X, (int)room.RoomPosition.Y].ToString());
+                        System.Diagnostics.Debug.WriteLine(thisShip.ShipGrid[(int)room.RoomPosition.X+1, (int)room.RoomPosition.Y].ToString());
+                        System.Diagnostics.Debug.WriteLine(thisShip.ShipGrid[(int)room.RoomPosition.X, (int)room.RoomPosition.Y+1].ToString());
+                        System.Diagnostics.Debug.WriteLine(thisShip.ShipGrid[(int)room.RoomPosition.X+1, (int)room.RoomPosition.Y+1].ToString());
                         roomGridDict[thisShip.ShipGrid[(int)room.RoomPosition.X, (int)room.RoomPosition.Y]] = key;
                         roomGridDict[thisShip.ShipGrid[(int)room.RoomPosition.X + 1, (int)room.RoomPosition.Y]] = key;
                         roomGridDict[thisShip.ShipGrid[(int)room.RoomPosition.X, (int)room.RoomPosition.Y + 1]] = key;
@@ -609,7 +611,14 @@ namespace SpaceIsFun
                 }
             }
 
-            return roomGridDict;
+            foreach (var value in roomGridDict.Values)
+            {
+                System.Diagnostics.Debug.WriteLine(value.ToString());
+            }
+
+            thisShip.RoomGridDict = roomGridDict;
+
+            //return roomGridDict;
             // TODO: possibly un-associate any un-wanted grids with rooms (weirdly-shaped rooms, for example)
 
         }
@@ -709,7 +718,7 @@ namespace SpaceIsFun
         /// <summary>
         /// sets every grid that doesnt belong to a room as unwalkable
         /// </summary>
-        private void setUnwalkableGrids(int shipUID)
+        public void setUnwalkableGrids(int shipUID)
         {
             Ship thisShip = (Ship)ShipManager.RetrieveEntity(shipUID);
             for (int i = 0; i < thisShip.ShipGrid.GetLength(0); i++)
@@ -719,10 +728,13 @@ namespace SpaceIsFun
                     // is this grid in the dictionary of grids  that have rooms?
                     // if not, make it unwalkable
 
+                    
+
                     if (!thisShip.RoomGridDict.ContainsKey(thisShip.ShipGrid[i, j]))
                     {
                         //System.Diagnostics.Debug.WriteLine(shipGrid[i, j].GridPosition.ToString());
                         Grid thisGrid = (Grid)GridManager.RetrieveEntity(thisShip.ShipGrid[i, j]);
+                        System.Diagnostics.Debug.WriteLine(thisGrid.GridPosition.ToString());
                         thisGrid.IsWalkable = false;
 
                     }

@@ -414,7 +414,10 @@ namespace SpaceIsFun
                 #endregion
                 #endregion
 
-                playerShip.Update(gameTime);
+                ShipManager.Update(gameTime);
+                GridManager.Update(gameTime);
+                RoomManager.Update(gameTime);
+
 
                 
             };
