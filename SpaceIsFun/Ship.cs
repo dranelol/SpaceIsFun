@@ -10,381 +10,6 @@ using Microsoft.Xna.Framework.Input;
 namespace SpaceIsFun
 {
     /// <summary>
-    /// Pew pew, its a weapon!
-    /// </summary>
-    class Weapon : Entity
-    {
-        #region fields
-        /// <summary>
-        /// True if the weapon is primed to fire, false otherwise (not fully charged, not powered, etc)
-        /// </summary>
-        private bool readyToFire;
-
-        /// <summary>
-        /// parameter for readyToFire
-        /// </summary>
-        public bool ReadyToFire
-        {
-            get
-            {
-                return readyToFire;
-            }
-
-            set
-            {
-                readyToFire = value;
-            }
-        }
-
-        /// <summary>
-        /// True if the weapon has a target, false if not
-        /// </summary>
-        private bool aimedAtTarget;
-
-        /// <summary>
-        /// parameter for aimedAtTarget
-        /// </summary>
-        public bool AimedAtTarget
-        {
-            get
-            {
-                return aimedAtTarget;
-            }
-
-            set
-            {
-                aimedAtTarget = value;
-            }
-        }
-
-        /// <summary>
-        /// the time, in miliseconds, it takes to charge the weapon
-        /// </summary>
-        private int timeToCharge;
-
-        /// <summary>
-        /// parameter for timeToCharge
-        /// </summary>
-        public int TimeToCharge
-        {
-            get
-            {
-                return timeToCharge;
-            }
-
-            set
-            {
-                timeToCharge = value;
-            }
-        }
-
-        private bool charged;
-        /// if the weapon is charged
-        /// end
-
-        ///paramater for charged
-        public bool Charged
-        {
-            get
-            {
-                return charged;
-            }
-
-            set
-            {
-                charged = value;
-            }
-        }
-
-        private bool is_charging;
-        /// if the weapon is charged
-        /// end
-
-        ///paramater for charged
-        public bool Is_charging
-        {
-            get
-            {
-                return is_charging;
-            }
-
-            set
-            {
-                is_charging = value;
-            }
-        }
-
-        //an int for weapon damage
-        private int damage;
-
-        //paramater for damage
-        public int Damage
-        {
-            get
-            {
-                return damage;
-            }
-
-            set
-            {
-                damage = value;
-            }
-        }
-
-        //an int for current charge, will be used with game time updated to track if a weapon is charged
-        private int charge;
-
-        //paramater for charge
-        public int Charge
-        {
-            get
-            {
-                return charge;
-            }
-
-            set
-            {
-                charge = value;
-            }
-        }
-
-        private int requiredPower;
-
-        public int RequiredPower
-        {
-            get
-            {
-                return requiredPower;
-            }
-
-            set
-            {
-                requiredPower = value;
-            }
-        }
-
-        private bool enoughPower;
-        //used to see if there is enough power to use the weapon
-
-        public bool EnoughPower
-        {
-            get
-            {
-                return enoughPower;
-            }
-
-            set
-            {
-                enoughPower = value;
-            }
-
-        }
-
-
-        private int currentTarget;
-        //these are used to see if which list index is the current target
-        public int CurrentTarget
-        {
-            get
-            {
-                return currentTarget;
-            }
-
-            set
-            {
-                currentTarget = value;
-            }
-        }
-
-        //a list of rooms that can be targeted, indexes are equivalent to the number of the room in constant.cs
-        //list[index] is changed to 1 if the room is targeted
-        
-
-        private enum weap_states { disabled, charging, ready };
-        //unused for now
-
-        //state machine and state declarations
-       public StateMachine weaponStateMachine;
-       public State ready, disabled, charging;
-
-        /// <summary>
-        /// This an enumeration of strings that represent the different weapon states
-        /// </summary>
-        /// 
-        List<Weapon> weapon_list = new List<Weapon>();
-
-        #endregion
-
-        #region constructors / destructors
-
-        //a generic constructor
-        public Weapon() 
-        { 
-        }
-        //declaration of the weapon state machine
-
-        public Weapon(Texture2D skin, int x, int y, int dmg, int time_to_charge, int power)
-        {
-
-            weaponStateMachine = new StateMachine();
-
-            ///block for declaration of new states for the weapon
-            disabled = new State { Name = "disabled" };
-            charging = new State { Name = "charging" };
-            ready = new State { Name = "ready" };
-
-            //next blocks are transitions available for each state
-            disabled.Transitions.Add(charging.Name, charging);
-            disabled.Transitions.Add(ready.Name, ready);
-
-            charging.Transitions.Add(disabled.Name, disabled);
-            charging.Transitions.Add(ready.Name, ready);
-
-            ready.Transitions.Add(disabled.Name, disabled);
-            ready.Transitions.Add(charging.Name, charging);
-
-
-            set_disabled();
-            set_charging();
-            set_ready();
-
-            //int x will be x coordinate
-            //int y will be y coordinate
-            damage = dmg;
-            timeToCharge = time_to_charge;
-            is_charging = false;
-            currentTarget = -1;
-            weaponStateMachine.Start(disabled);
-            charge = 0;
-            if (power >= requiredPower)
-                enoughPower = true;
-
-
-        }
-
-
-        #endregion
-
-        #region methods
-
-        void set_disabled()
-        {
-            disabled.enter += () =>
-            {
-                charge = 0;
-                currentTarget = -1;
-            };
-
-            disabled.update += (GameTime gameTime) =>
-            {
-                if (readyToFire == false && is_charging == true)
-                {
-                    weaponStateMachine.Transition(charging.Name);
-                }
-            };
-
-            disabled.leave += () =>
-            { 
-            };
-
-        }
-
-        void set_charging()
-        {
-            charging.enter += () => 
-            { 
-            };
-
-            start_charging();
-
-            charging.update += (GameTime gameTime) =>
-            {
-                //not sure if this will actually work.
-                charge += (int)gameTime.ElapsedGameTime.Milliseconds;
-                if (charge >= timeToCharge)
-                    readyToFire = true;
-                if (readyToFire == true)
-                {
-                    weaponStateMachine.Transition(ready.Name);
-                }
-
-                else if (readyToFire == false && is_charging == false)
-                    weaponStateMachine.Transition(disabled.Name);
-            };
-
-            charging.leave += () => 
-            { 
-            };
-        }
-
-        void set_ready()
-        {
-            ready.enter += () => 
-            {
-            };
-
-
-            ready.update += (GameTime gameTime) =>
-            {
-
-                if (readyToFire == false && is_charging == true)
-                {
-                    weaponStateMachine.Transition(charging.Name);
-                }
-
-                else if (readyToFire == false && is_charging == false)
-                {
-                    weaponStateMachine.Transition(disabled.Name);
-                }
-            };
-
-            ready.leave += () => { };
-
-        }
-
-        public void start_charging()
-        {
-            if (enoughPower == true)
-                is_charging = true;
-
-        }
-
-       public void set_target(int targetIndex)
-        {
-
-            currentTarget = targetIndex;
-
-        }
-
-        public void launch_weapon(int target)
-        {
-            if (weaponStateMachine.CurrentState == ready && currentTarget!=-1)
-            {
-
-                //fire
-                
-
-            }
-
-           
-        }
-
-        public void deactivate_weap()
-        {
-            ReadyToFire = false;
-            Is_charging = false;
-        }
-
-
-        #endregion
-
-
-    }
-
-
-
-
-    /// <summary>
     /// Its a ship!
     /// </summary>
     class Ship : Entity
@@ -530,7 +155,7 @@ namespace SpaceIsFun
         }
 
         /// <summary>
-        /// the 2D Grid array holding the grid objects attributed to the ship
+        /// the 2D int array holding the grid UIDs attributed to the ship
         /// </summary>
         private int[,] shipGrid;
 
@@ -551,7 +176,7 @@ namespace SpaceIsFun
         }
 
         /// <summary>
-        /// the list of rooms for a ship
+        /// the list of rooms on a ship; this is always gonna be size 11, and just tells whether or not the ship has a room of that type
         /// </summary>
         private bool[] roomList;
 
@@ -650,6 +275,9 @@ namespace SpaceIsFun
             }
         }
 
+        /// <summary>
+        /// holds the room UIDs assigned to this ship
+        /// </summary>
         private List<int> roomUIDList;
 
         public List<int> RoomUIDList
@@ -665,6 +293,9 @@ namespace SpaceIsFun
             }
         }
 
+        /// <summary>
+        ///  holds the grid UIDs assigned to this ship
+        /// </summary>
         private List<int> gridUIDList;
 
         public List<int> GridUIDList
@@ -679,7 +310,10 @@ namespace SpaceIsFun
                 gridUIDList = value;
             }
         }
-
+        
+        /// <summary>
+        /// holds the UIDs of weapons assigned to this ship
+        /// </summary>
         private List<int> weaponUIDList;
 
         public List<int> WeaponUIDList
@@ -692,6 +326,24 @@ namespace SpaceIsFun
             set
             {
                 weaponUIDList = value;
+            }
+        }
+
+        /// <summary>
+        /// holds the UID for a weapon assigned to a specific slot; -1 if nothing is assigned to that slot
+        /// </summary>
+        private int[] weaponSlots;
+
+        public int[] WeaponSlots
+        {
+            get
+            {
+                return weaponSlots;
+            }
+
+            set
+            {
+                weaponSlots = value;
             }
         }
 
@@ -756,15 +408,25 @@ namespace SpaceIsFun
             gridHeight = shipTexture.Bounds.Height / 32;
             //this.shipGrid = new int[gridWidth, gridHeight];
             this.shipGrid = shipGrid;
-            Default_weap = new Weapon(gridTexture, 0, 0, 2, 10, 3);
+
+
+
+            
 
             this.owner = owner;
 
             roomUIDList = roomUIDs;
             gridUIDList = gridUIDs;
             weaponUIDList = weaponUIDs;
-            
 
+            weaponSlots = new int[4];
+
+            weaponSlots[0] = weaponUIDList[0];
+            weaponSlots[1] = -1;
+            weaponSlots[2] = -1;
+            weaponSlots[3] = -1;
+
+            //Default_weap = new Weapon(gridTexture, 0, 0, 2, 10, 3);
             // we need to move the rooms to align ontop of the ship; probably find a better way to do this in the future
             /*
             foreach (Room room in roomList)

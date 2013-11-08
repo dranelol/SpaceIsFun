@@ -116,13 +116,9 @@ namespace SpaceIsFun
                 {
                     stateMachine.Transition(startMenu.Name);
                 }
-
-                if (currentKeyState.IsKeyDown(Keys.P))
-                {
-                    System.Diagnostics.Debug.WriteLine(playerShip.RoomGridDict.ToString());
-                }
-
+                
                 #region keys.c
+                /*
                 // if the c key is tapped, query to see if the cursor is hovering over the ship
                 if (currentKeyState.IsKeyDown(Keys.C) && previousKeyState.IsKeyUp(Keys.C))
                 {
@@ -239,9 +235,9 @@ namespace SpaceIsFun
                         }
                     }
                 }
-
+                */
                 #endregion
-
+                
                 #region keys.e
                 // if the e key is tapped, try to lose energy if possible
                 if (currentKeyState.IsKeyDown(Keys.E) == true && previousKeyState.IsKeyUp(Keys.E) == true)
@@ -291,18 +287,23 @@ namespace SpaceIsFun
                 //a test to see if my states work -Peter
                 if(currentKeyState.IsKeyDown(Keys.Y)==true)
                 {
-                    playerShip.Default_weap.EnoughPower = true;
-                    playerShip.Default_weap.start_charging();
-                    playerShip.Default_weap.weaponStateMachine.Update(gameTime);
-                    System.Diagnostics.Debug.WriteLine(playerShip.Default_weap.weaponStateMachine.CurrentState.Name);
+                    Weapon defaultWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
+
+
+
+                    defaultWeapon.EnoughPower = true;
+                    defaultWeapon.start_charging();
+                    defaultWeapon.weaponStateMachine.Update(gameTime);
+                    //System.Diagnostics.Debug.WriteLine(defaultWeapon.weaponStateMachine.CurrentState.Name);
                 }
 
                 //a test to see if my states work -Peter
                 if (currentKeyState.IsKeyDown(Keys.U) == true)
                 {
-                    playerShip.Default_weap.deactivate_weap();
-                    playerShip.Default_weap.weaponStateMachine.Update(gameTime);
-                    System.Diagnostics.Debug.WriteLine(playerShip.Default_weap.weaponStateMachine.CurrentState.Name);
+                    Weapon defaultWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
+
+                    defaultWeapon.deactivate_weap();
+                    defaultWeapon.weaponStateMachine.Update(gameTime);
                 }
 
                 #endregion
@@ -310,6 +311,61 @@ namespace SpaceIsFun
                 #endregion
 
                 #region mouse
+
+
+                #region right click
+                if (previousMouseState.RightButton == ButtonState.Released && currentMouseState.RightButton == ButtonState.Pressed)
+                {
+                    // if we've rightclicked
+
+
+
+                }
+
+                #endregion
+                #endregion
+                #endregion
+
+                ShipManager.Update(gameTime);
+                GridManager.Update(gameTime);
+                RoomManager.Update(gameTime);
+                WeaponManager.Update(gameTime);
+
+                cursorState.Update(gameTime);
+                
+            };
+            #endregion
+
+            // when leaving the battle state
+            #region battle state leave
+            battle.leave += () =>
+            {
+
+                // remove the energy widgets from the gui
+                gui.RemoveWidget(energy1);
+                gui.RemoveWidget(energy2);
+                gui.RemoveWidget(energy3);
+                gui.RemoveWidget(energy4);
+                gui.RemoveWidget(energy5);
+                gui.RemoveWidget(energy6);
+                gui.RemoveWidget(energy7);
+            };
+            #endregion
+            #endregion
+
+            #region idle cursor state methods
+            idleCursor.enter += () =>
+            {
+            };
+
+            idleCursor.update += (GameTime gameTime) =>
+            {
+                #region input handling
+
+                #region mouse
+
+                #region left click
+
                 // if we were previously holding the mouse button down, but now its released
                 if (previousMouseState.LeftButton == ButtonState.Pressed && currentMouseState.LeftButton == ButtonState.Released)
                 {
@@ -319,9 +375,11 @@ namespace SpaceIsFun
                         //cursorState.Transition(hasSelectedCrew.Name);
                     }
                     // else if we are multiselecting: get (x1,y1;x2,y2), select all crew in that area, set multiselecting to false, transition to hasSelectedCrew if any crew were selected
-                    else
+                    
+                    // note: this should only happen if the two points are on the player's ship
+                    else if (multiSelecting == true && checkShipHover(selectRectStart) == playerShipUID && checkShipHover(selectRectEnd) == playerShipUID)
                     {
-                        int x1 = (selectRectStart.X -50) / 32;
+                        int x1 = (selectRectStart.X - 50) / 32;
                         int y1 = (selectRectStart.Y - 50) / 32;
                         int x2 = (selectRectEnd.X - 50) / 32;
                         int y2 = (selectRectEnd.Y - 50) / 32;
@@ -346,17 +404,17 @@ namespace SpaceIsFun
                         x1 = Math.Max(x1, 0);
                         y1 = Math.Max(y1, 0);
 
-                        x2 = Math.Min(x2, playerShip.ShipGrid.GetLength(0)-1);
-                        y2 = Math.Min(y2, playerShip.ShipGrid.GetLength(1)-1);
+                        x2 = Math.Min(x2, playerShip.ShipGrid.GetLength(0) - 1);
+                        y2 = Math.Min(y2, playerShip.ShipGrid.GetLength(1) - 1);
 
                         selectedCrewMembers = new List<Crew>();
 
                         System.Diagnostics.Debug.WriteLine("x1, y1 {0},{1}", x1, y1);
                         System.Diagnostics.Debug.WriteLine("x2, y2 {0},{1}", x2, y2);
 
-                        for (int i = x1; i <= x2 ; i++ )
+                        for (int i = x1; i <= x2; i++)
                         {
-                            for (int j = y1; j <= y2; j++ )
+                            for (int j = y1; j <= y2; j++)
                             {
                                 System.Diagnostics.Debug.WriteLine("Selected Grid {0},{1}", i, j);
 
@@ -403,59 +461,19 @@ namespace SpaceIsFun
                     // else if we are multiselecting: end point = current cursor's position
                 }
 
-
-                if (previousMouseState.RightButton == ButtonState.Released && currentMouseState.RightButton == ButtonState.Pressed)
-                {
-                    // if we've rightclicked
-
-                    
-
-                }
-                #endregion
                 #endregion
 
-                ShipManager.Update(gameTime);
-                GridManager.Update(gameTime);
-                RoomManager.Update(gameTime);
 
-
-                
-            };
-            #endregion
-
-            // when leaving the battle state
-            #region battle state leave
-            battle.leave += () =>
-            {
-
-                // remove the energy widgets from the gui
-                gui.RemoveWidget(energy1);
-                gui.RemoveWidget(energy2);
-                gui.RemoveWidget(energy3);
-                gui.RemoveWidget(energy4);
-                gui.RemoveWidget(energy5);
-                gui.RemoveWidget(energy6);
-                gui.RemoveWidget(energy7);
-            };
-            #endregion
-            #endregion
-
-            #region idle cursor state methods
-            idleCursor.enter += () =>
-            {
-            };
-
-            idleCursor.update += (GameTime gameTime) =>
-            {
-                #region input handling
-
-                #region mouse
+                #region right click
                 if (previousMouseState.RightButton == ButtonState.Released && currentMouseState.RightButton == ButtonState.Pressed)
                 {
                     // if we've rightclicked
                 }
 
                 #endregion
+
+                #endregion
+
                 #endregion
             };
 
