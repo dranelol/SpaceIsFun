@@ -348,6 +348,26 @@ namespace SpaceIsFun
         }
 
         /// <summary>
+        /// an array of screenspace x,y points where each weapon slots is mounted on the ship
+        /// weaponMountPoints[0] corresponds to weaponSlots[0], [1] to [1], etc
+        /// </summary>
+        private Point[] weaponMountPoints;
+
+        public Point[] WeaponMountPoints
+        {
+            get
+            {
+                return weaponMountPoints;
+            }
+
+            set
+            {
+                value = weaponMountPoints;
+            }
+        }
+
+
+        /// <summary>
         /// faction owner of this ship; for now 0=player, 1=enemy
         /// </summary>
         private int owner;
