@@ -25,6 +25,8 @@ namespace SpaceIsFun
         Point selectRectStart = new Point();
         Point selectRectEnd = new Point();
 
+        List<int> currentEnemyShips = new List<int>();
+
         void setupBattle(int playerUID)
         {
             Vector2 target1 = new Vector2();
@@ -99,7 +101,7 @@ namespace SpaceIsFun
                     energyBarTest.Add(energyBar1);
                 }
 
-                
+                currentEnemyShips.Add(enemyShipUID);
             };
 
             #endregion
@@ -349,6 +351,11 @@ namespace SpaceIsFun
                 gui.RemoveWidget(energy5);
                 gui.RemoveWidget(energy6);
                 gui.RemoveWidget(energy7);
+
+                foreach(int UID in currentEnemyShips)
+                {
+                    ShipManager.DeleteEntity(UID);
+                }
             };
             #endregion
             #endregion

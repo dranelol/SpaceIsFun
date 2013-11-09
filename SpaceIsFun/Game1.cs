@@ -74,6 +74,8 @@ namespace SpaceIsFun
         //Ship playerShip;
         int playerShipUID;
 
+        int enemyShipUID;
+
         // game object managers
         #region object management
         EntityManager RoomManager = new EntityManager();
@@ -316,7 +318,7 @@ namespace SpaceIsFun
 
             weaponUIDs.Add(weaponUID);
 
-            int enemyShipUID = ShipManager.AddEntity(new Ship(shipTexture, gridSprite, gridHighlightSprite, enemyShipStartPosition, roomUIDs, gridUIDs, weaponUIDs, roomTypes, shipGrid, 0));
+            enemyShipUID = ShipManager.AddEntity(new Ship(shipTexture, gridSprite, gridHighlightSprite, enemyShipStartPosition, roomUIDs, gridUIDs, weaponUIDs, roomTypes, shipGrid, 0));
             WeaponToShip[weaponUID] = enemyShipUID;
             setRoomGridDictionary(enemyShipUID);
             setUnwalkableGrids(enemyShipUID);

@@ -20,6 +20,16 @@ namespace SpaceIsFun
         /// unique ID of this entity, set by the entity manager
         /// </summary>
         public int UID;
+
+        /// <summary>
+        /// whether or not this entity should be updated
+        /// </summary>
+        public bool updatable;
+
+        /// <summary>
+        /// whether or not we should skip this entity's next update
+        /// </summary>
+        public bool skipNextUpdate;
         #endregion
 
         #region constructors / destructors
@@ -55,6 +65,7 @@ namespace SpaceIsFun
         /// <param name="gameTime">current game time</param>
         virtual public void Update(GameTime gameTime)
         {
+            
         }
 
         /// <summary>

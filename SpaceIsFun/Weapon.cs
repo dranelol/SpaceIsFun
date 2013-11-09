@@ -205,7 +205,7 @@ namespace SpaceIsFun
 
         //state machine and state declarations
         public StateMachine weaponStateMachine;
-        public State ready, disabled, charging;
+        public State ready, disabled, charging, enroute;
 
         /// <summary>
         /// This an enumeration of strings that represent the different weapon states
@@ -232,6 +232,7 @@ namespace SpaceIsFun
             disabled = new State { Name = "disabled" };
             charging = new State { Name = "charging" };
             ready = new State { Name = "ready" };
+            enroute = new State { Name = "enroute" };
 
             //next blocks are transitions available for each state
             disabled.Transitions.Add(charging.Name, charging);
@@ -243,10 +244,14 @@ namespace SpaceIsFun
             ready.Transitions.Add(disabled.Name, disabled);
             ready.Transitions.Add(charging.Name, charging);
 
+            enroute.Transitions.Add(disabled.Name, disabled);
+            enroute.Transitions.Add(ready.Name, ready);
+
 
             set_disabled();
             set_charging();
             set_ready();
+            set_enroute();
 
             //int x will be x coordinate
             //int y will be y coordinate
@@ -256,6 +261,7 @@ namespace SpaceIsFun
             currentTarget = -1;
             weaponStateMachine.Start(disabled);
             charge = 0;
+
             if (power >= requiredPower)
             {
                 enoughPower = true;
@@ -301,7 +307,6 @@ namespace SpaceIsFun
 
             charging.update += (GameTime gameTime) =>
             {
-                //not sure if this will actually work.
                 charge += (int)gameTime.ElapsedGameTime.Milliseconds;
                 System.Diagnostics.Debug.WriteLine("current charge: " + charge.ToString());
                 System.Diagnostics.Debug.WriteLine("charge needed: " + timeToCharge.ToString());
@@ -349,6 +354,25 @@ namespace SpaceIsFun
             };
 
             ready.leave += () => { };
+
+        }
+
+        void set_enroute()
+        {
+            enroute.enter += () =>
+            {
+
+            };
+
+            enroute.update += (GameTime gameTime) =>
+            {
+
+            };
+
+            enroute.leave += () =>
+            {
+
+            };
 
         }
 

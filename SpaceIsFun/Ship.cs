@@ -450,6 +450,10 @@ namespace SpaceIsFun
         /// <param name="gameTime"></param>
         override public void Update(GameTime gameTime)
         {
+            if (currentHP == 0)
+            {
+                System.Diagnostics.Debug.WriteLine("dead ship");
+            }
             //update the shield
             /*if (roomList[0].getStatus() != "inoperable" || roomList[0].getStatus() != "disabled")
             {
@@ -481,7 +485,26 @@ namespace SpaceIsFun
             base.Draw(spriteBatch);
         }
 
-        
+        /// <summary>
+        /// do damage to the ship
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <returns>1 if this shot has killed the ship, 0 if this shot has not killed the ship</returns>
+        public int TakeDamage(int amount)
+        {
+            if (currentHP < amount)
+            {
+                currentHP = 0;
+                return 1;
+            }
+
+            else
+            {
+                currentHP = currentHP - amount;
+                return 0;
+            }
+        }
+
 
         
 
