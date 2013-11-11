@@ -36,7 +36,7 @@ namespace UnitTests.Tests
             Grid testGrid = new Grid(gridTexture, gridTextureHighlight, position, gPosition);
 
             Assert.AreEqual<Vector2>(position, testGrid.Sprite.Position2D, "positions are equal");
-            Assert.IsFalse(true, "should fail");
+            
 
         }
     }
