@@ -118,6 +118,57 @@ namespace SpaceIsFun
                 {
                     stateMachine.Transition(startMenu.Name);
                 }
+
+                if (currentKeyState.IsKeyDown(Keys.D1) && previousKeyState.IsKeyUp(Keys.D1))
+                {
+                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
+
+                    // if weapon 0 is currently disabled
+                    if (thisWeapon.weaponStateMachine.CurrentState.Name == "disabled")
+                    {
+                        // enable the weapon if possible
+
+                        // start charging
+                    }
+
+                    // if weapon 0 is charging
+                    else if (thisWeapon.weaponStateMachine.CurrentState.Name == "charging")
+                    {
+                        // go to target weapon state, try to assign target
+                    }
+
+                    
+                }
+
+                if (currentKeyState.IsKeyDown(Keys.D2) && previousKeyState.IsKeyUp(Keys.D2))
+                {
+                    // if weapon 1 is not charging, try to assign energy, start charging, go to weapon target cursor state, and target enemy
+
+                    // if weapon 1 is ready, go to weapon target cursor state, and target enemy
+                }
+
+                if (currentKeyState.IsKeyDown(Keys.D3) && previousKeyState.IsKeyUp(Keys.D3))
+                {
+                    // if weapon 2 is not charging, try to assign energy, start charging, go to weapon target cursor state, and target enemy
+
+                    // if weapon 2 is ready, go to weapon target cursor state, and target enemy
+                }
+
+                if (currentKeyState.IsKeyDown(Keys.D4) && previousKeyState.IsKeyUp(Keys.D4))
+                {
+                    // if weapon 3 is not charging, try to assign energy, start charging, go to weapon target cursor state, and target enemy
+
+                    // if weapon 3 is ready, go to weapon target cursor state, and target enemy
+                }
+
+                if (currentKeyState.IsKeyDown(Keys.D5) && previousKeyState.IsKeyUp(Keys.D5))
+                {
+                    // if weapon 4 is not charging, try to assign energy, start charging, go to weapon target cursor state, and target enemy
+
+                    // if weapon 4 is ready, go to weapon target cursor state, and target enemy
+                }
+
+
                 
                 #region keys.c
                 /*
@@ -315,14 +366,7 @@ namespace SpaceIsFun
                 #region mouse
 
 
-                #region right click
-                if (previousMouseState.RightButton == ButtonState.Released && currentMouseState.RightButton == ButtonState.Pressed)
-                {
-                    // if we've rightclicked
-
-
-
-                }
+                
 
                 #endregion
                 #endregion
@@ -357,7 +401,6 @@ namespace SpaceIsFun
                     ShipManager.DeleteEntity(UID);
                 }
             };
-            #endregion
             #endregion
 
             #region idle cursor state methods
@@ -475,6 +518,19 @@ namespace SpaceIsFun
                 if (previousMouseState.RightButton == ButtonState.Released && currentMouseState.RightButton == ButtonState.Pressed)
                 {
                     // if we've rightclicked
+
+                    // gui interaction: 
+
+                    // if we've right-clicked over a weapon gui element (the charge bar)
+                    /*
+                    if(rightclick position == weapon 0 space)
+                    {
+                        //disable weapon
+                        thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
+                        thisWeapon.WeaponStateMachine.Transition(disabled.Name);
+
+                    }
+                    */
                 }
 
                 #endregion
@@ -512,12 +568,14 @@ namespace SpaceIsFun
 
             hasSelectedCrew.leave += () =>
             {
+
             };
             #endregion
 
             #region weapon target cursor state methods
             targetWeapon.enter += () =>
             {
+
             };
 
             targetWeapon.update += (GameTime gameTime) =>
@@ -529,8 +587,11 @@ namespace SpaceIsFun
                 {
                     // if we've rightclicked
 
-                    // select weapon target
+                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
 
+                    // transition to idle cursor
+
+                    cursorState.Transition("idleCursor");
                 }
 
                 #endregion
