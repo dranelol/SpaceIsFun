@@ -656,7 +656,7 @@ namespace SpaceIsFun
                 {
                     // if we've rightclicked
 
-                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
+                    //Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
 
                     // transition to idle cursor
 
