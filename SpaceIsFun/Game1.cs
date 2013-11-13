@@ -58,7 +58,7 @@ namespace SpaceIsFun
         /// </summary>
         StateMachine stateMachine;
 
-        State startMenu, battle, pauseState;
+        State startMenu, battle, overworld, narrative, pauseState;
 
         /// <summary>
         /// the GUI object
@@ -213,9 +213,6 @@ namespace SpaceIsFun
             #endregion
 
             
-
-            
-
             #region player ship construction
 
             Vector2 playerShipStartPosition = new Vector2(50,50);
@@ -357,16 +354,30 @@ namespace SpaceIsFun
             startMenu = new State { Name = "startMenu" };
             battle = new State { Name = "battle" };
             pauseState = new State { Name = "pauseState" };
+            overworld = new State { Name = "overworld" };
+            narrative = new State { Name = "narrative" };
 
 
             startMenu.Transitions.Add(battle.Name, battle);
+            startMenu.Transitions.Add(overworld.Name, overworld);
             startMenu.Transitions.Add(pauseState.Name, pauseState);
 
+
             battle.Transitions.Add(startMenu.Name, startMenu);
+            battle.Transitions.Add(overworld.Name, overworld);
             battle.Transitions.Add(pauseState.Name, pauseState);
 
             pauseState.Transitions.Add(startMenu.Name, startMenu);
             pauseState.Transitions.Add(battle.Name, battle);
+
+            overworld.Transitions.Add(battle.Name, battle);
+            overworld.Transitions.Add(narrative.Name, narrative);
+            overworld.Transitions.Add(pauseState.Name, pauseState);
+
+            narrative.Transitions.Add(overworld.Name, overworld);
+            narrative.Transitions.Add(pauseState.Name, pauseState);
+
+            
 
             stateMachine.Start(startMenu);
             #endregion

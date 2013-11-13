@@ -9,22 +9,19 @@ using Microsoft.Xna.Framework.GamerServices;
 using Ruminate.GUI.Framework;
 using Ruminate.GUI.Content;
 
+
 namespace SpaceIsFun
 {
     public partial class Game1 : Game
     {
-        void setupOverworld()
+        void setupNarrative
         {
-            overworld.enter += () =>
+            narrative.enter += () =>
             {
                 // setup gui elements here
-
-                // for now, these probably will just be buttons arranged on a map to spawn certain battles / narrative events
-
-                //
             };
 
-            overworld.update += (GameTime gameTime) =>
+            narrative.update += (GameTime gameTime) =>
             {
                 #region input handling
 
@@ -34,7 +31,7 @@ namespace SpaceIsFun
 
             };
 
-            overworld.leave += () =>
+            narrative.leave += () =>
             {
                 // remove gui elements here
             };
