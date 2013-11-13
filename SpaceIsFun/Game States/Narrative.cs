@@ -14,11 +14,19 @@ namespace SpaceIsFun
 {
     public partial class Game1 : Game
     {
-        void setupNarrative
+        void setupNarrative()
         {
             narrative.enter += () =>
             {
                 // setup gui elements here
+
+                // to do
+
+                // info screen with "PLOT"
+
+                // back / next buttons
+
+                // end button to resolve narrative and go to overworld
             };
 
             narrative.update += (GameTime gameTime) =>
