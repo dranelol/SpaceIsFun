@@ -647,8 +647,6 @@ namespace SpaceIsFun
 
                     // set the enemy room as the weapon's target
 
-                    // set the weapon's state to enroute
-
                     // transition to idle cursor on success
                 }
 

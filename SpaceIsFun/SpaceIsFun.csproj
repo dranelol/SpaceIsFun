@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="Crew.cs" />
     <Compile Include="EntityManager.cs" />
+    <Compile Include="Game States\Narrative.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Drawable.cs" />
     <Compile Include="Entity.cs" />
@@ -117,6 +118,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Icon.ico" />
+    <Content Include="Content\weaponNoAnimate.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\uiskin.xnb">
