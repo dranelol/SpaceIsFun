@@ -576,6 +576,17 @@ namespace SpaceIsFun
                 #region input handling
 
                 #region mouse
+
+                if (previousMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
+                {
+                    // if we've leftclicked
+
+                    //deselect the crew, go to idlecursor
+
+                    selectedCrewMembers.Clear();
+                    cursorState.Transition(idleCursor.Name);
+                }
+
                 if (previousMouseState.RightButton == ButtonState.Released && currentMouseState.RightButton == ButtonState.Pressed)
                 {
                     // if we've rightclicked
@@ -602,7 +613,7 @@ namespace SpaceIsFun
                     {
                         // we got more than one man
 
-                        // get the room we clicked, and if its on the ship
+                        // did we click on a room on our ship?
                         if (checkShipHover(currentMouseState) == playerShipUID)
                         {
                             if (checkRoomHover(currentMouseState, playerShipUID) == true)
