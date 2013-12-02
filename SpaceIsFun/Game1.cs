@@ -88,6 +88,7 @@ namespace SpaceIsFun
         Dictionary<int, int> RoomToShip = new Dictionary<int, int>();
         Dictionary<int, int> WeaponToShip = new Dictionary<int, int>();
         Dictionary<int, int> CrewToShip = new Dictionary<int, int>();
+        Dictionary<int, int> CrewToRoom = new Dictionary<int, int>();
         #endregion
 
         // definitions for all the textures go here

@@ -356,6 +356,27 @@ namespace SpaceIsFun
         }
 
         /// <summary>
+        /// the amount of grid spaces this room takes up
+        /// </summary>
+        protected int roomSize;
+
+        /// <summary>
+        /// getter for roomSize
+        /// </summary>
+        public int RoomSize
+        {
+            get
+            {
+                return roomSize;
+            }
+
+            set
+            {
+                roomSize = value;
+            }
+        }
+
+        /// <summary>
         /// Declarations for state machines of individual room
         /// </summary>
         StateMachine roomStateMachine;

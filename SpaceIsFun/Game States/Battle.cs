@@ -36,7 +36,8 @@ namespace SpaceIsFun
             Vector2 target1Screen = new Vector2();
             Vector2 target2Screen = new Vector2();
             List<Crew> selectedCrewMembers = new List<Crew>();
-            
+            // mapping of gridID to true or false; whether or not this grid has a crew in it 
+            Dictionary<int, bool> gridFilled = new Dictionary<int, bool>();
 
             bool target1Selected = false;
             bool target2Selected = false;
@@ -580,7 +581,7 @@ namespace SpaceIsFun
                     // if we've rightclicked
 
                     // move the crew, we can assume the selected crew list has size of at least 1
-
+                    
                     if (selectedCrewMembers.Count == 1)
                     {
                         // we only have one man
@@ -601,13 +602,36 @@ namespace SpaceIsFun
                     {
                         // we got more than one man
 
-                        // get the room we clicked, and if its on the ship, check if the room has enough room to move the entire list of selected mans
+                        // get the room we clicked, and if its on the ship
+                        if (checkShipHover(currentMouseState) == playerShipUID)
+                        {
+                            if (checkRoomHover(currentMouseState, playerShipUID) == true)
+                            {
+                                int thisRoomUID = getRoomHover(currentMouseState, playerShipUID);
+                                Room thisRoom = (Room)RoomManager.RetrieveEntity(getRoomHover(currentMouseState, playerShipUID));
+                                //check if the room has enough room to move the entire list of selected mans
 
-                        // if it has room, move the mans to an empty grid in that room
+                                // loop through CrewToRoom, count any hits in the values; if count is less than or equal to the room's size then continue
+                                int count = 0;
+                                foreach(var item in CrewToRoom.Values)
+                                {
+                                   if(thisRoomUID == item)
+                                   {
+                                       count++;
+                                   }
+                                }
 
-                        // transition to idle cursor on success
+                                if (count <= thisRoom.RoomSize)
+                                {
+                                    // at this point, we can move the crew to the room
+                                    // todo: room-filling algorithm
+                                    // transition to idle cursor on success
 
-                        // todo: room-filling algorithm
+                                    
+                                }
+                            }
+                        }
+                        
 
                         
                     }
