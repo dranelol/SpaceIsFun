@@ -377,6 +377,29 @@ namespace SpaceIsFun
         }
 
         /// <summary>
+        /// the grids contained in the room
+        /// </summary>
+        private List<int> roomGrids;
+        
+
+        /// <summary>
+        /// getter for roomGrids
+        /// </summary>
+        public List<int> RoomGrids
+        {
+            get
+            {
+                return roomGrids;
+            }
+            set
+            {
+                roomGrids = value;
+            }
+        }
+
+
+
+        /// <summary>
         /// Declarations for state machines of individual room
         /// </summary>
         StateMachine roomStateMachine;
@@ -445,6 +468,8 @@ namespace SpaceIsFun
             height = h;
             aflame = false;
             hullBreach = false;
+
+            roomGrids = new List<int>();
         }
 
         #endregion

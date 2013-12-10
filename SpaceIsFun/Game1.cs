@@ -272,8 +272,12 @@ namespace SpaceIsFun
 
             setRoomGridDictionary(playerShipUID);
             setUnwalkableGrids(playerShipUID);
+            setCrewDictionary(playerShipUID);
 
             //playerShip = new Ship(shipTexture, gridSprite, gridHighlightSprite, new Vector2(50, 50), roomUIDs, gridUIDs, weaponUIDs, roomTypes);
+
+
+
 
             #endregion
 
@@ -862,6 +866,35 @@ namespace SpaceIsFun
             ret.Y = (int)relativeYPos / 32;
 
             return ret;
+
+        }
+
+        public void setCrewDictionary(int shipUID)
+        {
+            Ship thisShip = (Ship)ShipManager.RetrieveEntity(shipUID);
+
+            List<int> filledGrids = new List<int>();
+
+            List<int> roomShipKeys = new List<int>();
+
+            foreach (int i in RoomToShip.Keys)
+            {
+                if (RoomToShip[i] == shipUID)
+                {
+                    roomShipKeys.Add(i);
+                }
+            }
+
+
+
+            for (int i = 0; i < 3; i++)
+            {
+                
+                
+                //Crew newguy = new Crew()
+            }
+
+
 
         }
     }
