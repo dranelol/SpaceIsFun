@@ -395,6 +395,8 @@ namespace SpaceIsFun
                 GridManager.Update(gameTime);
                 RoomManager.Update(gameTime);
                 WeaponManager.Update(gameTime);
+                CrewManager.Update(gameTime);
+                //System.Diagnostics.Debug.WriteLine("Size of Manager: "+CrewManager.RetrieveKeys().Count.ToString());
 
                 cursorState.Update(gameTime);
                 
