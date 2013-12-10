@@ -271,9 +271,14 @@ namespace SpaceIsFun
             WeaponToShip[weaponUID] = playerShipUID;
 
             setRoomGridDictionary(playerShipUID);
+            setRoomToShipDictionary(playerShipUID, roomUIDs);
             setUnwalkableGrids(playerShipUID);
+            setCrewDictionary(playerShipUID);
 
             //playerShip = new Ship(shipTexture, gridSprite, gridHighlightSprite, new Vector2(50, 50), roomUIDs, gridUIDs, weaponUIDs, roomTypes);
+
+
+
 
             #endregion
 
@@ -501,6 +506,7 @@ namespace SpaceIsFun
                 ShipManager.Draw(spriteBatch);
                 GridManager.Draw(spriteBatch);
                 RoomManager.Draw(spriteBatch);
+                CrewManager.Draw(spriteBatch);
 
 
 
@@ -862,6 +868,75 @@ namespace SpaceIsFun
             ret.Y = (int)relativeYPos / 32;
 
             return ret;
+
+        }
+
+        public void setCrewDictionary(int shipUID)
+        {
+            Ship thisShip = (Ship)ShipManager.RetrieveEntity(shipUID);
+
+            
+
+            // roomShipKeys: current room UIDs in current ship
+            List<int> roomShipKeys = new List<int>();
+
+            // gridRoomKeys: current grid UIDs in rooms on current ship
+            List<int> gridRoomKeys = new List<int>();
+
+
+            // This is looping over every room that exists.
+            //System.Diagnostics.Debug.WriteLine("RoomToShip: " + RoomToShip.Keys.Count.ToString());    
+            foreach (int i in RoomToShip.Keys)
+            {
+                if (RoomToShip[i] == shipUID)
+                {
+                    //System.Diagnostics.Debug.WriteLine("This is getting the rooms: "+i.ToString());                    
+                    roomShipKeys.Add(i);
+                }
+            }
+
+            // This is looping over Grids in every room that exists.
+            foreach (int i in GridToRoom.Keys)
+            {
+                if (roomShipKeys.Contains(GridToRoom[i]))
+                {
+                    //System.Diagnostics.Debug.WriteLine("This is getting the grids: " + i.ToString());
+                    gridRoomKeys.Add(i);
+                }
+            }
+
+
+            int mans = 0;
+            
+            foreach (int i in gridRoomKeys)
+            {
+                if (mans == 3)
+                {
+                    break;
+                }
+
+                Grid thisGrid = (Grid)GridManager.RetrieveEntity(i);
+
+                Crew newguy = new Crew(thisGrid.Sprite.Position2D, crewNoAnimate, crewNoAnimate);
+
+                int crewUID = CrewManager.AddEntity(newguy);
+
+                CrewToShip[crewUID] = shipUID;
+                CrewToRoom[crewUID] = GridToRoom[i];
+
+                mans++;
+            }
+
+
+
+        }
+
+        public void setRoomToShipDictionary(int shipUID, List<int> roomUIDs)
+        {
+            foreach (int i in roomUIDs)
+            {
+                RoomToShip[i] = shipUID;
+            }
 
         }
     }

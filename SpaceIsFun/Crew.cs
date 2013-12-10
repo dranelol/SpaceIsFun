@@ -197,6 +197,8 @@ namespace SpaceIsFun
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            
+            
             if (selected == true)
             {
                 Sprite.SpriteTexture = crewSelectedTexture;

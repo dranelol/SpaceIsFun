@@ -35,7 +35,7 @@ namespace SpaceIsFun
 
             Vector2 target1Screen = new Vector2();
             Vector2 target2Screen = new Vector2();
-            List<Crew> selectedCrewMembers = new List<Crew>();
+            List<int> selectedCrewMembers = new List<int>();
             // mapping of gridID to true or false; whether or not this grid has a crew in it 
             Dictionary<int, bool> gridFilled = new Dictionary<int, bool>();
 
@@ -395,6 +395,8 @@ namespace SpaceIsFun
                 GridManager.Update(gameTime);
                 RoomManager.Update(gameTime);
                 WeaponManager.Update(gameTime);
+                CrewManager.Update(gameTime);
+                //System.Diagnostics.Debug.WriteLine("Size of Manager: "+CrewManager.RetrieveKeys().Count.ToString());
 
                 cursorState.Update(gameTime);
                 
@@ -489,13 +491,17 @@ namespace SpaceIsFun
                             {
                                 System.Diagnostics.Debug.WriteLine("Selected Grid {0},{1}", i, j);
 
-                                foreach (Crew man in crewMembers)
-                                {
-                                    if (man.Position.X == i && man.Position.Y == j)
-                                    {
-                                        man.Selected = true;
-                                        selectedCrewMembers.Add(man);
+                                var crewMembers = CrewManager.RetrieveKeys();
 
+                                foreach(int k in crewMembers)
+                                {
+                                    Crew thisguy = (Crew)CrewManager.RetrieveEntity(k);
+
+                                    if (thisguy.Position.X == i && thisguy.Position.Y == j)
+                                    {
+                                        thisguy.Selected = true;
+
+                                        selectedCrewMembers.Add(k);
                                     }
                                 }
                             }
@@ -590,7 +596,7 @@ namespace SpaceIsFun
                 if (previousMouseState.RightButton == ButtonState.Released && currentMouseState.RightButton == ButtonState.Pressed)
                 {
                     // if we've rightclicked
-
+                        
                     // move the crew, we can assume the selected crew list has size of at least 1
                     
                     if (selectedCrewMembers.Count == 1)
