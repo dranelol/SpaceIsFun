@@ -95,7 +95,9 @@ namespace SpaceIsFun
         #region textures
         Texture2D shipTexture;
         Texture2D energyBar;
-        Texture2D healthBar;
+        Texture2D healthBarFull;
+        Texture2D healthBarMed;
+        Texture2D healthBarLow;
         Texture2D gridSprite;
         Texture2D gridHighlightSprite;
         Texture2D energyBarSprite;
@@ -203,7 +205,9 @@ namespace SpaceIsFun
             #region textures
             shipTexture = Content.Load<Texture2D>("ship1");
             energyBar = Content.Load<Texture2D>("energyBar");
-            healthBar = Content.Load<Texture2D>("healthBarFull");
+            healthBarFull = Content.Load<Texture2D>("healthBarFull");
+            healthBarMed = Content.Load<Texture2D>("healthBarMed");
+            healthBarLow = Content.Load<Texture2D>("healthBarLow");
             gridSprite = Content.Load<Texture2D>("Grid");
             gridHighlightSprite = Content.Load<Texture2D>("GridNotWalkable");
             energyBarSprite = Content.Load<Texture2D>("energyBar");
