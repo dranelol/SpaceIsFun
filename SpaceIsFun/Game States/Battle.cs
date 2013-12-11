@@ -65,6 +65,7 @@ namespace SpaceIsFun
 
             // this list will hold the individual bars within one energy bar
             List<Widget> energyBarTest = new List<Widget>();
+            List<Widget> healthBarTest = new List<Widget>();
 
             int shipStartEnergy = playerShip.Energy;
 
@@ -122,15 +123,28 @@ namespace SpaceIsFun
                 gui.AddWidget(Health);
 
                 Texture2D HB;
-                if (playerShip.CurrentHP < playerShip.MaxHP * (1 / 3))
-                    HB = healthBar; // red healthbar
-                else if (playerShip.CurrentHP < playerShip.MaxHP * (2 / 3))
-                    HB = healthBar; // orange healthbar
-                else
-                    HB = healthBar; // green healthbar
 
+                
+                if (playerShip.CurrentHP > 3)
+                    for (int i = 0; i < 3; i++)
+                    {
+                        HB = healthBarLow; // red healthbar
+                        Health.AddWidget(HealthBar = new Image(32 * i, 0, HB));
+                        healthBarTest.Add(HealthBar);
+                    }
+                if (playerShip.CurrentHP > 6)
+                    for (int i = 0; i < 6; i++)
+                    {
+                        HB = healthBarMed; // orange healthbar
+                        Health.AddWidget(HealthBar = new Image(32 * i, 0, HB));
+                        healthBarTest.Add(HealthBar);
+                    }
                 for (int i = 0; i < playerShip.CurrentHP; i++)
+                {
+                    HB = healthBarFull; // green healthbar
                     Health.AddWidget(HealthBar = new Image(32 * i, 0, HB));
+                    healthBarTest.Add(HealthBar);
+                }
                 /*END Lance's*/
 
                 // add as many energy widgets as there is ship energy to one entire energy bar
@@ -353,7 +367,7 @@ namespace SpaceIsFun
 
                 #endregion
 
-                #region keys.f
+                #region keys.r
                 // if the f key is tapped, try to gain energy if possibile
                 if (currentKeyState.IsKeyDown(Keys.R) == true && previousKeyState.IsKeyUp(Keys.R) == true)
                 {
@@ -373,6 +387,60 @@ namespace SpaceIsFun
                     }
                 }
 
+                #endregion
+
+                #region keys.o
+                if (currentKeyState.IsKeyDown(Keys.O) == true && previousKeyState.IsKeyUp(Keys.O) == true)
+                {
+                    if (playerShip.CurrentHP < 10)
+                    {
+                        System.Diagnostics.Debug.WriteLine("gained energy!");
+                        playerShip.CurrentHP = playerShip.CurrentHP + 1;
+                    }
+
+                    int j = 0;
+                    for (int i = 0; i < 19; i++)
+                    {
+                        if (playerShip.CurrentHP > 6)
+                            j = 9;
+                        else if (playerShip.CurrentHP > 3)
+                            j = 3;
+                        else
+                            j = 0; 
+                        
+                        if (i < playerShip.CurrentHP + j)
+                        {
+                            healthBarTest[i].Visible = true;
+                        }
+                    }
+                }
+                #endregion
+
+                #region keys.p
+                if (currentKeyState.IsKeyDown(Keys.P) == true && previousKeyState.IsKeyUp(Keys.P) == true)
+                {
+                    if (playerShip.CurrentHP > 0)
+                    {
+                        System.Diagnostics.Debug.WriteLine("lost energy!");
+                        playerShip.CurrentHP = playerShip.CurrentHP - 1;
+                    }
+
+                    int j = 0;
+                    for (int i = 0; i < 19; i++)
+                    {
+                        if (playerShip.CurrentHP > 6)
+                            j = 9; 
+                        else if (playerShip.CurrentHP > 3)
+                            j = 3;
+                        else
+                            j = 0;
+
+                        if (i >= playerShip.CurrentHP + j)
+                        {
+                            healthBarTest[i].Visible = false;
+                        }
+                    }
+                }
                 #endregion
 
                 #region weapons testing: keys.y, keys.u
