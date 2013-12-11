@@ -152,6 +152,34 @@ namespace SpaceIsFun
 
                 #region keys
 
+                Ship thisShip = (Ship)ShipManager.RetrieveEntity(0);
+
+                if (currentKeyState.IsKeyDown(Keys.T) && previousKeyState.IsKeyUp(Keys.T))
+                {
+                    Crew man = (Crew)CrewManager.RetrieveEntity(0);
+
+                    pather = new Pathfinder(thisShip.ShipGrid, GridManager);
+
+                    Grid thisGrid = (Grid)GridManager.RetrieveEntity(9);
+
+                    target1 = man.Position;
+
+                    thisGrid = (Grid)GridManager.RetrieveEntity(26);
+
+                    target2 = thisGrid.GridPosition;
+
+                    List<Vector2> path = pather.FindOptimalPath(target1, target2);
+
+                    foreach (Vector2 item in path)
+                    {
+                        Vector2 dumb = new Vector2((item.X / 32), (item.Y / 32));
+
+                        System.Diagnostics.Debug.WriteLine(dumb.ToString());
+                    }
+
+                    man.Move(path);
+                }
+
                 // if the a key is pressed, transition back to the menu
                 if (currentKeyState.IsKeyDown(Keys.A))
                 {
@@ -453,6 +481,8 @@ namespace SpaceIsFun
             {
                 #region input handling
 
+                
+
                 #region mouse
 
                 #region left click
@@ -532,6 +562,8 @@ namespace SpaceIsFun
                     }
 
                     multiSelecting = false;
+
+                   
                 }
 
                 // if we're holding the mouse button down
@@ -599,6 +631,9 @@ namespace SpaceIsFun
             {
                 #region input handling
 
+                
+
+
                 #region mouse
 
                 if (previousMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
@@ -606,6 +641,8 @@ namespace SpaceIsFun
                     // if we've leftclicked
 
                     //deselect the crew, go to idlecursor
+
+                    
 
                     selectedCrewMembers.Clear();
                     cursorState.Transition(idleCursor.Name);

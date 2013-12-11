@@ -162,7 +162,7 @@ namespace SpaceIsFun
             }
         }
 
-        #endregion
+        
 
         /// <summary>
         /// whether or not the drawable is moving
@@ -226,6 +226,8 @@ namespace SpaceIsFun
                 path = value;
             }
         }
+
+        #endregion
 
         #region constructors / destructors
 
@@ -298,6 +300,8 @@ namespace SpaceIsFun
                         moving = false;
                         target = new Vector2();
                     }
+
+
                 }
 
                 // else, we need to move along the delta
