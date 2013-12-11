@@ -32,6 +32,7 @@ namespace SpaceIsFun
         /// <summary>
         /// the method delegate for entering the state
         /// </summary>
+
         public delegate void Enter();
 
         /// <summary>
@@ -59,6 +60,7 @@ namespace SpaceIsFun
         /// event called on state update
         /// </summary>
         public event Update update;
+
 
         /// <summary>
         /// the function executed on state enter
@@ -100,6 +102,7 @@ namespace SpaceIsFun
             get
             {
                 return transitions;
+
             }
         }
     }

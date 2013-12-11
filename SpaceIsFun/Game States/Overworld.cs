@@ -13,5 +13,31 @@ namespace SpaceIsFun
 {
     public partial class Game1 : Game
     {
+        void setupOverworld()
+        {
+            overworld.enter += () =>
+            {
+                // setup gui elements here
+
+                // for now, these probably will just be buttons arranged on a map to spawn certain battles / narrative events
+
+                //
+            };
+
+            overworld.update += (GameTime gameTime) =>
+            {
+                #region input handling
+
+                #endregion
+
+               
+
+            };
+
+            overworld.leave += () =>
+            {
+                // remove gui elements here
+            };
+        }
     }
 }

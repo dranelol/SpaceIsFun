@@ -24,7 +24,10 @@ namespace SpaceIsFun
             // this adds a button labelled "Play" that will transition to the battle state when clicked
             loginpanel.AddWidget(new Button(50, 100, "Play", 2, (Widget widget) =>
             {
+                // instead of going to a battle, go to an overworld instead
+                //stateMachine.Transition(overworld.Name);
                 stateMachine.Transition(battle.Name);
+                
             }));
 
             // when entering start menu state
