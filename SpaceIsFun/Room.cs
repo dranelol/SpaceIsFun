@@ -493,6 +493,8 @@ namespace SpaceIsFun
         /// <param name="spriteBatch">main spriteBatch object</param>
         public override void Draw(SpriteBatch spriteBatch)
         {
+            
+            
             if (highlighted == true)
             {
                 Sprite.SpriteTexture = roomHighlightTexture;

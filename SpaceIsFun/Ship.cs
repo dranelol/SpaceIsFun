@@ -493,6 +493,8 @@ namespace SpaceIsFun
         /// <param name="spriteBatch"></param>
         override public void Draw(SpriteBatch spriteBatch)
         {
+            
+            
             // draw the ship's sprite
             sprite.Draw(spriteBatch);
 

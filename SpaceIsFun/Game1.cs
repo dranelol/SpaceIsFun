@@ -114,6 +114,10 @@ namespace SpaceIsFun
         // 2: cursor over enemy ship
         int shipCursorFocus;
 
+
+        // ship start offset
+        Vector2 playerShipStartPosition = new Vector2(50, 50);
+
         /// <summary>
         /// width of the current screen, in pixels
         /// </summary>
@@ -497,11 +501,15 @@ namespace SpaceIsFun
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            
+           
             // to start, clear the graphics device of the last frame
             GraphicsDevice.Clear(Color.Black);
 
             // draw the GUI
             gui.Draw();
+
+            
 
             // if we're in the battle state, or paused in the battle state
             if (stateMachine.CurrentState.Name == battle.Name
@@ -511,7 +519,9 @@ namespace SpaceIsFun
                 ShipManager.Draw(spriteBatch);
                 GridManager.Draw(spriteBatch);
                 RoomManager.Draw(spriteBatch);
+                //System.Diagnostics.Debug.WriteLine("before crew draw");
                 CrewManager.Draw(spriteBatch);
+                //System.Diagnostics.Debug.WriteLine("after crew draw");
 
 
 
@@ -566,6 +576,7 @@ namespace SpaceIsFun
 
             
             base.Draw(gameTime);
+            
         }
 
         #endregion

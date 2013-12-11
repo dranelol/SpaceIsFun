@@ -45,7 +45,7 @@ namespace SpaceIsFun
             Ship playerShip = (Ship)ShipManager.RetrieveEntity(playerUID);
 
 
-            Pathfinder pather = new Pathfinder(playerShip.ShipGrid, GridManager);
+            Pathfinder pather = new Pathfinder(playerShip.ShipGrid, playerShipStartPosition ,GridManager);
 
             // sets up seven energy bars for the ship
             Panel energy1 = new Panel(4, screenHeight - 128, 40, 128 - 8);
@@ -172,7 +172,7 @@ namespace SpaceIsFun
                 {
                     Crew man = (Crew)CrewManager.RetrieveEntity(0);
 
-                    pather = new Pathfinder(thisShip.ShipGrid, GridManager);
+                    pather = new Pathfinder(thisShip.ShipGrid, playerShipStartPosition, GridManager);
 
                     Grid thisGrid = (Grid)GridManager.RetrieveEntity(9);
 
@@ -511,6 +511,7 @@ namespace SpaceIsFun
                 GridManager.Update(gameTime);
                 RoomManager.Update(gameTime);
                 WeaponManager.Update(gameTime);
+                CrewManager.Update(gameTime);
 
                 cursorState.Update(gameTime);
 

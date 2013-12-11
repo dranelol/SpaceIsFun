@@ -191,6 +191,8 @@ namespace SpaceIsFun
 
         public override void Update(GameTime gameTime)
         {
+            //System.Diagnostics.Debug.WriteLine("crew update");
+            
             Sprite.Update(gameTime);
             base.Update(gameTime);
         }
@@ -234,6 +236,9 @@ namespace SpaceIsFun
         public void Move(List<Vector2> path)
         {
             //I have a dream that one day this function will exist, that it will tell the sprite where to move, and the sprite will move there as decreed by the mighty A* algorithm given to us by Peter Hart, Nils Nilsson and Bertram Raphael of the hallowed Stanford Research Instituteendregion
+
+
+
             System.Diagnostics.Debug.WriteLine("Positions Before Move: "+sprite.Position2D.ToString());
             sprite.setPath(path);
             System.Diagnostics.Debug.WriteLine("Positions After Move: " + sprite.Position2D.ToString());

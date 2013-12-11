@@ -274,15 +274,18 @@ namespace SpaceIsFun
         /// <param name="gameTime">current game time</param>
         public void Update(GameTime gameTime)
         {
-
+            //System.Diagnostics.Debug.WriteLine("position: "+position2D.ToString());
+            
+            //System.Diagnostics.Debug.WriteLine("updating");
             
             
             if(pathing == true)
             {
-                System.Diagnostics.Debug.WriteLine("updating");
+                //System.Diagnostics.Debug.WriteLine("updating");
                 
                 // find the distance to target
                 //double c = Math.Sqrt(Math.Pow((double)(target.X - position2D.X), 2d) + Math.Pow((double)(target.Y - position2D.Y), 2d));
+                System.Diagnostics.Debug.WriteLine("target: " + target.ToString());
                 Vector2 delta = new Vector2(target.X - position2D.X, target.Y - position2D.Y);
                 //System.Diagnostics.Debug.WriteLine("target: " + target.ToString());
 
@@ -394,7 +397,10 @@ namespace SpaceIsFun
         public void setPath(List<Vector2> path)
         {
 
+
+
             System.Diagnostics.Debug.WriteLine("setpath");
+
             this.path = path;
             pathing = true;
             moving = true;
