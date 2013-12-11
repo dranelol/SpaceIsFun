@@ -169,11 +169,11 @@ namespace SpaceIsFun
         /// <param name="position">starting position of the crewman</param>
         /// <param name="crewTexture">texture of the crewman when not selected</param>
         /// <param name="crewSelectedTexture">texture of the crewman when selected</param>
-        public Crew(Vector2 position, Texture2D crewTexture, Texture2D crewSelectedTexture)
+        public Crew(Vector2 position, Vector2 gPosition ,Texture2D crewTexture, Texture2D crewSelectedTexture)
             : base()
         {
             maxHP = currentHP = 100;
-            this.position = position;
+            this.position = gPosition;
 
             this.crewTexture = crewTexture;
             this.crewSelectedTexture = crewSelectedTexture;
@@ -234,7 +234,9 @@ namespace SpaceIsFun
         public void Move(List<Vector2> path)
         {
             //I have a dream that one day this function will exist, that it will tell the sprite where to move, and the sprite will move there as decreed by the mighty A* algorithm given to us by Peter Hart, Nils Nilsson and Bertram Raphael of the hallowed Stanford Research Instituteendregion
-            //sprite.setPath(path);
+            System.Diagnostics.Debug.WriteLine("Positions Before Move: "+sprite.Position2D.ToString());
+            sprite.setPath(path);
+            System.Diagnostics.Debug.WriteLine("Positions After Move: " + sprite.Position2D.ToString());
         }
 
         #endregion

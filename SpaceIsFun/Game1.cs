@@ -203,7 +203,7 @@ namespace SpaceIsFun
             #region textures
             shipTexture = Content.Load<Texture2D>("ship1");
             energyBar = Content.Load<Texture2D>("energyBar");
-            healthBar = Content.Load<Texture2D>("healthBar");
+            healthBar = Content.Load<Texture2D>("healthBarFull");
             gridSprite = Content.Load<Texture2D>("Grid");
             gridHighlightSprite = Content.Load<Texture2D>("GridNotWalkable");
             energyBarSprite = Content.Load<Texture2D>("energyBar");
@@ -918,7 +918,7 @@ namespace SpaceIsFun
 
                 Grid thisGrid = (Grid)GridManager.RetrieveEntity(i);
 
-                Crew newguy = new Crew(thisGrid.Sprite.Position2D, crewNoAnimate, crewNoAnimate);
+                Crew newguy = new Crew(thisGrid.Sprite.Position2D, thisGrid.GridPosition, crewNoAnimate, crewNoAnimate);
 
                 int crewUID = CrewManager.AddEntity(newguy);
 
