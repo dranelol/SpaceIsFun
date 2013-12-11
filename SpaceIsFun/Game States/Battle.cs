@@ -35,7 +35,7 @@ namespace SpaceIsFun
 
             Vector2 target1Screen = new Vector2();
             Vector2 target2Screen = new Vector2();
-            List<Crew> selectedCrewMembers = new List<Crew>();
+            List<Crew> selectedCrewMembers;
             
 
             bool target1Selected = false;
@@ -85,24 +85,6 @@ namespace SpaceIsFun
             #region battle state enter
             battle.enter += () =>
             {
-                // add gui elements here
-                
-                // player ship HP, enemy ship HP
-
-
-                // player ship shields, enemy ship shields
-
-
-                // player ship total / current energy (we'll deal with segmented energy later)
-
-                // player ship rooms: 
-                // powered up or down, on fire, hull breach
-
-
-                // weapons GUI: 
-                // weapon slots 1-5 for each:
-                // filled or not, enabled or not, charging or not
-
                 // adds all the energy bars to the gui
                 gui.AddWidget(energy1);
                 gui.AddWidget(energy2);
@@ -398,13 +380,12 @@ namespace SpaceIsFun
                 cursorState.Update(gameTime);
                 
             };
-            
+            #endregion
 
             // when leaving the battle state
             #region battle state leave
             battle.leave += () =>
             {
-                // tear down gui elements
 
                 // remove the energy widgets from the gui
                 gui.RemoveWidget(energy1);
@@ -420,7 +401,6 @@ namespace SpaceIsFun
                     ShipManager.DeleteEntity(UID);
                 }
             };
-            #endregion
             #endregion
 
             #region idle cursor state methods
@@ -477,7 +457,7 @@ namespace SpaceIsFun
                         x2 = Math.Min(x2, playerShip.ShipGrid.GetLength(0) - 1);
                         y2 = Math.Min(y2, playerShip.ShipGrid.GetLength(1) - 1);
 
-                        
+                        selectedCrewMembers = new List<Crew>();
 
                         System.Diagnostics.Debug.WriteLine("x1, y1 {0},{1}", x1, y1);
                         System.Diagnostics.Debug.WriteLine("x2, y2 {0},{1}", x2, y2);
@@ -579,40 +559,7 @@ namespace SpaceIsFun
                 {
                     // if we've rightclicked
 
-                    // move the crew, we can assume the selected crew list has size of at least 1
-
-                    if (selectedCrewMembers.Count == 1)
-                    {
-                        // we only have one man
-                        
-                        // get the room we clicked, and if its on the ship, check if the room is empty of mans
-
-                        // if it has room, move the man to an empty grid in that room
-
-                        // transition to idle cursor on success
-
-                        // todo: room-filling algorithm
-
-                        
-                        
-                    }
-
-                    else
-                    {
-                        // we got more than one man
-
-                        // get the room we clicked, and if its on the ship, check if the room has enough room to move the entire list of selected mans
-
-                        // if it has room, move the mans to an empty grid in that room
-
-                        // transition to idle cursor on success
-
-                        // todo: room-filling algorithm
-
-                        
-                    }
-
-                    
+                    // move the crew
                 }
 
                 #endregion
@@ -636,22 +583,6 @@ namespace SpaceIsFun
                 #region input handling
 
                 #region mouse
-
-                if (previousMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
-                {
-                    // if we've leftclicked
-
-                    // did we click an enemy room?
-
-                    // if so, get the weapon we're currently selecting
-
-                    // set the enemy room as the weapon's target
-
-                    // set the weapon's state to enroute
-
-                    // transition to idle cursor on success
-                }
-
                 if (previousMouseState.RightButton == ButtonState.Released && currentMouseState.RightButton == ButtonState.Pressed)
                 {
                     // if we've rightclicked
@@ -673,8 +604,6 @@ namespace SpaceIsFun
             #endregion
 
 
-            
-           
         }
 
     }
