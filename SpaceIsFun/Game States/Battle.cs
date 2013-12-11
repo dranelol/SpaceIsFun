@@ -56,7 +56,12 @@ namespace SpaceIsFun
             Panel energy6 = new Panel(320 + 4, screenHeight - 128, 40, 128 - 8);
             Panel energy7 = new Panel(384 + 4, screenHeight - 128, 40, 128 - 8);
 
+            /*Lance's code*/
+            Panel Health = new Panel(5, 5, (32 * playerShip.MaxHP) + 8, 72);
+            /*END Lance's code*/
+
             Image energyBar1;
+            Image HealthBar;
 
             // this list will hold the individual bars within one energy bar
             List<Widget> energyBarTest = new List<Widget>();
@@ -77,7 +82,7 @@ namespace SpaceIsFun
             hasSelectedCrew.Transitions.Add(idleCursor.Name, idleCursor);
             hasSelectedCrew.Transitions.Add(hasSelectedCrew.Name, hasSelectedCrew);
 
-            
+
 
             cursorState.Start(idleCursor);
 
@@ -87,7 +92,7 @@ namespace SpaceIsFun
             battle.enter += () =>
             {
                 // add gui elements here
-                
+
                 // player ship HP, enemy ship HP
 
 
@@ -112,6 +117,21 @@ namespace SpaceIsFun
                 gui.AddWidget(energy5);
                 gui.AddWidget(energy6);
                 gui.AddWidget(energy7);
+
+                /*Lance's*/
+                gui.AddWidget(Health);
+
+                Texture2D HB;
+                if (playerShip.CurrentHP < playerShip.MaxHP * (1 / 3))
+                    HB = healthBar; // red healthbar
+                else if (playerShip.CurrentHP < playerShip.MaxHP * (2 / 3))
+                    HB = healthBar; // orange healthbar
+                else
+                    HB = healthBar; // green healthbar
+
+                for (int i = 0; i < playerShip.CurrentHP; i++)
+                    Health.AddWidget(HealthBar = new Image(32 * i, 0, HB));
+                /*END Lance's*/
 
                 // add as many energy widgets as there is ship energy to one entire energy bar
                 for (int i = 0; i < playerShip.Energy; i++)
@@ -156,7 +176,7 @@ namespace SpaceIsFun
                         // go to target weapon state, try to assign target
                     }
 
-                    
+
                 }
 
                 if (currentKeyState.IsKeyDown(Keys.D2) && previousKeyState.IsKeyUp(Keys.D2))
@@ -188,7 +208,7 @@ namespace SpaceIsFun
                 }
 
 
-                
+
                 #region keys.c
                 /*
                 // if the c key is tapped, query to see if the cursor is hovering over the ship
@@ -309,7 +329,7 @@ namespace SpaceIsFun
                 }
                 */
                 #endregion
-                
+
                 #region keys.e
                 // if the e key is tapped, try to lose energy if possible
                 if (currentKeyState.IsKeyDown(Keys.E) == true && previousKeyState.IsKeyUp(Keys.E) == true)
@@ -357,7 +377,7 @@ namespace SpaceIsFun
 
                 #region weapons testing: keys.y, keys.u
                 //a test to see if my states work -Peter
-                if(currentKeyState.IsKeyDown(Keys.Y)==true)
+                if (currentKeyState.IsKeyDown(Keys.Y) == true)
                 {
                     Weapon defaultWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
 
@@ -385,23 +405,21 @@ namespace SpaceIsFun
                 #region mouse
 
 
-                
+
 
                 #endregion
                 #endregion
-                #endregion
+            #endregion
 
                 ShipManager.Update(gameTime);
                 GridManager.Update(gameTime);
                 RoomManager.Update(gameTime);
                 WeaponManager.Update(gameTime);
-                CrewManager.Update(gameTime);
-                //System.Diagnostics.Debug.WriteLine("Size of Manager: "+CrewManager.RetrieveKeys().Count.ToString());
 
                 cursorState.Update(gameTime);
-                
+
             };
-            
+
 
             // when leaving the battle state
             #region battle state leave
@@ -418,7 +436,7 @@ namespace SpaceIsFun
                 gui.RemoveWidget(energy6);
                 gui.RemoveWidget(energy7);
 
-                foreach(int UID in currentEnemyShips)
+                foreach (int UID in currentEnemyShips)
                 {
                     ShipManager.DeleteEntity(UID);
                 }
@@ -448,7 +466,7 @@ namespace SpaceIsFun
                         //cursorState.Transition(hasSelectedCrew.Name);
                     }
                     // else if we are multiselecting: get (x1,y1;x2,y2), select all crew in that area, set multiselecting to false, transition to hasSelectedCrew if any crew were selected
-                    
+
                     // note: this should only happen if the two points are on the player's ship
                     else if (multiSelecting == true && checkShipHover(selectRectStart) == playerShipUID && checkShipHover(selectRectEnd) == playerShipUID)
                     {
@@ -480,7 +498,7 @@ namespace SpaceIsFun
                         x2 = Math.Min(x2, playerShip.ShipGrid.GetLength(0) - 1);
                         y2 = Math.Min(y2, playerShip.ShipGrid.GetLength(1) - 1);
 
-                        
+
 
                         System.Diagnostics.Debug.WriteLine("x1, y1 {0},{1}", x1, y1);
                         System.Diagnostics.Debug.WriteLine("x2, y2 {0},{1}", x2, y2);
@@ -493,7 +511,7 @@ namespace SpaceIsFun
 
                                 var crewMembers = CrewManager.RetrieveKeys();
 
-                                foreach(int k in crewMembers)
+                                foreach (int k in crewMembers)
                                 {
                                     Crew thisguy = (Crew)CrewManager.RetrieveEntity(k);
 
@@ -596,13 +614,13 @@ namespace SpaceIsFun
                 if (previousMouseState.RightButton == ButtonState.Released && currentMouseState.RightButton == ButtonState.Pressed)
                 {
                     // if we've rightclicked
-                        
+
                     // move the crew, we can assume the selected crew list has size of at least 1
-                    
+
                     if (selectedCrewMembers.Count == 1)
                     {
                         // we only have one man
-                        
+
                         // get the room we clicked, and if its on the ship, check if the room is empty of mans
 
                         // if it has room, move the man to an empty grid in that room
@@ -611,8 +629,8 @@ namespace SpaceIsFun
 
                         // todo: room-filling algorithm
 
-                        
-                        
+
+
                     }
 
                     else
@@ -630,12 +648,12 @@ namespace SpaceIsFun
 
                                 // loop through CrewToRoom, count any hits in the values; if count is less than or equal to the room's size then continue
                                 int count = 0;
-                                foreach(var item in CrewToRoom.Values)
+                                foreach (var item in CrewToRoom.Values)
                                 {
-                                   if(thisRoomUID == item)
-                                   {
-                                       count++;
-                                   }
+                                    if (thisRoomUID == item)
+                                    {
+                                        count++;
+                                    }
                                 }
 
                                 if (count <= thisRoom.RoomSize)
@@ -644,16 +662,16 @@ namespace SpaceIsFun
                                     // todo: room-filling algorithm
                                     // transition to idle cursor on success
 
-                                    
+
                                 }
                             }
                         }
-                        
 
-                        
+
+
                     }
 
-                    
+
                 }
 
                 #endregion
@@ -712,8 +730,8 @@ namespace SpaceIsFun
             #endregion
 
 
-            
-           
+
+
         }
 
     }
