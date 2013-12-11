@@ -178,9 +178,6 @@ namespace SpaceIsFun
 
             // init managers
 
-            // ALL OF THIS STUFF HAS BEEN MOVED TO LOAD CONTENT
-
-            // maybe move it back when we can... 
             
 
             
