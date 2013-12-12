@@ -941,12 +941,47 @@ namespace SpaceIsFun
 
         }
 
+        //For now, just appends current state to save file
         public void saveState(string fileName)
         {
             IFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(fileName, FileMode.Append);
             formatter.Serialize(stream, stateMachine.CurrentState);
             stream.Close();
+        }
+
+        public void saveData(string fileName)
+        {
+            IFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(fileName, FileMode.Create);
+            stream.Close();  //This is a bit odd but
+            //Each function appends to the file.  Opening and closing here
+            //just erases the previous file.
+
+            saveState(fileName);
+            RoomManager.dumpObjects(fileName);
+            GridManager.dumpObjects(fileName);
+            CrewManager.dumpObjects(fileName);
+            WeaponManager.dumpObjects(fileName);
+            ShipManager.dumpObjects(fileName);
+         
+            /*  my need to save these too...
+            Dictionary<int, int> GridToRoom 
+             * RoomToShip 
+             * WeaponToShip
+             * CrewToShip
+             * CrewToRoom 
+             * 
+             * Hell.  may need to just save every field in this class.
+             * That could work.
+             */
+
+
+        }
+
+        public void loadData(string fileName)
+        {
+
         }
 
     }
