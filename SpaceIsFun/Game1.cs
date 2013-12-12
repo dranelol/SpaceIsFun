@@ -125,7 +125,8 @@ namespace SpaceIsFun
 
 
         // ship start offset
-        Vector2 playerShipStartPosition = new Vector2(50, 50);
+        Vector2 playerShipStartPosition = new Vector2(100, 100);
+        Vector2 enemyShipStartPosition = new Vector2(400, 100);
 
         public bool battle1Resolved = false;
         public bool battle2Resolved = false;
@@ -223,8 +224,8 @@ namespace SpaceIsFun
             // load all needed textures here
 
             #region textures
-            shipTexture = Content.Load<Texture2D>("ship02");
-            enemyShipTexture1 = Content.Load<Texture2D>("ship03");
+            shipTexture = Content.Load<Texture2D>("ship01");
+            enemyShipTexture1 = Content.Load<Texture2D>("ship02");
             enemyShipTexture2 = Content.Load<Texture2D>("ship03");
             energyBar = Content.Load<Texture2D>("energyBar");
             healthBarFull = Content.Load<Texture2D>("healthBarFull");
