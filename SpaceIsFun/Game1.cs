@@ -956,27 +956,26 @@ namespace SpaceIsFun
             FileStream stream = new FileStream(fileName, FileMode.Create);
             stream.Close();  //This is a bit odd but
             //Each function appends to the file.  Opening and closing here
-            //just erases the previous file if there was one.
+            //just erases the previous file if there was one, and creates a new one.
+            //Closes file so there aren't multiple streams to the same file open.
 
             saveState(fileName);
 
- 
+            //These dump the dictionary<int, Entity> objects from EntityManager
             RoomManager.dumpObjects(fileName);
             GridManager.dumpObjects(fileName);
             CrewManager.dumpObjects(fileName);
             WeaponManager.dumpObjects(fileName);
             ShipManager.dumpObjects(fileName);
-         
-            /*  may need to save these too...
-            Dictionary<int, int> GridToRoom 
-             * RoomToShip 
-             * WeaponToShip
-             * CrewToShip
-             * CrewToRoom 
-             * 
-             *  may need to just save every field in this class.
-             * That could work.
-             */
+
+            FileStream stream2 = new FileStream(fileName, FileMode.Append);
+            formatter.Serialize(stream2, GridToRoom);
+            formatter.Serialize(stream2, RoomToShip);
+            formatter.Serialize(stream2, WeaponToShip);
+            formatter.Serialize(stream2, CrewToShip);
+            formatter.Serialize(stream2, CrewToRoom);
+
+            stream2.Close();
 
 
         }
@@ -998,7 +997,17 @@ namespace SpaceIsFun
             WeaponManager.setObjects((Dictionary<int, Entity>)formatter.Deserialize(stream));
             ShipManager.setObjects((Dictionary<int, Entity>)formatter.Deserialize(stream));
 
-
+            Dictionary<int, int> temp;
+            temp = (Dictionary<int, int>)formatter.Deserialize(stream);
+            GridToRoom = new Dictionary<int, int>(temp);
+            temp = (Dictionary<int, int>)formatter.Deserialize(stream);
+            RoomToShip = new Dictionary<int, int>(temp);
+            temp = (Dictionary<int, int>)formatter.Deserialize(stream);
+            WeaponToShip = new Dictionary<int, int>(temp);
+            temp = (Dictionary<int, int>)formatter.Deserialize(stream);
+            CrewToShip = new Dictionary<int, int>(temp);
+            temp = (Dictionary<int, int>)formatter.Deserialize(stream);
+            CrewToRoom = new Dictionary<int, int>(temp);
 
         }
 
