@@ -52,14 +52,17 @@ namespace SpaceIsFun
 
             /*Lance's code*/
             Panel Health = new Panel(5, 5, (32 * playerShip.MaxHP) + 8, 72);
+            Panel Shields = new Panel(5, 80, (32 * playerShip.MaxShields)+8, 40);
             /*END Lance's code*/
 
             Image energyBar1;
             Image HealthBar;
+            Image sBubble;
 
             // this list will hold the individual bars within one energy bar
             List<Widget> energyBarTest = new List<Widget>();
             List<Widget> healthBarTest = new List<Widget>();
+            List<Widget> shieldTest = new List<Widget>();
             List<Button> weapons = new List<Button>();
 
             int shipStartEnergy = playerShip.Energy;
@@ -164,10 +167,11 @@ namespace SpaceIsFun
                 gui.AddWidget(energy1);
                 /*Lance's*/
                 gui.AddWidget(Health);
+                gui.AddWidget(Shields);
+
+
 
                 Texture2D HB;
-
-                
                 if (playerShip.CurrentHP > 3)
                     for (int i = 0; i < 3; i++)
                     {
@@ -188,14 +192,20 @@ namespace SpaceIsFun
                     Health.AddWidget(HealthBar = new Image(32 * i, 0, HB));
                     healthBarTest.Add(HealthBar);
                 }
-                /*END Lance's*/
 
-                // add as many energy widgets as there is ship energy to one entire energy bar
-                for (int i = 0; i < playerShip.Energy; i++)
+                for (int i = 0; i < playerShip.CurrentShields; i++)
                 {
-                    energy1.AddWidget(energyBar1 = new Image(0, (256 - 16 - 8 - 8) - i * 16, energyBarSprite));
-                    energyBarTest.Add(energyBar1);
+                    Shields.AddWidget(sBubble = new Image(32*i, 0, shieldBubble));
+                    shieldTest.Add(sBubble);
                 }
+                    /*END Lance's*/
+
+                    // add as many energy widgets as there is ship energy to one entire energy bar
+                    for (int i = 0; i < playerShip.Energy; i++)
+                    {
+                        energy1.AddWidget(energyBar1 = new Image(0, (256 - 16 - 8 - 8) - i * 16, energyBarSprite));
+                        energyBarTest.Add(energyBar1);
+                    }
 
                 currentEnemyShips.Add(enemyShipUID);
             };
@@ -442,7 +452,7 @@ namespace SpaceIsFun
                 // if the f key is tapped, try to gain energy if possibile
                 if (currentKeyState.IsKeyDown(Keys.R) == true && previousKeyState.IsKeyUp(Keys.R) == true)
                 {
-                    if (playerShip.Energy < 5)
+                    if (playerShip.Energy < 10)
                     {
                         System.Diagnostics.Debug.WriteLine("gained energy!");
                         playerShip.Energy = playerShip.Energy + 1;
@@ -465,7 +475,7 @@ namespace SpaceIsFun
                 {
                     if (playerShip.CurrentHP < 10)
                     {
-                        System.Diagnostics.Debug.WriteLine("gained energy!");
+                        System.Diagnostics.Debug.WriteLine("gained health!");
                         playerShip.CurrentHP = playerShip.CurrentHP + 1;
                     }
 
@@ -492,7 +502,7 @@ namespace SpaceIsFun
                 {
                     if (playerShip.CurrentHP > 0)
                     {
-                        System.Diagnostics.Debug.WriteLine("lost energy!");
+                        System.Diagnostics.Debug.WriteLine("lost health!");
                         playerShip.CurrentHP = playerShip.CurrentHP - 1;
                     }
 
@@ -511,6 +521,34 @@ namespace SpaceIsFun
                             healthBarTest[i].Visible = false;
                         }
                     }
+                }
+                #endregion
+
+                #region keys.z
+                if (currentKeyState.IsKeyDown(Keys.Z) == true && previousKeyState.IsKeyUp(Keys.Z) == true)
+                {
+                    if (playerShip.CurrentShields > 0)
+                    {
+                        System.Diagnostics.Debug.WriteLine("A shield has fallen!");
+                        playerShip.CurrentShields = playerShip.CurrentShields - 1;
+                    }
+                    for (int i = 0; i < playerShip.MaxShields; i++)
+                        if(i >= playerShip.CurrentShields)
+                            shieldTest[i].Visible = false;
+                }
+                #endregion
+
+                #region keys.x
+                if (currentKeyState.IsKeyDown(Keys.X) == true && previousKeyState.IsKeyUp(Keys.X) == true)
+                {
+                    if (playerShip.CurrentShields < 4)
+                    {
+                        System.Diagnostics.Debug.WriteLine("A shield has recharged!");
+                        playerShip.CurrentShields = playerShip.CurrentShields + 1;
+                    }
+                    for (int i = 0; i < playerShip.MaxShields; i++)
+                        if(i < playerShip.CurrentShields)
+                            shieldTest[i].Visible = true;
                 }
                 #endregion
 

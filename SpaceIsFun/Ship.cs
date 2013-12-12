@@ -419,7 +419,7 @@ namespace SpaceIsFun
             // set some default values 
             maxHP = currentHP = 10;
             energy = 10;
-            maxShields = currentShields = 2;
+            maxShields = currentShields = 4;
 
             // create the ship's drawable
             sprite = new Drawable(shipTexture, position);
