@@ -47,6 +47,8 @@ namespace SpaceIsFun
 
             Pathfinder pather = new Pathfinder(playerShip.ShipGrid, playerShipStartPosition ,GridManager);
 
+            
+
             // sets up seven energy bars for the ship
             Panel energy1 = new Panel(4, screenHeight - 128, 40, 128 - 8);
             Panel energy2 = new Panel(64 + 4, screenHeight - 128, 40, 128 - 8);
@@ -615,9 +617,24 @@ namespace SpaceIsFun
                                     if (grid.GridPosition == blah)
                                     {
                                         System.Diagnostics.Debug.WriteLine("Filled: " + FilledRooms[x].ToString());
+                                        System.Diagnostics.Debug.WriteLine("Walkable: " + grid.IsWalkable.ToString());
                                         break;
                                     }
                                 }
+
+                                /*for (i = 0; i < playerShip.ShipGrid.GetLength(0); i++)
+                                {
+                                    for (j = 0; j < playerShip.ShipGrid.GetLength(1); j++)
+                                    {
+
+                                        Grid walkCheck = (Grid)GridManager.RetrieveEntity(playerShip.ShipGrid[i, j]);
+
+                                        //System.Diagnostics.Debug.WriteLine("Grid {0},{1}: {2}", i, j, walkCheck.IsWalkable.ToString());
+                                    }
+
+                                }*/
+
+                                
                                 
 
                                 var crewMembers = CrewManager.RetrieveKeys();
@@ -752,6 +769,9 @@ namespace SpaceIsFun
                         // transition to idle cursor on success
 
                         // todo: room-filling algorithm
+                     
+                        int thisRoomUID = getRoomHover(currentMouseState, playerShipUID);
+                        Room thisRoom = (Room)RoomManager.RetrieveEntity(getRoomHover(currentMouseState, playerShipUID));
 
 
 
@@ -759,7 +779,7 @@ namespace SpaceIsFun
 
                     else
                     {*/
-                        // we got more than one man
+                    // we got more than one man
 
                         // did we click on a room on our ship?
                         if (checkShipHover(currentMouseState) == playerShipUID)
@@ -835,15 +855,17 @@ namespace SpaceIsFun
                                         
                                         // get the next available grid
                                         int targetGridUID = 0;
-                                        for (int j = 0; j < theGrids.Count; j++)
+                                        foreach (int roomGridID in theGrids)
                                         {
+
+                                            
 
                                             // if this grid is filled by a man
 
                                             //search the crew for their positions
                                             bool skipGrid = false;
-                                            
-                                            if (FilledRooms[j] == true)
+
+                                            if (FilledRooms[roomGridID] == true)
                                             {
                                                 skipGrid = true;
                                             }
@@ -854,16 +876,18 @@ namespace SpaceIsFun
                                                 System.Diagnostics.Debug.WriteLine("skipGrid: " + skipGrid.ToString());
                                                     
 
-                                                break;
+                                                continue;
                                             }
                                             else
                                             {
-                                                targetGridUID = theGrids[j];
+                                                targetGridUID = roomGridID;
                                                 break;
                                             }
                                             
                                         }
 
+
+                                        System.Diagnostics.Debug.WriteLine("Target: " + targetGridUID.ToString());
                                         Crew thisCrew = (Crew)CrewManager.RetrieveEntity(selectedCrewMembers[i]);
                                         Grid thisGrid = (Grid)GridManager.RetrieveEntity(targetGridUID);
 
@@ -886,6 +910,7 @@ namespace SpaceIsFun
                                         thisCrew.Position = thisGrid.GridPosition;
                                         FilledRooms[originGridUID] = false;
                                         FilledRooms[targetGridUID] = true;
+                                        CrewToRoom[thisCrew.UID] = GridToRoom[targetGridUID];
 
                                     }
 

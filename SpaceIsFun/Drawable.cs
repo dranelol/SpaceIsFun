@@ -333,7 +333,7 @@ namespace SpaceIsFun
                     if (path.Count != 0)
                     {
                         this.positionGrid = target;
-                        System.Diagnostics.Debug.WriteLine("Draw Position: "+positionGrid.ToString());
+                        //System.Diagnostics.Debug.WriteLine("Draw Position: "+positionGrid.ToString());
                         target = path[0];
                         path.RemoveAt(0);
                         
@@ -438,7 +438,9 @@ namespace SpaceIsFun
 
 
 
-            System.Diagnostics.Debug.WriteLine("setpath");
+            //System.Diagnostics.Debug.WriteLine("setpath");
+
+            
 
             this.path = path;
             pathing = true;
