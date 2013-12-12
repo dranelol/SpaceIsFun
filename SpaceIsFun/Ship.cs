@@ -418,7 +418,7 @@ namespace SpaceIsFun
             System.Diagnostics.Debug.WriteLine("initting ship");
             // set some default values 
             maxHP = currentHP = 10;
-            energy = 5;
+            energy = 10;
             maxShields = currentShields = 2;
 
             // create the ship's drawable
@@ -435,16 +435,22 @@ namespace SpaceIsFun
 
             this.owner = owner;
 
+
+
             roomUIDList = roomUIDs;
             gridUIDList = gridUIDs;
             weaponUIDList = weaponUIDs;
 
-            weaponSlots = new int[4];
+            System.Diagnostics.Debug.WriteLine(weaponUIDs.Count);
+
+            weaponSlots = new int[5];
+
 
             weaponSlots[0] = weaponUIDList[0];
-            weaponSlots[1] = -1;
-            weaponSlots[2] = -1;
-            weaponSlots[3] = -1;
+            weaponSlots[1] = weaponUIDList[1];
+            weaponSlots[2] = weaponUIDList[2];
+            weaponSlots[3] = weaponUIDList[3];
+            weaponSlots[4] = weaponUIDList[4];
 
             //Default_weap = new Weapon(gridTexture, 0, 0, 2, 10, 3);
             // we need to move the rooms to align ontop of the ship; probably find a better way to do this in the future
