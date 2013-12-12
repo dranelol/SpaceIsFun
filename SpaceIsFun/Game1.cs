@@ -106,6 +106,8 @@ namespace SpaceIsFun
         Texture2D roomHighlightSprite;
         Texture2D pixel;
         Texture2D crewNoAnimate;
+        Texture2D starTexture;
+        Texture2D overworldCursorTexture;
 
         Drawable testDrawable;
         #endregion
@@ -221,7 +223,8 @@ namespace SpaceIsFun
             pixel = new Texture2D(GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             pixel.SetData(new[] { Color.Green });
             crewNoAnimate = Content.Load<Texture2D>("crewNoAnimate");
-            
+            starTexture = Content.Load<Texture2D>("starNode");
+            overworldCursorTexture = Content.Load<Texture2D>("overworldCursor");
 
 
             #endregion
@@ -400,7 +403,7 @@ namespace SpaceIsFun
 
             
 
-            stateMachine.Start(startMenu);
+            stateMachine.Start(overworld);
             #endregion
 
             // set up any UI elements here
@@ -418,6 +421,7 @@ namespace SpaceIsFun
             setupStartMenu();
             setupBattle(playerShipUID);
             setupPauseState();
+            setupOverworld();
 
             #endregion
 
@@ -512,7 +516,18 @@ namespace SpaceIsFun
             // draw the GUI
             gui.Draw();
 
-            
+            if (stateMachine.CurrentState.Name == overworld.Name)
+            {
+                spriteBatch.Begin();
+                foreach (var item in starNodeDraws)
+                {
+                    System.Diagnostics.Debug.WriteLine("Test");
+                    item.Update(gameTime);
+                    item.Draw(spriteBatch);
+                }
+                overworldCursorDraw.Draw(spriteBatch);
+                spriteBatch.End();
+            }
 
             // if we're in the battle state, or paused in the battle state
             if (stateMachine.CurrentState.Name == battle.Name
