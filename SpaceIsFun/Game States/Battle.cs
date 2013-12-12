@@ -758,7 +758,7 @@ namespace SpaceIsFun
 
                     // move the crew, we can assume the selected crew list has size of at least 1
 
-                    /*if (selectedCrewMembers.Count == 1)
+                    if (selectedCrewMembers.Count == 1)
                     {
                         // we only have one man
 
@@ -770,15 +770,72 @@ namespace SpaceIsFun
 
                         // todo: room-filling algorithm
                      
-                        int thisRoomUID = getRoomHover(currentMouseState, playerShipUID);
-                        Room thisRoom = (Room)RoomManager.RetrieveEntity(getRoomHover(currentMouseState, playerShipUID));
+
+                        if(checkShipHover(currentMouseState) == playerShipUID)
+                        {
+                            Vector2 targetGridVector = getGridHover(currentMouseState, playerShipUID);
+                            
+
+                            //System.Diagnostics.Debug.WriteLine("target grid: "+targetGrid);
+
+                            Grid targetGrid = (Grid)GridManager.RetrieveEntity(playerShip.ShipGrid[(int)targetGridVector.X, (int)targetGridVector.Y]);
+
+                            //System.Diagnostics.Debug.WriteLine("target grid: " + targetGrid.UID);
+
+                            int targetGridUID = targetGrid.UID;
+
+                            Crew thisCrew = (Crew)CrewManager.RetrieveEntity(selectedCrewMembers[0]);
+                            Grid thisGrid = (Grid)GridManager.RetrieveEntity(targetGridUID);
+
+                            bool dothis = true;
+
+                            foreach (var item in CrewManager.RetrieveKeys())
+                            {
+                                Crew testGuy = (Crew)CrewManager.RetrieveEntity(item);
+
+                                if (testGuy.Position == thisGrid.GridPosition)
+                                {
+                                    dothis = false;
+                                }
+
+                            }
 
 
+                            if (dothis == true)
+                            {
+
+
+                                int originGridUID = 0;
+                                foreach (int x in GridManager.RetrieveKeys())
+                                {
+                                    Grid grid = (Grid)GridManager.RetrieveEntity(x);
+
+                                    if (grid.GridPosition == thisCrew.Position)
+                                    {
+                                        originGridUID = x;
+                                        break;
+                                    }
+                                }
+
+
+                                List<Vector2> path = pather.FindOptimalPath(thisCrew.Position, thisGrid.GridPosition);
+                                thisCrew.Move(path);
+                                thisCrew.Position = thisGrid.GridPosition;
+                                FilledRooms[originGridUID] = false;
+                                FilledRooms[targetGridUID] = true;
+                                CrewToRoom[thisCrew.UID] = GridToRoom[targetGridUID];
+
+                            }
+
+
+                        }
+
+                    
 
                     }
 
                     else
-                    {*/
+                    {
                     // we got more than one man
 
                         // did we click on a room on our ship?
@@ -920,7 +977,7 @@ namespace SpaceIsFun
 
 
 
-                    //}
+                    }
 
 
                 }
