@@ -74,7 +74,9 @@ namespace SpaceIsFun
         //Ship playerShip;
         int playerShipUID;
 
-        int enemyShipUID;
+        int enemyShipUID1;
+        int enemyShipUID2;
+        
 
         // game object managers
         #region object management
@@ -109,6 +111,7 @@ namespace SpaceIsFun
         Texture2D crewNoAnimate;
         Texture2D starTexture;
         Texture2D overworldCursorTexture;
+        Texture2D starGreyedTexture;
 
         Drawable testDrawable;
         #endregion
@@ -155,8 +158,10 @@ namespace SpaceIsFun
         }
 
         List<Crew> crewMembers;
-        
 
+
+        int gameStateUID;
+        
 
         #endregion
 
@@ -227,6 +232,7 @@ namespace SpaceIsFun
             crewNoAnimate = Content.Load<Texture2D>("crewNoAnimate");
             starTexture = Content.Load<Texture2D>("starNode");
             overworldCursorTexture = Content.Load<Texture2D>("overworldCursor");
+            starGreyedTexture = Content.Load<Texture2D>("starNodeGreyed");
 
 
             #endregion
@@ -322,7 +328,7 @@ namespace SpaceIsFun
 
             #endregion
 
-            #region enemy ship construction
+            #region enemy ship construction 1
             Vector2 enemyShipStartPosition = new Vector2(400,50);
             gridUIDs = new List<int>();
             roomUIDs = new List<int>();
@@ -378,18 +384,89 @@ namespace SpaceIsFun
             System.Diagnostics.Debug.WriteLine(weaponUIDs.Count);
 
 
-            enemyShipUID = ShipManager.AddEntity(new Ship(shipTexture, gridSprite, gridHighlightSprite, playerShipStartPosition, roomUIDs, gridUIDs, weaponUIDs, roomTypes, shipGrid, 0));
+            enemyShipUID1 = ShipManager.AddEntity(new Ship(shipTexture, gridSprite, gridHighlightSprite, playerShipStartPosition, roomUIDs, gridUIDs, weaponUIDs, roomTypes, shipGrid, 0));
 
 
             foreach (var item in weaponUIDs)
             {
-                WeaponToShip[item] = enemyShipUID;
+                WeaponToShip[item] = enemyShipUID1;
             }
             
             
-            WeaponToShip[weaponUID] = enemyShipUID;
-            setRoomGridDictionary(enemyShipUID);
-            setUnwalkableGrids(enemyShipUID);
+            WeaponToShip[weaponUID] = enemyShipUID1;
+            setRoomGridDictionary(enemyShipUID1);
+            setUnwalkableGrids(enemyShipUID1);
+
+            #endregion
+
+            #region enemy ship construction 2
+            enemyShipStartPosition = new Vector2(400, 50);
+            gridUIDs = new List<int>();
+            roomUIDs = new List<int>();
+            weaponUIDs = new List<int>();
+            gridWidth = shipTexture.Bounds.Width / 32;
+            gridHeight = shipTexture.Bounds.Height / 32;
+            shipGrid = new int[gridWidth, gridHeight];
+            // grid creation for the player ship
+            for (int i = 0; i < shipTexture.Bounds.Width / 32; i++)
+            {
+                // in each column, iterate over the ship sprite's height
+                for (int j = 0; j < shipTexture.Bounds.Height / 32; j++)
+                {
+                    // create a new grid object for i,j
+                    //shipGrid[i, j] = new Grid(gridTexture, highlightTexture, new Vector2(i * 32 + position.X, j * 32 + position.Y), new Vector2(i, j));
+                    Grid toAdd = new Grid(gridSprite, gridHighlightSprite,
+                               new Vector2(i * 32 + enemyShipStartPosition.X, j * 32 + enemyShipStartPosition.Y),
+                               new Vector2(i, j));
+
+                    int UID = GridManager.AddEntity(toAdd);
+                    gridUIDs.Add(UID);
+                    shipGrid[i, j] = UID;
+                }
+            }
+
+            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 1, enemyShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+            roomUIDs.Add(roomUID);
+            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 4, enemyShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+            roomUIDs.Add(roomUID);
+
+            roomTypes = new bool[11];
+
+            for (int i = 0; i < 11; i++)
+            {
+                roomTypes[i] = false;
+            }
+
+            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+            weaponUIDs.Add(weaponUID);
+
+            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+            weaponUIDs.Add(weaponUID);
+
+            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+            weaponUIDs.Add(weaponUID);
+
+            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+            weaponUIDs.Add(weaponUID);
+
+            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+            weaponUIDs.Add(weaponUID);
+
+            System.Diagnostics.Debug.WriteLine(weaponUIDs.Count);
+
+
+            enemyShipUID2 = ShipManager.AddEntity(new Ship(shipTexture, gridSprite, gridHighlightSprite, playerShipStartPosition, roomUIDs, gridUIDs, weaponUIDs, roomTypes, shipGrid, 0));
+
+
+            foreach (var item in weaponUIDs)
+            {
+                WeaponToShip[item] = enemyShipUID2;
+            }
+
+
+            WeaponToShip[weaponUID] = enemyShipUID2;
+            setRoomGridDictionary(enemyShipUID2);
+            setUnwalkableGrids(enemyShipUID2);
 
             #endregion
             // load fonts
@@ -502,8 +579,6 @@ namespace SpaceIsFun
 
             //System.Diagnostics.Debug.WriteLine(gameTime.ElapsedGameTime.TotalMilliseconds.ToString());
 
-            
-
             previousKeyState = currentKeyState;
             previousMouseState = currentMouseState;
 
@@ -570,8 +645,8 @@ namespace SpaceIsFun
                 spriteBatch.Begin();
                 foreach (var item in starNodeDraws)
                 {
-                    System.Diagnostics.Debug.WriteLine("Test");
                     item.Update(gameTime);
+
                     item.Draw(spriteBatch);
                 }
                 overworldCursorDraw.Draw(spriteBatch);
@@ -583,13 +658,44 @@ namespace SpaceIsFun
                 || stateMachine.CurrentState.Name == pauseState.Name && stateMachine.PreviousState.Name == battle.Name)
             {
                 spriteBatch.Begin();
-                ShipManager.Draw(spriteBatch);
+                Ship playerShip = (Ship)ShipManager.RetrieveEntity(playerShipUID);
+                playerShip.Draw(spriteBatch);
+
+                // draw different stuff based on the current gamestate
+                switch (gameStateUID)
+                {
+                    case 0:
+                        //this is battle one
+                        Ship enemyShip1 = (Ship)ShipManager.RetrieveEntity(enemyShipUID1);
+                        enemyShip1.Draw(spriteBatch);
+                        break;
+                    case 1:
+                        //this is narrative one
+
+                        break;
+                    case 2:
+                        //this is battle two
+                        Ship enemyShip2 = (Ship)ShipManager.RetrieveEntity(enemyShipUID2);
+                        enemyShip2.Draw(spriteBatch);
+                        break;
+                    case 3:
+                        //this is narrative two
+
+                        break;
+                    default:
+
+                        break;
+                        
+                }
+
+
+
                 GridManager.Draw(spriteBatch);
                 RoomManager.Draw(spriteBatch);
                 //System.Diagnostics.Debug.WriteLine("before crew draw");
                 CrewManager.Draw(spriteBatch);
                 //System.Diagnostics.Debug.WriteLine("after crew draw");
-
+                WeaponManager.Draw(spriteBatch);
 
 
                 if (multiSelecting == true)

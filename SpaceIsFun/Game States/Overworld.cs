@@ -13,6 +13,9 @@ namespace SpaceIsFun
 {
     public partial class Game1 : Game
     {
+        //States for what the nodes can be
+        enum NodeState { Narrative1, Narrative2, Battle1, Battle2 }
+
         List<Vector2> starNodes = new List<Vector2>();
         List<Drawable> starNodeDraws = new List<Drawable>();
         int starNodeSelectedIndex = 0;
@@ -33,9 +36,22 @@ namespace SpaceIsFun
 
                 setNodes();
 
+                for (int i = 0; i < starNodes.Count; i++)
+                {
+                    if (i == (int)NodeState.Narrative1 || i == (int)NodeState.Battle1)
+                    {
+                        starNodeDraws.Add(new Drawable(starTexture, starNodes[i]));
+                    }
+                    else if (i == (int)NodeState.Battle2 || i == (int)NodeState.Narrative2)
+                    {
+                        starNodeDraws.Add(new Drawable(starGreyedTexture, starNodes[i]));
+                    }
+                }
+                /*
                 foreach (Vector2 item in starNodes) {
                     starNodeDraws.Add(new Drawable(starTexture, item));
                 }
+                 * */
             };
 
             overworld.update += (GameTime gameTime) =>
@@ -59,9 +75,32 @@ namespace SpaceIsFun
                     traverseStarsRight();
                 }
 
-                if (currentKeyState.IsKeyUp(Keys.R) && previousKeyState.IsKeyDown(Keys.R))
+
+
+
+                //Upon Enter press, check if the
+                if (currentKeyState.IsKeyUp(Keys.Enter) && previousKeyState.IsKeyDown(Keys.Enter))
                 {
-                    setNodes();
+                    if (starNodeSelectedIndex == (int)NodeState.Narrative1)
+                    {
+                        //Do some shit
+                        System.Diagnostics.Debug.WriteLine("Narrative1");
+                    }
+                    else if (starNodeSelectedIndex == (int)NodeState.Narrative2)
+                    {
+                        //Do some more shit
+                        System.Diagnostics.Debug.WriteLine("Narrative2");
+                    }
+                    else if (starNodeSelectedIndex == (int)NodeState.Battle1)
+                    {
+                        //Battle some shit
+                        System.Diagnostics.Debug.WriteLine("Penises, Penises and lollipops.  Unicorn on top.");
+                    }
+                    else if (starNodeSelectedIndex == (int)NodeState.Battle2)
+                    {
+                        //Battle some more shit
+                        System.Diagnostics.Debug.WriteLine("Penises, Penises and lollipops.  Big floppy penises, just don't stop.");
+                    }
                 }
 
 
@@ -92,11 +131,12 @@ namespace SpaceIsFun
         {
             Random rand = new Random();
             
+            
             starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
             starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
             starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
             starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
-
+            
         }
 
         private void traverseStarsUp()
