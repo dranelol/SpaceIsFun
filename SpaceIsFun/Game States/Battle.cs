@@ -43,7 +43,16 @@ namespace SpaceIsFun
             bool target2Selected = false;
 
             Ship playerShip = (Ship)ShipManager.RetrieveEntity(playerUID);
+            Ship enemyShip;
+            if (gameStateUID == 0)
+            {
+                enemyShip = (Ship)ShipManager.RetrieveEntity(enemyShipUID1);
+            }
 
+            else if (gameStateUID == 2)
+            {
+                enemyShip = (Ship)ShipManager.RetrieveEntity(enemyShipUID2);
+            }
 
             Pathfinder pather = new Pathfinder(playerShip.ShipGrid, playerShipStartPosition ,GridManager);
 
@@ -83,9 +92,18 @@ namespace SpaceIsFun
             hasSelectedCrew.Transitions.Add(idleCursor.Name, idleCursor);
             hasSelectedCrew.Transitions.Add(hasSelectedCrew.Name, hasSelectedCrew);
 
-
-
             cursorState.Start(idleCursor);
+
+
+            StateMachine enemyAI = new StateMachine();
+
+            State enemyIdle = new State { Name = "enemyIdle" };
+            State enemyFiring = new State { Name = "enemyFiring" };
+
+            enemyIdle.Transitions.Add(enemyFiring.Name, enemyFiring);
+            enemyFiring.Transitions.Add(enemyIdle.Name, enemyFiring);
+
+            enemyAI.Start(enemyIdle);
 
             #region battle state methods
             // when entering the battle state
@@ -1276,7 +1294,37 @@ namespace SpaceIsFun
             };
             #endregion
 
-            
+            #region enemy AI state methods
+            enemyIdle.enter += () =>
+            {
+
+            };
+
+            enemyIdle.update += (GameTime gameTime) =>
+            {
+                #region input handling
+                #endregion
+            };
+
+            enemyIdle.leave += () =>
+            {
+            };
+
+            enemyFiring.enter += () =>
+            {
+
+            };
+
+            enemyFiring.update += (GameTime gameTime) =>
+            {
+                #region input handling
+                #endregion
+            };
+
+            enemyFiring.leave += () =>
+            {
+            };
+            #endregion
 
 
         }
