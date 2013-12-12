@@ -75,7 +75,40 @@ namespace SpaceIsFun
                     traverseStarsRight();
                 }
 
+                if (currentKeyState.IsKeyUp(Keys.LeftControl) && previousKeyState.IsKeyDown(Keys.LeftControl))
+                {
+                    resetNodes();
+                }
 
+                if (battle1Resolved && narrative1Resolved)
+                {
+                    starNodeDraws[1].SpriteTexture = starTexture;
+                }
+                if (narrative2Resolved)
+                {
+                    starNodeDraws[3].SpriteTexture = starTexture;
+                }
+                if (battle1Resolved)
+                {
+                    starNodeDraws[2].SpriteTexture = starGreyedTexture;
+                }
+                if (narrative1Resolved)
+                {
+                    starNodeDraws[0].SpriteTexture = starGreyedTexture;
+                }
+                if (narrative2Resolved)
+                {
+                    starNodeDraws[1].SpriteTexture = starGreyedTexture;
+                }
+                if (battle2Resolved)
+                {
+                    starNodeDraws[3].SpriteTexture = starGreyedTexture;
+                }
+
+                if (narrative1Resolved && narrative2Resolved && battle1Resolved && battle2Resolved)
+                {
+                    //Generate you win message here
+                }
 
 
                 //Upon Enter press, check if the
@@ -83,23 +116,39 @@ namespace SpaceIsFun
                 {
                     if (starNodeSelectedIndex == (int)NodeState.Narrative1)
                     {
-                        //Do some shit
-                        System.Diagnostics.Debug.WriteLine("Narrative1");
+                        if (narrative1Resolved == false)
+                        {
+                            //Do some shit
+                            System.Diagnostics.Debug.WriteLine("Narrative1");
+                            narrative1Resolved = true;
+                        }
                     }
                     else if (starNodeSelectedIndex == (int)NodeState.Narrative2)
                     {
-                        //Do some more shit
-                        System.Diagnostics.Debug.WriteLine("Narrative2");
+                        if (narrative1Resolved && battle1Resolved)
+                        {
+                            //Do some more shit if narrative2
+                            System.Diagnostics.Debug.WriteLine("Narrative2");
+                            narrative2Resolved = true;
+                        }
                     }
                     else if (starNodeSelectedIndex == (int)NodeState.Battle1)
                     {
-                        //Battle some shit
-                        System.Diagnostics.Debug.WriteLine("Penises, Penises and lollipops.  Unicorn on top.");
+                        if (battle1Resolved == false)
+                        {
+                            //Battle some shit
+                            System.Diagnostics.Debug.WriteLine("Penises, Penises and lollipops.  Unicorn on top.");
+                            battle1Resolved = true;
+                        }
                     }
                     else if (starNodeSelectedIndex == (int)NodeState.Battle2)
                     {
-                        //Battle some more shit
-                        System.Diagnostics.Debug.WriteLine("Penises, Penises and lollipops.  Big floppy penises, just don't stop.");
+                        if (narrative2Resolved)
+                        {
+                            //Battle some more shit
+                            System.Diagnostics.Debug.WriteLine("Penises, Penises and lollipops.  Big floppy penises, just don't stop.");
+                            battle2Resolved = true;
+                        }
                     }
                 }
 
@@ -137,6 +186,31 @@ namespace SpaceIsFun
             starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
             starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
             
+        }
+
+        private void resetNodes()
+        {
+            starNodes = new List<Vector2>();
+            starNodeDraws = new List<Drawable>();
+
+            setNodes();
+
+            narrative1Resolved = false;
+            narrative2Resolved = false;
+            battle1Resolved = false;
+            battle2Resolved = false;
+
+            for (int i = 0; i < starNodes.Count; i++)
+            {
+                if (i == (int)NodeState.Narrative1 || i == (int)NodeState.Battle1)
+                {
+                    starNodeDraws.Add(new Drawable(starTexture, starNodes[i]));
+                }
+                else if (i == (int)NodeState.Battle2 || i == (int)NodeState.Narrative2)
+                {
+                    starNodeDraws.Add(new Drawable(starGreyedTexture, starNodes[i]));
+                }
+            }
         }
 
         private void traverseStarsUp()
