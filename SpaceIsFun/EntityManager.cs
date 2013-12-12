@@ -152,7 +152,7 @@ namespace SpaceIsFun
             return objects.Keys;
         }
 
-        //This will dump the entire dictionary "objects" to the file: keys and objects.
+        //This will dump the entire dictionary "objects" to the file completely: keys and objects.
         //It APPENDS to the file.
         public void dumpObjects(string fileName)
         {

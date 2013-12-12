@@ -8,6 +8,9 @@ using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
 using Ruminate.GUI.Framework;
 using Ruminate.GUI.Content;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 //using NUnit.Framework;
 //using Rhino.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -937,5 +940,14 @@ namespace SpaceIsFun
             }
 
         }
+
+        public void saveState(string fileName)
+        {
+            IFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(fileName, FileMode.Append);
+            formatter.Serialize(stream, stateMachine.CurrentState);
+            stream.Close();
+        }
+
     }
 }
