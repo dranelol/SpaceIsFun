@@ -123,6 +123,11 @@ namespace SpaceIsFun
         // ship start offset
         Vector2 playerShipStartPosition = new Vector2(50, 50);
 
+        public bool battle1Resolved = false;
+        public bool battle2Resolved = false;
+        public bool narrative1Resolved = false;
+        public bool narrative2Resolved = false;
+
         /// <summary>
         /// width of the current screen, in pixels
         /// </summary>
