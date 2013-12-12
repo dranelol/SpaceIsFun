@@ -132,7 +132,7 @@ namespace SpaceIsFun
 
                     Grid grid = (Grid)manager.RetrieveEntity(map[x, y]);
 
-                    if (grid.Highlighted == false)  
+                    if (grid.IsWalkable == true)  
                     { 
                         node.Walkable = true;
                     }
@@ -331,6 +331,8 @@ namespace SpaceIsFun
         /// <returns></returns>
         public List<Vector2> FindOptimalPath(Vector2 start, Vector2 end)
         {
+
+            
             //Vector2 start = new Vector2((int)(source.sprite.X / 64), (int)(source.sprite.X / 64));
             //Vector2 end = new Vector2((int)(target.sprite.X / 64), (int)(target.sprite.X / 64));
             
