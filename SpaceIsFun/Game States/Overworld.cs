@@ -83,6 +83,9 @@ namespace SpaceIsFun
                 if (battle1Resolved && narrative1Resolved)
                 {
                     starNodeDraws[1].SpriteTexture = starTexture;
+                }
+                if (narrative2Resolved)
+                {
                     starNodeDraws[3].SpriteTexture = starTexture;
                 }
                 if (battle1Resolved)
@@ -92,6 +95,19 @@ namespace SpaceIsFun
                 if (narrative1Resolved)
                 {
                     starNodeDraws[0].SpriteTexture = starGreyedTexture;
+                }
+                if (narrative2Resolved)
+                {
+                    starNodeDraws[1].SpriteTexture = starGreyedTexture;
+                }
+                if (battle2Resolved)
+                {
+                    starNodeDraws[3].SpriteTexture = starGreyedTexture;
+                }
+
+                if (narrative1Resolved && narrative2Resolved && battle1Resolved && battle2Resolved)
+                {
+                    //Generate you win message here
                 }
 
 
@@ -113,6 +129,7 @@ namespace SpaceIsFun
                         {
                             //Do some more shit if narrative2
                             System.Diagnostics.Debug.WriteLine("Narrative2");
+                            narrative2Resolved = true;
                         }
                     }
                     else if (starNodeSelectedIndex == (int)NodeState.Battle1)
@@ -126,9 +143,12 @@ namespace SpaceIsFun
                     }
                     else if (starNodeSelectedIndex == (int)NodeState.Battle2)
                     {
-                        if (narrative1Resolved && battle1Resolved)
-                        //Battle some more shit
-                        System.Diagnostics.Debug.WriteLine("Penises, Penises and lollipops.  Big floppy penises, just don't stop.");
+                        if (narrative2Resolved)
+                        {
+                            //Battle some more shit
+                            System.Diagnostics.Debug.WriteLine("Penises, Penises and lollipops.  Big floppy penises, just don't stop.");
+                            battle2Resolved = true;
+                        }
                     }
                 }
 
@@ -174,6 +194,11 @@ namespace SpaceIsFun
             starNodeDraws = new List<Drawable>();
 
             setNodes();
+
+            narrative1Resolved = false;
+            narrative2Resolved = false;
+            battle1Resolved = false;
+            battle2Resolved = false;
 
             for (int i = 0; i < starNodes.Count; i++)
             {
