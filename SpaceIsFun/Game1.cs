@@ -929,7 +929,7 @@ namespace SpaceIsFun
             List<int> filledRoomUIDs = new List<int>();
             foreach (int i in gridRoomKeys)
             {
-                if (mans == 3)
+                if (mans == 1)
                 {
                     break;
                 }

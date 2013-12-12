@@ -606,6 +606,19 @@ namespace SpaceIsFun
                             for (int j = y1; j <= y2; j++)
                             {
                                 System.Diagnostics.Debug.WriteLine("Selected Grid {0},{1}", i, j);
+                                
+                                Vector2 blah = new Vector2(i,j);
+                                foreach (int x in GridManager.RetrieveKeys())
+                                {
+                                    Grid grid = (Grid)GridManager.RetrieveEntity(x);
+
+                                    if (grid.GridPosition == blah)
+                                    {
+                                        System.Diagnostics.Debug.WriteLine("Filled: " + FilledRooms[x].ToString());
+                                        break;
+                                    }
+                                }
+                                
 
                                 var crewMembers = CrewManager.RetrieveKeys();
 
@@ -728,7 +741,7 @@ namespace SpaceIsFun
 
                     // move the crew, we can assume the selected crew list has size of at least 1
 
-                    if (selectedCrewMembers.Count == 1)
+                    /*if (selectedCrewMembers.Count == 1)
                     {
                         // we only have one man
 
@@ -745,7 +758,7 @@ namespace SpaceIsFun
                     }
 
                     else
-                    {
+                    {*/
                         // we got more than one man
 
                         // did we click on a room on our ship?
@@ -813,6 +826,13 @@ namespace SpaceIsFun
                                     // loop through crew members, for each one, find the next available grid and assign him that target
                                     for(int i=0;i<selectedCrewMembers.Count;i++)
                                     {
+
+                                        //if there are more selected crew than available room spaces, do nothing
+                                        if (selectedCrewMembers.Count > (thisRoom.RoomSize-count))
+                                        {
+                                            //break;
+                                        }
+                                        
                                         // get the next available grid
                                         int targetGridUID = 0;
                                         for (int j = 0; j < theGrids.Count; j++)
@@ -822,25 +842,24 @@ namespace SpaceIsFun
 
                                             //search the crew for their positions
                                             bool skipGrid = false;
-                                            foreach(var man in CrewManager.RetrieveKeys())
+                                            
+                                            if (FilledRooms[j] == true)
                                             {
-                                                Crew searchCrew = (Crew)CrewManager.RetrieveEntity(man);
-                                                Grid searchGrid = (Grid)GridManager.RetrieveEntity(theGrids[j]);
-                                                if (searchCrew.Position == searchGrid.GridPosition)
-                                                {
-                                                    skipGrid = true;
-                                                }
+                                                skipGrid = true;
                                             }
 
                                             //if the grid was filled, skip this grid
                                             if (skipGrid == true)
                                             {
+                                                System.Diagnostics.Debug.WriteLine("skipGrid: " + skipGrid.ToString());
+                                                    
+
                                                 break;
                                             }
-
                                             else
                                             {
                                                 targetGridUID = theGrids[j];
+                                                break;
                                             }
                                             
                                         }
@@ -848,8 +867,26 @@ namespace SpaceIsFun
                                         Crew thisCrew = (Crew)CrewManager.RetrieveEntity(selectedCrewMembers[i]);
                                         Grid thisGrid = (Grid)GridManager.RetrieveEntity(targetGridUID);
 
+
+                                        int originGridUID = 0;
+                                        foreach (int x in GridManager.RetrieveKeys())
+                                        {
+                                            Grid grid = (Grid)GridManager.RetrieveEntity(x);
+
+                                            if (grid.GridPosition == thisCrew.Position)
+                                            {
+                                                originGridUID = x;
+                                                break;
+                                            }
+                                        }
+
+
                                         List<Vector2> path = pather.FindOptimalPath(thisCrew.Position, thisGrid.GridPosition);
                                         thisCrew.Move(path);
+                                        thisCrew.Position = thisGrid.GridPosition;
+                                        FilledRooms[originGridUID] = false;
+                                        FilledRooms[targetGridUID] = true;
+
                                     }
 
                                 }
@@ -858,7 +895,7 @@ namespace SpaceIsFun
 
 
 
-                    }
+                    //}
 
 
                 }

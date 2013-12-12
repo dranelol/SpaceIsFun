@@ -179,7 +179,7 @@ namespace SpaceIsFun
             this.crewSelectedTexture = crewSelectedTexture;
             this.selected = false;
 
-            sprite = new Drawable(crewTexture, position);
+            sprite = new Drawable(crewTexture, position, gPosition);
 
 
 
@@ -239,9 +239,9 @@ namespace SpaceIsFun
 
 
 
-            System.Diagnostics.Debug.WriteLine("Positions Before Move: "+sprite.Position2D.ToString());
+            
             sprite.setPath(path);
-            System.Diagnostics.Debug.WriteLine("Positions After Move: " + sprite.Position2D.ToString());
+            
         }
 
         #endregion
