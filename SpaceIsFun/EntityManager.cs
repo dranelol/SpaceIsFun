@@ -163,6 +163,12 @@ namespace SpaceIsFun
 
         }
 
+        public void setObjects(Dictionary<int, Entity> obj)
+        {
+            objects = new Dictionary<int, Entity>(obj); //copy constructor
+
+        }
+
 
     }
 }

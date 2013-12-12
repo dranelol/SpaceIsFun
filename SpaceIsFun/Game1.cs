@@ -956,28 +956,25 @@ namespace SpaceIsFun
             FileStream stream = new FileStream(fileName, FileMode.Create);
             stream.Close();  //This is a bit odd but
             //Each function appends to the file.  Opening and closing here
-            //just erases the previous file.
+            //just erases the previous file if there was one.
 
             saveState(fileName);
 
-            //Instead of just dumping the objects
-            //We could just make the Entity Manager serializable
-            //And dump the manager itself.
-            //But that may take extra storage space
+ 
             RoomManager.dumpObjects(fileName);
             GridManager.dumpObjects(fileName);
             CrewManager.dumpObjects(fileName);
             WeaponManager.dumpObjects(fileName);
             ShipManager.dumpObjects(fileName);
          
-            /*  my need to save these too...
+            /*  may need to save these too...
             Dictionary<int, int> GridToRoom 
              * RoomToShip 
              * WeaponToShip
              * CrewToShip
              * CrewToRoom 
              * 
-             * Hell.  may need to just save every field in this class.
+             *  may need to just save every field in this class.
              * That could work.
              */
 
@@ -986,6 +983,22 @@ namespace SpaceIsFun
 
         public void loadData(string fileName)
         {
+            //Load and set currentState in stateMachine
+            //May need to do more
+
+            IFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(fileName, FileMode.Open);
+            State new_CurrentState = (State)formatter.Deserialize(stream);
+            //TODO transition state machine to this state
+
+            //Loads "objects" dictionary from save to Entity managers. Keys and Values will be transferred from save file.
+            RoomManager.setObjects((Dictionary<int, Entity>)formatter.Deserialize(stream));
+            GridManager.setObjects((Dictionary<int, Entity>)formatter.Deserialize(stream));
+            CrewManager.setObjects((Dictionary<int, Entity>)formatter.Deserialize(stream));
+            WeaponManager.setObjects((Dictionary<int, Entity>)formatter.Deserialize(stream));
+            ShipManager.setObjects((Dictionary<int, Entity>)formatter.Deserialize(stream));
+
+
 
         }
 
