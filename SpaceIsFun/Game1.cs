@@ -58,7 +58,7 @@ namespace SpaceIsFun
         /// </summary>
         StateMachine stateMachine;
 
-        State startMenu, battle, overworld, narrative, pauseState;
+        State startMenu, battle, overworld, narrative, pauseState, introState;
 
         /// <summary>
         /// the GUI object
@@ -271,13 +271,36 @@ namespace SpaceIsFun
                 roomTypes[i] = false;
             }
 
-            int weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+            
 
+            int weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
             weaponUIDs.Add(weaponUID);
+            
+
+            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+            weaponUIDs.Add(weaponUID);
+           
+            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+            weaponUIDs.Add(weaponUID);
+            
+            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+            weaponUIDs.Add(weaponUID);
+           
+
+            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+            weaponUIDs.Add(weaponUID);
+
+            System.Diagnostics.Debug.WriteLine(weaponUIDs.Count);
+                
 
             playerShipUID = ShipManager.AddEntity(new Ship(shipTexture, gridSprite, gridHighlightSprite, playerShipStartPosition, roomUIDs, gridUIDs, weaponUIDs, roomTypes, shipGrid, 0));
 
-            WeaponToShip[weaponUID] = playerShipUID;
+            
+            foreach (var item in weaponUIDs)
+            {
+                WeaponToShip[item] = playerShipUID;
+            }
+          
 
             setRoomGridDictionary(playerShipUID);
             setRoomToShipDictionary(playerShipUID, roomUIDs);
@@ -329,11 +352,33 @@ namespace SpaceIsFun
                 roomTypes[i] = false;
             }
 
-            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 10000, 3));
-
+            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
             weaponUIDs.Add(weaponUID);
 
-            enemyShipUID = ShipManager.AddEntity(new Ship(shipTexture, gridSprite, gridHighlightSprite, enemyShipStartPosition, roomUIDs, gridUIDs, weaponUIDs, roomTypes, shipGrid, 0));
+            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+            weaponUIDs.Add(weaponUID);
+
+            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+            weaponUIDs.Add(weaponUID);
+
+            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+            weaponUIDs.Add(weaponUID);
+
+            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+            weaponUIDs.Add(weaponUID);
+
+            System.Diagnostics.Debug.WriteLine(weaponUIDs.Count);
+
+
+            enemyShipUID = ShipManager.AddEntity(new Ship(shipTexture, gridSprite, gridHighlightSprite, playerShipStartPosition, roomUIDs, gridUIDs, weaponUIDs, roomTypes, shipGrid, 0));
+
+
+            foreach (var item in weaponUIDs)
+            {
+                WeaponToShip[item] = enemyShipUID;
+            }
+            
+            
             WeaponToShip[weaponUID] = enemyShipUID;
             setRoomGridDictionary(enemyShipUID);
             setUnwalkableGrids(enemyShipUID);
@@ -374,11 +419,13 @@ namespace SpaceIsFun
             pauseState = new State { Name = "pauseState" };
             overworld = new State { Name = "overworld" };
             narrative = new State { Name = "narrative" };
+            introState = new State { Name = "introState" };
 
 
             startMenu.Transitions.Add(battle.Name, battle);
             startMenu.Transitions.Add(overworld.Name, overworld);
             startMenu.Transitions.Add(pauseState.Name, pauseState);
+            startMenu.Transitions.Add(introState.Name, introState);
 
 
             battle.Transitions.Add(startMenu.Name, startMenu);
@@ -395,7 +442,7 @@ namespace SpaceIsFun
             narrative.Transitions.Add(overworld.Name, overworld);
             narrative.Transitions.Add(pauseState.Name, pauseState);
 
-            
+            introState.Transitions.Add(overworld.Name, overworld);
 
             stateMachine.Start(startMenu);
             #endregion

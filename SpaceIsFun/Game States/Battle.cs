@@ -48,13 +48,7 @@ namespace SpaceIsFun
             Pathfinder pather = new Pathfinder(playerShip.ShipGrid, playerShipStartPosition ,GridManager);
 
             // sets up seven energy bars for the ship
-            Panel energy1 = new Panel(4, screenHeight - 128, 40, 128 - 8);
-            Panel energy2 = new Panel(64 + 4, screenHeight - 128, 40, 128 - 8);
-            Panel energy3 = new Panel(128 + 4, screenHeight - 128, 40, 128 - 8);
-            Panel energy4 = new Panel(192 + 4, screenHeight - 128, 40, 128 - 8);
-            Panel energy5 = new Panel(256 + 4, screenHeight - 128, 40, 128 - 8);
-            Panel energy6 = new Panel(320 + 4, screenHeight - 128, 40, 128 - 8);
-            Panel energy7 = new Panel(384 + 4, screenHeight - 128, 40, 128 - 8);
+            Panel energy1 = new Panel(4, screenHeight - 256, 40, 256 - 8);
 
             /*Lance's code*/
             Panel Health = new Panel(5, 5, (32 * playerShip.MaxHP) + 8, 72);
@@ -66,6 +60,7 @@ namespace SpaceIsFun
             // this list will hold the individual bars within one energy bar
             List<Widget> energyBarTest = new List<Widget>();
             List<Widget> healthBarTest = new List<Widget>();
+            List<Button> weapons = new List<Button>();
 
             int shipStartEnergy = playerShip.Energy;
 
@@ -110,14 +105,63 @@ namespace SpaceIsFun
                 // weapon slots 1-5 for each:
                 // filled or not, enabled or not, charging or not
 
+                // Rebecca's Code
+
+                // weapon enabling
+
+               // this panel will hold all the login GUI objects
+
+                //WidgetEvent wpn1click = new WidgetEvent();
+
+                Panel wpnEnable = new Panel(500, screenHeight - 128, 388+8, 75);
+                gui.AddWidget(wpnEnable);
+
+                // Create and add weapon disable buttons
+                Button wpn1Disable = new Button(0, 0, 100, "WPN 1: Disable");
+                Button wpn2Disable = new Button(130, 0, 100, "WPN 2: Disable");
+                Button wpn3Disable = new Button(260, 0, 100, "WPN 3: Disable");
+                Button wpn4Disable = new Button(65, 35, 100, "WPN 4: Disable");
+                Button wpn5Disable = new Button(195, 35, 100, "WPN 5: Disable");
+                wpnEnable.AddWidget(wpn1Disable);
+                weapons.Add(wpn1Disable);
+                wpnEnable.AddWidget(wpn2Disable);
+                weapons.Add(wpn2Disable);
+                wpnEnable.AddWidget(wpn3Disable);
+                weapons.Add(wpn3Disable);
+                wpnEnable.AddWidget(wpn4Disable);
+                weapons.Add(wpn4Disable);
+                wpnEnable.AddWidget(wpn5Disable);
+                weapons.Add(wpn5Disable);
+
+                // Create and add weapon enable buttons
+                Button wpn1Enable = new Button(0, 0, 100, "WPN 1: Enable");
+                Button wpn2Enable = new Button(130, 0, 100, "WPN 2: Enable");
+                Button wpn3Enable = new Button(260, 0, 100, "WPN 3: Enable");
+                Button wpn4Enable = new Button(65, 35, 100, "WPN 4: Enable");
+                Button wpn5Enable = new Button(195, 35, 100, "WPN 5: Enable");
+                wpnEnable.AddWidget(wpn1Enable);
+                weapons.Add(wpn1Enable);
+                wpnEnable.AddWidget(wpn2Enable);
+                weapons.Add(wpn2Enable);
+                wpnEnable.AddWidget(wpn3Enable);
+                weapons.Add(wpn3Enable);
+                wpnEnable.AddWidget(wpn4Enable);
+                weapons.Add(wpn4Enable);
+                wpnEnable.AddWidget(wpn5Enable);
+                weapons.Add(wpn5Enable);
+
+                for (int i = 5; i < 10; i++)
+                    weapons[i].Visible = false;
+
+                    //playerShip.WeaponSlots[1];
+                    //WeaponManager.
+
+
+                    // Rebecca's code end
+
+
                 // adds all the energy bars to the gui
                 gui.AddWidget(energy1);
-                gui.AddWidget(energy2);
-                gui.AddWidget(energy3);
-                gui.AddWidget(energy4);
-                gui.AddWidget(energy5);
-                gui.AddWidget(energy6);
-                gui.AddWidget(energy7);
 
                 /*Lance's*/
                 gui.AddWidget(Health);
@@ -150,7 +194,7 @@ namespace SpaceIsFun
                 // add as many energy widgets as there is ship energy to one entire energy bar
                 for (int i = 0; i < playerShip.Energy; i++)
                 {
-                    energy1.AddWidget(energyBar1 = new Image(0, (128 - 16 - 8 - 8) - i * 16, energyBarSprite));
+                    energy1.AddWidget(energyBar1 = new Image(0, (256 - 16 - 8 - 8) - i * 16, energyBarSprite));
                     energyBarTest.Add(energyBar1);
                 }
 
@@ -200,7 +244,7 @@ namespace SpaceIsFun
                     stateMachine.Transition(startMenu.Name);
                 }
 
-                if (currentKeyState.IsKeyDown(Keys.D1) && previousKeyState.IsKeyUp(Keys.D1))
+                /*if (currentKeyState.IsKeyDown(Keys.D1) && previousKeyState.IsKeyUp(Keys.D1))
                 {
                     Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
 
@@ -247,7 +291,7 @@ namespace SpaceIsFun
                     // if weapon 4 is not charging, try to assign energy, start charging, go to weapon target cursor state, and target enemy
 
                     // if weapon 4 is ready, go to weapon target cursor state, and target enemy
-                }
+                }*/
 
 
 
@@ -471,27 +515,190 @@ namespace SpaceIsFun
                 }
                 #endregion
 
+                #region keys.1
+                if (currentKeyState.IsKeyDown(Keys.D1) == true && previousKeyState.IsKeyUp(Keys.D1) == true)
+                {
+                    int num = 0;
+                    if (weapons[num].Visible)
+                    {
+                        // enable weapon 1
+                        weapons[num].Visible = false;
+                        weapons[num+5].Visible = true;
+                    }
+                    else
+                    {
+                        // disable weapon 1
+                        weapons[num].Visible = true;
+                        weapons[num + 5].Visible = false;
+                    }
+
+                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[num]);
+
+                    // if weapon 1 is currently disabled
+                    if (thisWeapon.weaponStateMachine.CurrentState.Name == "disabled")
+                    {
+                        thisWeapon.start_charging();
+                    }
+
+                    // if weapon 1 is charging
+                    else if (thisWeapon.weaponStateMachine.CurrentState.Name == "charging")
+                    {
+                        // go to target weapon state, try to assign target
+                    }
+                }
+                #endregion
+
+                #region keys.2
+                if (currentKeyState.IsKeyDown(Keys.D2) == true && previousKeyState.IsKeyUp(Keys.D2) == true)
+                {
+                    int num = 1;
+                    if (weapons[num].Visible)
+                    {
+                        weapons[num].Visible = false;
+                        weapons[num + 5].Visible = true;
+                    }
+                    else
+                    {
+                        weapons[num].Visible = true;
+                        weapons[num + 5].Visible = false;
+                    }
+
+                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[num]);
+
+                    // if weapon 2 is currently disabled
+                    if (thisWeapon.weaponStateMachine.CurrentState.Name == "disabled")
+                    {
+                        thisWeapon.start_charging();
+                    }
+
+                    // if weapon 2 is charging
+                    else if (thisWeapon.weaponStateMachine.CurrentState.Name == "charging")
+                    {
+                        // go to target weapon state, try to assign target
+                    }
+                }
+                #endregion
+
+                #region keys.3
+                if (currentKeyState.IsKeyDown(Keys.D3) == true && previousKeyState.IsKeyUp(Keys.D3) == true)
+                {
+                    int num = 2;
+                    if (weapons[num].Visible)
+                    {
+                        weapons[num].Visible = false;
+                        weapons[num + 5].Visible = true;
+                    }
+                    else
+                    {
+                        weapons[num].Visible = true;
+                        weapons[num + 5].Visible = false;
+                    }
+
+                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[num]);
+
+                    // if weapon 3 is currently disabled
+                    if (thisWeapon.weaponStateMachine.CurrentState.Name == "disabled")
+                    {
+                        thisWeapon.start_charging();
+                    }
+
+                    // if weapon 3 is charging
+                    else if (thisWeapon.weaponStateMachine.CurrentState.Name == "charging")
+                    {
+                        // go to target weapon state, try to assign target
+                    }
+                }
+                #endregion
+
+                #region keys.4
+                if (currentKeyState.IsKeyDown(Keys.D4) == true && previousKeyState.IsKeyUp(Keys.D4) == true)
+                {
+                    int num = 3;
+                    if (weapons[num].Visible)
+                    {
+                        weapons[num].Visible = false;
+                        weapons[num + 5].Visible = true;
+                    }
+                    else
+                    {
+                        weapons[num].Visible = true;
+                        weapons[num + 5].Visible = false;
+                    };
+
+                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[num]);
+
+                    // if weapon 4 is currently disabled
+                    if (thisWeapon.weaponStateMachine.CurrentState.Name == "disabled")
+                    {
+                        thisWeapon.start_charging();
+                    }
+
+                    // if weapon 4 is charging
+                    else if (thisWeapon.weaponStateMachine.CurrentState.Name == "charging")
+                    {
+                        // go to target weapon state, try to assign target
+                    }
+                }
+                #endregion
+
+                #region keys.5
+                if (currentKeyState.IsKeyDown(Keys.D5) == true && previousKeyState.IsKeyUp(Keys.D5) == true)
+                {
+                    int num = 4;
+                    if (weapons[num].Visible)
+                    {
+                        weapons[num].Visible = false;
+                        weapons[num + 5].Visible = true;
+                    }
+                    else
+                    {
+                        weapons[num].Visible = true;
+                        weapons[num + 5].Visible = false;
+                    }
+
+                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[num]);
+
+                    // if weapon 5 is currently disabled
+                    if (thisWeapon.weaponStateMachine.CurrentState.Name == "disabled")
+                    {
+                        thisWeapon.start_charging();
+                    }
+
+                    // if weapon 5 is charging
+                    else if (thisWeapon.weaponStateMachine.CurrentState.Name == "charging")
+                    {
+                        // go to target weapon state, try to assign target
+                    }
+                }
+                #endregion
+
+
+
                 #region weapons testing: keys.y, keys.u
                 //a test to see if my states work -Peter
                 if (currentKeyState.IsKeyDown(Keys.Y) == true)
                 {
-                    Weapon defaultWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
+                    for (int i = 0; i < 5; i++)
+                    {
+                        Weapon defaultWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[i]);
 
-
-
-                    defaultWeapon.EnoughPower = true;
-                    defaultWeapon.start_charging();
-                    defaultWeapon.weaponStateMachine.Update(gameTime);
-                    //System.Diagnostics.Debug.WriteLine(defaultWeapon.weaponStateMachine.CurrentState.Name);
+                        defaultWeapon.EnoughPower = true;
+                        defaultWeapon.start_charging();
+                        defaultWeapon.weaponStateMachine.Update(gameTime);
+                        //System.Diagnostics.Debug.WriteLine(defaultWeapon.weaponStateMachine.CurrentState.Name);
+                    }
                 }
 
                 //a test to see if my states work -Peter
                 if (currentKeyState.IsKeyDown(Keys.U) == true)
                 {
-                    Weapon defaultWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
+                    for (int i = 0; i < 5; i++)
+                    {
+                        Weapon defaultWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
 
-                    defaultWeapon.deactivate_weap();
-                    defaultWeapon.weaponStateMachine.Update(gameTime);
+                        defaultWeapon.deactivate_weap();
+                        defaultWeapon.weaponStateMachine.Update(gameTime);
+                    }
                 }
 
                 #endregion
@@ -526,12 +733,6 @@ namespace SpaceIsFun
 
                 // remove the energy widgets from the gui
                 gui.RemoveWidget(energy1);
-                gui.RemoveWidget(energy2);
-                gui.RemoveWidget(energy3);
-                gui.RemoveWidget(energy4);
-                gui.RemoveWidget(energy5);
-                gui.RemoveWidget(energy6);
-                gui.RemoveWidget(energy7);
 
                 foreach (int UID in currentEnemyShips)
                 {
