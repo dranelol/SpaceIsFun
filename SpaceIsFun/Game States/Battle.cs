@@ -47,11 +47,13 @@ namespace SpaceIsFun
             if (gameStateUID == 0)
             {
                 enemyShip = (Ship)ShipManager.RetrieveEntity(enemyShipUID1);
+                currentEnemyShips.Add(enemyShipUID1);
             }
 
             else if (gameStateUID == 2)
             {
                 enemyShip = (Ship)ShipManager.RetrieveEntity(enemyShipUID2);
+                currentEnemyShips.Add(enemyShipUID2);
             }
 
             Pathfinder pather = new Pathfinder(playerShip.ShipGrid, playerShipStartPosition ,GridManager);
@@ -227,7 +229,7 @@ namespace SpaceIsFun
                         energyBarTest.Add(energyBar1);
                     }
 
-                currentEnemyShips.Add(enemyShipUID);
+                
             };
 
             #endregion
