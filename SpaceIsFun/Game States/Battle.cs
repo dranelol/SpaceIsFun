@@ -21,7 +21,6 @@ namespace SpaceIsFun
 
 
         bool multiSelecting = false;
-
         Point selectRectStart = new Point();
         Point selectRectEnd = new Point();
 
@@ -1246,12 +1245,24 @@ namespace SpaceIsFun
                 if (previousMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
                 {
                     // if we've leftclicked
-
+                    
                     // did we click an enemy room?
+                    Ship name = (Ship)ShipManager.RetrieveEntity(checkShipHover(currentMouseState));
+                    bool selectedEnemy;
+                    if (checkShipHover(currentMouseState) != 1 && name.UID != playerShip.UID)
+                    {
+                        selectedEnemy = true;
+                    }
 
                     // if so, get the weapon we're currently selecting
+                    Weapon selectedWeapon;
+                    if (currentKeyState.IsKeyDown(Keys.NumPad1))
+                        selectedWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponUIDList[1]);
+
 
                     // set the enemy room as the weapon's target
+                    //selectedWeapon.CurrentTarget=whichever enemy ship get's instantiated UID's
+                    
 
                     // transition to idle cursor on success
                 }
