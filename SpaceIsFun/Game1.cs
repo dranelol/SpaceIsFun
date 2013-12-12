@@ -111,6 +111,7 @@ namespace SpaceIsFun
         Texture2D crewNoAnimate;
         Texture2D starTexture;
         Texture2D overworldCursorTexture;
+        Texture2D starGreyedTexture;
 
         Drawable testDrawable;
         #endregion
@@ -231,6 +232,7 @@ namespace SpaceIsFun
             crewNoAnimate = Content.Load<Texture2D>("crewNoAnimate");
             starTexture = Content.Load<Texture2D>("starNode");
             overworldCursorTexture = Content.Load<Texture2D>("overworldCursor");
+            starGreyedTexture = Content.Load<Texture2D>("starNodeGreyed");
 
 
             #endregion
@@ -643,8 +645,8 @@ namespace SpaceIsFun
                 spriteBatch.Begin();
                 foreach (var item in starNodeDraws)
                 {
-                    System.Diagnostics.Debug.WriteLine("Test");
                     item.Update(gameTime);
+
                     item.Draw(spriteBatch);
                 }
                 overworldCursorDraw.Draw(spriteBatch);
