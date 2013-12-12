@@ -35,8 +35,14 @@ namespace SpaceIsFun
 
             Vector2 target1Screen = new Vector2();
             Vector2 target2Screen = new Vector2();
+<<<<<<< HEAD
             List<Crew> selectedCrewMembers;
             
+=======
+            List<int> selectedCrewMembers = new List<int>();
+            // mapping of gridID to true or false; whether or not this grid has a crew in it 
+            Dictionary<int, bool> gridFilled = new Dictionary<int, bool>();
+>>>>>>> origin/dev
 
             bool target1Selected = false;
             bool target2Selected = false;
@@ -55,7 +61,12 @@ namespace SpaceIsFun
             Panel energy6 = new Panel(320 + 4, screenHeight - 128, 40, 128 - 8);
             Panel energy7 = new Panel(384 + 4, screenHeight - 128, 40, 128 - 8);
 
+            /*Lance's code*/
+            Panel Health = new Panel(5, 5, (32 * playerShip.MaxHP) + 8, 72);
+            /*END Lance's code*/
+
             Image energyBar1;
+            Image HealthBar;
 
             // this list will hold the individual bars within one energy bar
             List<Widget> energyBarTest = new List<Widget>();
@@ -76,7 +87,7 @@ namespace SpaceIsFun
             hasSelectedCrew.Transitions.Add(idleCursor.Name, idleCursor);
             hasSelectedCrew.Transitions.Add(hasSelectedCrew.Name, hasSelectedCrew);
 
-            
+
 
             cursorState.Start(idleCursor);
 
@@ -85,6 +96,27 @@ namespace SpaceIsFun
             #region battle state enter
             battle.enter += () =>
             {
+<<<<<<< HEAD
+=======
+                // add gui elements here
+
+                // player ship HP, enemy ship HP
+
+
+                // player ship shields, enemy ship shields
+
+
+                // player ship total / current energy (we'll deal with segmented energy later)
+
+                // player ship rooms: 
+                // powered up or down, on fire, hull breach
+
+
+                // weapons GUI: 
+                // weapon slots 1-5 for each:
+                // filled or not, enabled or not, charging or not
+
+>>>>>>> origin/dev
                 // adds all the energy bars to the gui
                 gui.AddWidget(energy1);
                 gui.AddWidget(energy2);
@@ -93,6 +125,21 @@ namespace SpaceIsFun
                 gui.AddWidget(energy5);
                 gui.AddWidget(energy6);
                 gui.AddWidget(energy7);
+
+                /*Lance's*/
+                gui.AddWidget(Health);
+
+                Texture2D HB;
+                if (playerShip.CurrentHP < playerShip.MaxHP * (1 / 3))
+                    HB = healthBar; // red healthbar
+                else if (playerShip.CurrentHP < playerShip.MaxHP * (2 / 3))
+                    HB = healthBar; // orange healthbar
+                else
+                    HB = healthBar; // green healthbar
+
+                for (int i = 0; i < playerShip.CurrentHP; i++)
+                    Health.AddWidget(HealthBar = new Image(32 * i, 0, HB));
+                /*END Lance's*/
 
                 // add as many energy widgets as there is ship energy to one entire energy bar
                 for (int i = 0; i < playerShip.Energy; i++)
@@ -112,6 +159,34 @@ namespace SpaceIsFun
                 #region input handling
 
                 #region keys
+
+                Ship thisShip = (Ship)ShipManager.RetrieveEntity(0);
+
+                if (currentKeyState.IsKeyDown(Keys.T) && previousKeyState.IsKeyUp(Keys.T))
+                {
+                    Crew man = (Crew)CrewManager.RetrieveEntity(0);
+
+                    pather = new Pathfinder(thisShip.ShipGrid, GridManager);
+
+                    Grid thisGrid = (Grid)GridManager.RetrieveEntity(9);
+
+                    target1 = man.Position;
+
+                    thisGrid = (Grid)GridManager.RetrieveEntity(26);
+
+                    target2 = thisGrid.GridPosition;
+
+                    List<Vector2> path = pather.FindOptimalPath(target1, target2);
+
+                    foreach (Vector2 item in path)
+                    {
+                        Vector2 dumb = new Vector2((item.X / 32), (item.Y / 32));
+
+                        System.Diagnostics.Debug.WriteLine(dumb.ToString());
+                    }
+
+                    man.Move(path);
+                }
 
                 // if the a key is pressed, transition back to the menu
                 if (currentKeyState.IsKeyDown(Keys.A))
@@ -137,7 +212,7 @@ namespace SpaceIsFun
                         // go to target weapon state, try to assign target
                     }
 
-                    
+
                 }
 
                 if (currentKeyState.IsKeyDown(Keys.D2) && previousKeyState.IsKeyUp(Keys.D2))
@@ -169,7 +244,7 @@ namespace SpaceIsFun
                 }
 
 
-                
+
                 #region keys.c
                 /*
                 // if the c key is tapped, query to see if the cursor is hovering over the ship
@@ -290,7 +365,7 @@ namespace SpaceIsFun
                 }
                 */
                 #endregion
-                
+
                 #region keys.e
                 // if the e key is tapped, try to lose energy if possible
                 if (currentKeyState.IsKeyDown(Keys.E) == true && previousKeyState.IsKeyUp(Keys.E) == true)
@@ -338,7 +413,7 @@ namespace SpaceIsFun
 
                 #region weapons testing: keys.y, keys.u
                 //a test to see if my states work -Peter
-                if(currentKeyState.IsKeyDown(Keys.Y)==true)
+                if (currentKeyState.IsKeyDown(Keys.Y) == true)
                 {
                     Weapon defaultWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
 
@@ -366,11 +441,11 @@ namespace SpaceIsFun
                 #region mouse
 
 
-                
+
 
                 #endregion
                 #endregion
-                #endregion
+            #endregion
 
                 ShipManager.Update(gameTime);
                 GridManager.Update(gameTime);
@@ -378,9 +453,13 @@ namespace SpaceIsFun
                 WeaponManager.Update(gameTime);
 
                 cursorState.Update(gameTime);
-                
+
             };
+<<<<<<< HEAD
             #endregion
+=======
+
+>>>>>>> origin/dev
 
             // when leaving the battle state
             #region battle state leave
@@ -396,7 +475,7 @@ namespace SpaceIsFun
                 gui.RemoveWidget(energy6);
                 gui.RemoveWidget(energy7);
 
-                foreach(int UID in currentEnemyShips)
+                foreach (int UID in currentEnemyShips)
                 {
                     ShipManager.DeleteEntity(UID);
                 }
@@ -412,6 +491,8 @@ namespace SpaceIsFun
             {
                 #region input handling
 
+                
+
                 #region mouse
 
                 #region left click
@@ -425,7 +506,7 @@ namespace SpaceIsFun
                         //cursorState.Transition(hasSelectedCrew.Name);
                     }
                     // else if we are multiselecting: get (x1,y1;x2,y2), select all crew in that area, set multiselecting to false, transition to hasSelectedCrew if any crew were selected
-                    
+
                     // note: this should only happen if the two points are on the player's ship
                     else if (multiSelecting == true && checkShipHover(selectRectStart) == playerShipUID && checkShipHover(selectRectEnd) == playerShipUID)
                     {
@@ -457,7 +538,11 @@ namespace SpaceIsFun
                         x2 = Math.Min(x2, playerShip.ShipGrid.GetLength(0) - 1);
                         y2 = Math.Min(y2, playerShip.ShipGrid.GetLength(1) - 1);
 
+<<<<<<< HEAD
                         selectedCrewMembers = new List<Crew>();
+=======
+
+>>>>>>> origin/dev
 
                         System.Diagnostics.Debug.WriteLine("x1, y1 {0},{1}", x1, y1);
                         System.Diagnostics.Debug.WriteLine("x2, y2 {0},{1}", x2, y2);
@@ -468,13 +553,17 @@ namespace SpaceIsFun
                             {
                                 System.Diagnostics.Debug.WriteLine("Selected Grid {0},{1}", i, j);
 
-                                foreach (Crew man in crewMembers)
-                                {
-                                    if (man.Position.X == i && man.Position.Y == j)
-                                    {
-                                        man.Selected = true;
-                                        selectedCrewMembers.Add(man);
+                                var crewMembers = CrewManager.RetrieveKeys();
 
+                                foreach (int k in crewMembers)
+                                {
+                                    Crew thisguy = (Crew)CrewManager.RetrieveEntity(k);
+
+                                    if (thisguy.Position.X == i && thisguy.Position.Y == j)
+                                    {
+                                        thisguy.Selected = true;
+
+                                        selectedCrewMembers.Add(k);
                                     }
                                 }
                             }
@@ -487,6 +576,8 @@ namespace SpaceIsFun
                     }
 
                     multiSelecting = false;
+
+                   
                 }
 
                 // if we're holding the mouse button down
@@ -554,12 +645,88 @@ namespace SpaceIsFun
             {
                 #region input handling
 
+                
+
+
                 #region mouse
+
+                if (previousMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
+                {
+                    // if we've leftclicked
+
+                    //deselect the crew, go to idlecursor
+
+                    
+
+                    selectedCrewMembers.Clear();
+                    cursorState.Transition(idleCursor.Name);
+                }
+
                 if (previousMouseState.RightButton == ButtonState.Released && currentMouseState.RightButton == ButtonState.Pressed)
                 {
                     // if we've rightclicked
 
+<<<<<<< HEAD
                     // move the crew
+=======
+                    // move the crew, we can assume the selected crew list has size of at least 1
+
+                    if (selectedCrewMembers.Count == 1)
+                    {
+                        // we only have one man
+
+                        // get the room we clicked, and if its on the ship, check if the room is empty of mans
+
+                        // if it has room, move the man to an empty grid in that room
+
+                        // transition to idle cursor on success
+
+                        // todo: room-filling algorithm
+
+
+
+                    }
+
+                    else
+                    {
+                        // we got more than one man
+
+                        // did we click on a room on our ship?
+                        if (checkShipHover(currentMouseState) == playerShipUID)
+                        {
+                            if (checkRoomHover(currentMouseState, playerShipUID) == true)
+                            {
+                                int thisRoomUID = getRoomHover(currentMouseState, playerShipUID);
+                                Room thisRoom = (Room)RoomManager.RetrieveEntity(getRoomHover(currentMouseState, playerShipUID));
+                                //check if the room has enough room to move the entire list of selected mans
+
+                                // loop through CrewToRoom, count any hits in the values; if count is less than or equal to the room's size then continue
+                                int count = 0;
+                                foreach (var item in CrewToRoom.Values)
+                                {
+                                    if (thisRoomUID == item)
+                                    {
+                                        count++;
+                                    }
+                                }
+
+                                if (count <= thisRoom.RoomSize)
+                                {
+                                    // at this point, we can move the crew to the room
+                                    // todo: room-filling algorithm
+                                    // transition to idle cursor on success
+
+
+                                }
+                            }
+                        }
+
+
+
+                    }
+
+
+>>>>>>> origin/dev
                 }
 
                 #endregion
@@ -583,11 +750,28 @@ namespace SpaceIsFun
                 #region input handling
 
                 #region mouse
+<<<<<<< HEAD
+=======
+
+                if (previousMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
+                {
+                    // if we've leftclicked
+
+                    // did we click an enemy room?
+
+                    // if so, get the weapon we're currently selecting
+
+                    // set the enemy room as the weapon's target
+
+                    // transition to idle cursor on success
+                }
+
+>>>>>>> origin/dev
                 if (previousMouseState.RightButton == ButtonState.Released && currentMouseState.RightButton == ButtonState.Pressed)
                 {
                     // if we've rightclicked
 
-                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
+                    //Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
 
                     // transition to idle cursor
 
@@ -604,6 +788,11 @@ namespace SpaceIsFun
             #endregion
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> origin/dev
         }
 
     }
