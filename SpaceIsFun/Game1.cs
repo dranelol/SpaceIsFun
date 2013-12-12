@@ -959,6 +959,11 @@ namespace SpaceIsFun
             //just erases the previous file.
 
             saveState(fileName);
+
+            //Instead of just dumping the objects
+            //We could just make the Entity Manager serializable
+            //And dump the manager itself.
+            //But that may take extra storage space
             RoomManager.dumpObjects(fileName);
             GridManager.dumpObjects(fileName);
             CrewManager.dumpObjects(fileName);
