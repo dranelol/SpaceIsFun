@@ -99,6 +99,7 @@ namespace SpaceIsFun
         Texture2D healthBarFull;
         Texture2D healthBarMed;
         Texture2D healthBarLow;
+        Texture2D shieldBubble;
         Texture2D gridSprite;
         Texture2D gridHighlightSprite;
         Texture2D energyBarSprite;
@@ -215,6 +216,7 @@ namespace SpaceIsFun
             healthBarFull = Content.Load<Texture2D>("healthBarFull");
             healthBarMed = Content.Load<Texture2D>("healthBarMed");
             healthBarLow = Content.Load<Texture2D>("healthBarLow");
+            shieldBubble = Content.Load<Texture2D>("shieldBubble");
             gridSprite = Content.Load<Texture2D>("Grid");
             gridHighlightSprite = Content.Load<Texture2D>("GridNotWalkable");
             energyBarSprite = Content.Load<Texture2D>("energyBar");
