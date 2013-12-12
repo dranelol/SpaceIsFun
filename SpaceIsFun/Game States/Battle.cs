@@ -118,7 +118,6 @@ namespace SpaceIsFun
                 gui.AddWidget(energy5);
                 gui.AddWidget(energy6);
                 gui.AddWidget(energy7);
-
                 /*Lance's*/
                 gui.AddWidget(Health);
 
@@ -632,7 +631,13 @@ namespace SpaceIsFun
 
                     multiSelecting = false;
 
-                   
+                    if (selectedCrewMembers.Count > 0)
+                    {
+                        foreach (var item in selectedCrewMembers)
+                        {
+                            System.Diagnostics.Debug.WriteLine(item);
+                        }
+                    }
                 }
 
                 // if we're holding the mouse button down
@@ -768,6 +773,84 @@ namespace SpaceIsFun
                                     // todo: room-filling algorithm
                                     // transition to idle cursor on success
 
+                                    // get grids that exist in the room
+                                    List<int> theGrids = new List<int>();
+                                    foreach (var item in GridToRoom.Keys)
+                                    {
+                                        if (thisRoomUID == GridToRoom[item])
+                                        {
+                                            theGrids.Add(item);
+                                            
+                                        }
+                                        
+                                    }
+                                    //add their positions to a list
+                                    List<Tuple<int, int>> gridPositions = new List<Tuple<int, int>>();
+                                    foreach (var item in theGrids)
+                                    {
+                                        Grid gridInRoom = (Grid)GridManager.RetrieveEntity(item); 
+                                        //System.Diagnostics.Debug.WriteLine(item);
+                                        //System.Diagnostics.Debug.WriteLine(gridInRoom.GridPosition.ToString());
+                                        gridPositions.Add(new Tuple<int,int>((int)gridInRoom.GridPosition.X, (int)gridInRoom.GridPosition.Y));
+                                        
+                                    }
+
+                                    foreach (var item in gridPositions)
+                                    {
+                                        System.Diagnostics.Debug.WriteLine(item.Item1.ToString() + ", " + item.Item2.ToString());
+                                    }
+
+                                    // this is where we sort, if needed
+
+                                    /*
+                                    gridPositions.Sort();
+                                    System.Diagnostics.Debug.WriteLine("sorted");
+                                    foreach (var item in gridPositions)
+                                    {
+                                        System.Diagnostics.Debug.WriteLine(item.Item1.ToString() + ", " + item.Item2.ToString());
+                                    }
+                                    */
+                                    // loop through crew members, for each one, find the next available grid and assign him that target
+                                    for(int i=0;i<selectedCrewMembers.Count;i++)
+                                    {
+                                        // get the next available grid
+                                        int targetGridUID = 0;
+                                        for (int j = 0; j < theGrids.Count; j++)
+                                        {
+
+                                            // if this grid is filled by a man
+
+                                            //search the crew for their positions
+                                            bool skipGrid = false;
+                                            foreach(var man in CrewManager.RetrieveKeys())
+                                            {
+                                                Crew searchCrew = (Crew)CrewManager.RetrieveEntity(man);
+                                                Grid searchGrid = (Grid)GridManager.RetrieveEntity(theGrids[j]);
+                                                if (searchCrew.Position == searchGrid.GridPosition)
+                                                {
+                                                    skipGrid = true;
+                                                }
+                                            }
+
+                                            //if the grid was filled, skip this grid
+                                            if (skipGrid == true)
+                                            {
+                                                break;
+                                            }
+
+                                            else
+                                            {
+                                                targetGridUID = theGrids[j];
+                                            }
+                                            
+                                        }
+
+                                        Crew thisCrew = (Crew)CrewManager.RetrieveEntity(selectedCrewMembers[i]);
+                                        Grid thisGrid = (Grid)GridManager.RetrieveEntity(targetGridUID);
+
+                                        List<Vector2> path = pather.FindOptimalPath(thisCrew.Position, thisGrid.GridPosition);
+                                        thisCrew.Move(path);
+                                    }
 
                                 }
                             }
@@ -835,7 +918,7 @@ namespace SpaceIsFun
             };
             #endregion
 
-
+            
 
 
         }

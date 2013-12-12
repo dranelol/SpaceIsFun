@@ -89,6 +89,7 @@ namespace SpaceIsFun
         Dictionary<int, int> WeaponToShip = new Dictionary<int, int>();
         Dictionary<int, int> CrewToShip = new Dictionary<int, int>();
         Dictionary<int, int> CrewToRoom = new Dictionary<int, int>();
+        Dictionary<int, bool> FilledRooms = new Dictionary<int, bool>();
         #endregion
 
         // definitions for all the textures go here
@@ -232,6 +233,7 @@ namespace SpaceIsFun
             List<int> gridUIDs = new List<int>();
             List<int> roomUIDs = new List<int>();
             List<int> weaponUIDs = new List<int>();
+            List<int> filledRoomUIDs = new List<int>();
             int gridWidth = shipTexture.Bounds.Width / 32;
             int gridHeight = shipTexture.Bounds.Height / 32;
             int [,] shipGrid = new int[gridWidth, gridHeight];
@@ -282,7 +284,8 @@ namespace SpaceIsFun
             setRoomGridDictionary(playerShipUID);
             setRoomToShipDictionary(playerShipUID, roomUIDs);
             setUnwalkableGrids(playerShipUID);
-            setCrewDictionary(playerShipUID);
+            filledRoomUIDs = setCrewDictionary(playerShipUID);
+            setFilledDict(playerShipUID, filledRoomUIDs);
 
             //playerShip = new Ship(shipTexture, gridSprite, gridHighlightSprite, new Vector2(50, 50), roomUIDs, gridUIDs, weaponUIDs, roomTypes);
 
@@ -887,7 +890,7 @@ namespace SpaceIsFun
 
         }
 
-        public void setCrewDictionary(int shipUID)
+        public List<int> setCrewDictionary(int shipUID)
         {
             Ship thisShip = (Ship)ShipManager.RetrieveEntity(shipUID);
 
@@ -923,7 +926,7 @@ namespace SpaceIsFun
 
 
             int mans = 0;
-            
+            List<int> filledRoomUIDs = new List<int>();
             foreach (int i in gridRoomKeys)
             {
                 if (mans == 3)
@@ -939,12 +942,13 @@ namespace SpaceIsFun
 
                 CrewToShip[crewUID] = shipUID;
                 CrewToRoom[crewUID] = GridToRoom[i];
+                filledRoomUIDs.Add(i);
 
                 mans++;
             }
 
 
-
+            return filledRoomUIDs;
         }
 
         public void setRoomToShipDictionary(int shipUID, List<int> roomUIDs)
@@ -954,6 +958,25 @@ namespace SpaceIsFun
                 RoomToShip[i] = shipUID;
             }
 
+        }
+
+        public void setFilledDict(int shipUID, List<int> filledRoomUIDs)
+        {
+
+            var grids = GridManager.RetrieveKeys();
+            
+            foreach (int i in grids)
+            {
+                if (filledRoomUIDs.Contains(i))
+                {
+                    FilledRooms[i] = true;                    
+                }
+                else
+                {
+                    FilledRooms[i] = false;
+                }
+
+            }
         }
     }
 }

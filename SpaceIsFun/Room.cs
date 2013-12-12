@@ -377,7 +377,7 @@ namespace SpaceIsFun
         }
 
         /// <summary>
-        /// the grids contained in the room
+        /// the grids contained in the room, in order of how they will be filled
         /// </summary>
         private List<int> roomGrids;
         
