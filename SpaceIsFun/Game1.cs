@@ -62,6 +62,8 @@ namespace SpaceIsFun
 
         State startMenu, battle, overworld, narrative, pauseState, introState;
 
+        Boolean battleStatus;
+
         /// <summary>
         /// the GUI object
         /// </summary>
@@ -144,8 +146,11 @@ namespace SpaceIsFun
 
         public bool battle1Resolved = false;
         public bool battle2Resolved = false;
+        public bool battle1Result = false;
         public bool narrative1Resolved = false;
         public bool narrative2Resolved = false;
+
+        Drawable overworldCursorDraw;
 
         /// <summary>
         /// width of the current screen, in pixels
@@ -526,6 +531,8 @@ namespace SpaceIsFun
             gui.AddText("error", new Ruminate.GUI.Framework.Text(font, Color.Red));
             gui.AddText("password", new Ruminate.GUI.Framework.Text(font, Color.TransparentBlack));
             gui.AddText("empty", new Ruminate.GUI.Framework.Text(font, Color.LightSlateGray));
+            gui.AddText("Oh, so you’re off to explore space are you? Good for you, though you might be forewarned that the Demonstrably Erratic Mostly-flying Object spacecraft that you’ve been assigned might be a bit, err, unique",
+                new Ruminate.GUI.Framework.Text(font, Color.White));
 
 
             #region stuff from initialize
@@ -568,10 +575,11 @@ namespace SpaceIsFun
 
             narrative.Transitions.Add(overworld.Name, overworld);
             narrative.Transitions.Add(pauseState.Name, pauseState);
+            narrative.Transitions.Add(battle.Name, battle);
 
             introState.Transitions.Add(overworld.Name, overworld);
 
-            stateMachine.Start(battle);
+            stateMachine.Start(narrative);
             #endregion
 
             // set up any UI elements here
@@ -590,7 +598,8 @@ namespace SpaceIsFun
             setupBattle(playerShipUID);
             setupPauseState();
             setupOverworld();
-
+            setupNarrative();
+            overworldCursorDraw = new Drawable(overworldCursorTexture, cursorCoords);
             #endregion
 
         }
@@ -644,7 +653,7 @@ namespace SpaceIsFun
             #region input handling
 
             // initial pass on game pausing logic
-
+                /*
             // if space is pressed
             if (currentKeyState.IsKeyDown(Keys.Space) == true && previousKeyState.IsKeyUp(Keys.Space) == true)
             {
@@ -660,6 +669,7 @@ namespace SpaceIsFun
                     stateMachine.Transition(pauseState.Name);
                 }
             }
+                 * */
 
 
             #endregion
@@ -691,6 +701,7 @@ namespace SpaceIsFun
 
                     item.Draw(spriteBatch);
                 }
+                
                 overworldCursorDraw.Draw(spriteBatch);
                 spriteBatch.End();
             }

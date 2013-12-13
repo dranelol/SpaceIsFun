@@ -23,7 +23,7 @@ namespace SpaceIsFun
         List<Drawable> starNodeDraws = new List<Drawable>(); //Drawable objects to correlate to the star nodes
         int starNodeSelectedIndex = 0; //The index in the list of nodes for the star that is selected
         Vector2 starNodeSelected; //Vector that correlates with the selected star
-        Drawable overworldCursorDraw; //Drawable for the cursor
+        //Drawable overworldCursorDraw; //Drawable for the cursor
         Vector2 cursorCoords = new Vector2();          //Both the cursor coordinates and the selected node
 
         void setupOverworld()
@@ -160,7 +160,7 @@ namespace SpaceIsFun
                
 
                 cursorCoords = starNodes[starNodeSelectedIndex];
-                overworldCursorDraw = new Drawable(overworldCursorTexture, cursorCoords);
+                overworldCursorDraw.MoveTo(cursorCoords);
                
 
             };
