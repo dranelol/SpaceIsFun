@@ -11,6 +11,8 @@ using Ruminate.GUI.Content;
 //using NUnit.Framework;
 //using Rhino.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 
 namespace SpaceIsFun 
@@ -255,11 +257,9 @@ namespace SpaceIsFun
             starTexture = Content.Load<Texture2D>("starNode");
             overworldCursorTexture = Content.Load<Texture2D>("overworldCursor");
             starGreyedTexture = Content.Load<Texture2D>("starNodeGreyed");
-            
-
             #endregion
 
-            
+
             #region player ship construction
 
             //Vector2 playerShipStartPosition = new Vector2(50,50);
