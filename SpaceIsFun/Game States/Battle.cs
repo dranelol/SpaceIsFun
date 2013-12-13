@@ -193,11 +193,9 @@ namespace SpaceIsFun
 
             Ship playerShip = (Ship)ShipManager.RetrieveEntity(playerUID);
             Ship enemyShip;
-<<<<<<< HEAD
+
             enemyShip = (Ship)ShipManager.RetrieveEntity(enemyShipUID1);
-=======
-            
->>>>>>> 8938d182c1d12e8d4a6619dffdd3159269200dce
+
             if (gameStateUID == 0)
             {
                 enemyShip = (Ship)ShipManager.RetrieveEntity(enemyShipUID1);
