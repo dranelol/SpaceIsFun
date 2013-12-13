@@ -11,6 +11,8 @@ using Ruminate.GUI.Content;
 //using NUnit.Framework;
 //using Rhino.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 
 namespace SpaceIsFun 
@@ -237,8 +239,8 @@ namespace SpaceIsFun
 
             #region textures
             shipTexture = Content.Load<Texture2D>("ship01");
-            enemyShipTexture1 = Content.Load<Texture2D>("ship02");
-            enemyShipTexture2 = Content.Load<Texture2D>("ship03");
+            enemyShipTexture1 = Content.Load<Texture2D>("ship02Flipped");
+            enemyShipTexture2 = Content.Load<Texture2D>("ship03Flipped");
             energyBar = Content.Load<Texture2D>("energyBar");
             healthBarFull = Content.Load<Texture2D>("healthBarFull");
             healthBarMed = Content.Load<Texture2D>("healthBarMed");
@@ -248,18 +250,16 @@ namespace SpaceIsFun
             gridHighlightSprite = Content.Load<Texture2D>("GridNotWalkable");
             energyBarSprite = Content.Load<Texture2D>("energyBar");
             roomSprite = Content.Load<Texture2D>("Room2x2");
-            roomHighlightSprite = Content.Load<Texture2D>("Room2x2highlight");
+            roomHighlightSprite = Content.Load<Texture2D>("Room2x2");
             pixel = new Texture2D(GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             pixel.SetData(new[] { Color.Green });
             crewNoAnimate = Content.Load<Texture2D>("crewNoAnimate");
             starTexture = Content.Load<Texture2D>("starNode");
             overworldCursorTexture = Content.Load<Texture2D>("overworldCursor");
             starGreyedTexture = Content.Load<Texture2D>("starNodeGreyed");
-            
-
             #endregion
 
-            
+
             #region player ship construction
 
             //Vector2 playerShipStartPosition = new Vector2(50,50);
