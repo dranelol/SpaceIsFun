@@ -122,7 +122,10 @@ namespace SpaceIsFun
                         if (narrative1Resolved == false)
                         {
                             //Do some 
-                            System.Diagnostics.Debug.WriteLine("Narrative1");
+                            //System.Diagnostics.Debug.WriteLine("Narrative1");
+
+                            stateMachine.Transition(battle.Name);
+
                             narrative1Resolved = true;
                         }
                     }
@@ -131,7 +134,8 @@ namespace SpaceIsFun
                         if (narrative1Resolved && battle1Resolved)
                         {
                             //Do some more  if narrative2
-                            System.Diagnostics.Debug.WriteLine("Narrative2");
+                            //System.Diagnostics.Debug.WriteLine("Narrative2");
+                            
                             narrative2Resolved = true;
                         }
                     }
@@ -140,7 +144,10 @@ namespace SpaceIsFun
                         if (battle1Resolved == false)
                         {
                             //Battle some 
-                            System.Diagnostics.Debug.WriteLine(",  and lollipops.  Unicorn on top.");
+                            //System.Diagnostics.Debug.WriteLine(",  and lollipops.  Unicorn on top.");
+
+                            gameStateUID = 2;
+                            stateMachine.Transition(battle.Name);
                             battle1Resolved = true;
                         }
                     }

@@ -590,6 +590,7 @@ namespace SpaceIsFun
             setupBattle(playerShipUID);
             setupPauseState();
             setupOverworld();
+            setupIntro();
 
             #endregion
 
@@ -704,6 +705,7 @@ namespace SpaceIsFun
                 playerShip.Draw(spriteBatch);
 
                 // draw different stuff based on the current gamestate
+                
                 switch (gameStateUID)
                 {
                     case 0:
@@ -718,6 +720,15 @@ namespace SpaceIsFun
                     case 2:
                         //this is battle two
                         Ship enemyShip2 = (Ship)ShipManager.RetrieveEntity(enemyShipUID2);
+                        //System.Diagnostics.Debug.WriteLine("enemy ship id1:" + playerShipUID);
+                        //System.Diagnostics.Debug.WriteLine("enemy ship id1:"+enemyShipUID1);
+                        //System.Diagnostics.Debug.WriteLine("enemy ship id2:" + enemyShipUID2);
+
+
+                        
+
+                        
+
                         enemyShip2.Draw(spriteBatch);
                         break;
                     case 3:
@@ -725,7 +736,7 @@ namespace SpaceIsFun
 
                         break;
                     default:
-
+                        
                         break;
                         
                 }
