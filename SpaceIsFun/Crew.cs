@@ -179,7 +179,7 @@ namespace SpaceIsFun
             this.crewSelectedTexture = crewSelectedTexture;
             this.selected = false;
 
-            sprite = new Drawable(crewTexture, position, gPosition);
+            sprite = new Drawable(crewTexture, position, gPosition, 8, 4, AnimationType.Loop, 0, 8);
 
 
 

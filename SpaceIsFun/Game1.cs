@@ -253,7 +253,7 @@ namespace SpaceIsFun
             roomHighlightSprite = Content.Load<Texture2D>("Room2x2");
             pixel = new Texture2D(GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             pixel.SetData(new[] { Color.Green });
-            crewNoAnimate = Content.Load<Texture2D>("crewNoAnimate");
+            crewNoAnimate = Content.Load<Texture2D>("CrewSpritesheet");
             starTexture = Content.Load<Texture2D>("starNode");
             overworldCursorTexture = Content.Load<Texture2D>("overworldCursor");
             starGreyedTexture = Content.Load<Texture2D>("starNodeGreyed");
@@ -571,7 +571,7 @@ namespace SpaceIsFun
 
             introState.Transitions.Add(overworld.Name, overworld);
 
-            stateMachine.Start(battle);
+            stateMachine.Start(startMenu);
             #endregion
 
             // set up any UI elements here
