@@ -166,6 +166,14 @@ namespace SpaceIsFun
         public void setObjects(Dictionary<int, Entity> obj)
         {
             objects = new Dictionary<int, Entity>(obj); //copy constructor
+            int count = 0;
+
+            //This should make count = last used key
+            foreach (int i in objects.Keys.ToArray())
+                count = i;
+
+            UIDcurrent = count;
+            //should be last assigned UID
 
         }
 
