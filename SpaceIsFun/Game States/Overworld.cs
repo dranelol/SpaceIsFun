@@ -16,11 +16,12 @@ namespace SpaceIsFun
         //States for what the nodes can be
         enum NodeState { Narrative1, Narrative2, Battle1, Battle2 }
 
-        List<Vector2> starNodes = new List<Vector2>();
-        List<Drawable> starNodeDraws = new List<Drawable>();
-        int starNodeSelectedIndex = 0;
-        Vector2 starNodeSelected;
-        Drawable overworldCursorDraw;
+        
+        List<Vector2> starNodes = new List<Vector2>(); //A list of star nodes
+        List<Drawable> starNodeDraws = new List<Drawable>(); //Drawable objects to correlate to the star nodes
+        int starNodeSelectedIndex = 0; //The index in the list of nodes for the star that is selected
+        Vector2 starNodeSelected; //Vector that correlates with the selected star
+        Drawable overworldCursorDraw; //Drawable for the cursor
         Vector2 cursorCoords = new Vector2();          //Both the cursor coordinates and the selected node
 
         void setupOverworld()
@@ -36,6 +37,7 @@ namespace SpaceIsFun
 
                 setNodes();
 
+                //Traverse through starNodes, and assign gray or regular textures based on which node it is
                 for (int i = 0; i < starNodes.Count; i++)
                 {
                     if (i == (int)NodeState.Narrative1 || i == (int)NodeState.Battle1)
@@ -47,17 +49,13 @@ namespace SpaceIsFun
                         starNodeDraws.Add(new Drawable(starGreyedTexture, starNodes[i]));
                     }
                 }
-                /*
-                foreach (Vector2 item in starNodes) {
-                    starNodeDraws.Add(new Drawable(starTexture, item));
-                }
-                 * */
             };
 
             overworld.update += (GameTime gameTime) =>
             {
                 #region input handling
 
+                //Go to the next star node based on which key is pressed
                 if (currentKeyState.IsKeyUp(Keys.Up) && previousKeyState.IsKeyDown(Keys.Up))
                 {
                     traverseStarsUp();
@@ -75,11 +73,13 @@ namespace SpaceIsFun
                     traverseStarsRight();
                 }
 
+                //Completely reset all of the stars when the user presses control. 
                 if (currentKeyState.IsKeyUp(Keys.LeftControl) && previousKeyState.IsKeyDown(Keys.LeftControl))
                 {
                     resetNodes();
                 }
-
+                
+                //Reset the sprite textures of the stars based on the current state of the narrative and battle resolutions
                 if (battle1Resolved && narrative1Resolved)
                 {
                     starNodeDraws[1].SpriteTexture = starTexture;
@@ -105,13 +105,14 @@ namespace SpaceIsFun
                     starNodeDraws[3].SpriteTexture = starGreyedTexture;
                 }
 
+                //Win condition
                 if (narrative1Resolved && narrative2Resolved && battle1Resolved && battle2Resolved)
                 {
                     //Generate you win message here
                 }
 
 
-                //Upon Enter press, check if the
+                //Upon pressing Enter, transition to the necessary state based on which node is selected and whether or not they meet the criteria
                 if (currentKeyState.IsKeyUp(Keys.Enter) && previousKeyState.IsKeyDown(Keys.Enter))
                 {
                     if (starNodeSelectedIndex == (int)NodeState.Narrative1)
@@ -153,12 +154,8 @@ namespace SpaceIsFun
                 }
 
 
-                //If user hits down, traverseStarsLeft
-                //If user hits right, traverseStarsRight
-
                 #endregion
                
-               //This is where it would draw if it weren't dumb
 
                 cursorCoords = starNodes[starNodeSelectedIndex];
                 overworldCursorDraw = new Drawable(overworldCursorTexture, cursorCoords);
@@ -180,7 +177,7 @@ namespace SpaceIsFun
         {
             Random rand = new Random();
             
-            
+            //Add four stars to the list of star nodes at random points on the screen
             starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
             starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
             starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
@@ -190,6 +187,7 @@ namespace SpaceIsFun
 
         private void resetNodes()
         {
+            //Nullify the old star node lists and draw lists so we can reset them
             starNodes = new List<Vector2>();
             starNodeDraws = new List<Drawable>();
 
@@ -215,7 +213,7 @@ namespace SpaceIsFun
 
         private void traverseStarsUp()
         {
-            //Cut star map in vertical 'halves' 
+            //Cut star map in vertical 'halves'  by finding the stars with a y coordinate lower than the selected node.
             List<Vector2> mapHalf = new List<Vector2>();
             foreach (var item in starNodes)
             {
@@ -227,7 +225,9 @@ namespace SpaceIsFun
                     }
                 }
             }
+
             //Calculate cartesian distance between selected node and every other node left
+            //Put the distances in another list
             List<double> distances = new List<double>();
             foreach (var item in mapHalf)
             {
@@ -238,8 +238,7 @@ namespace SpaceIsFun
                 distances.Add(distance);
 
             }
-
-            //Whichever has the lowest cartesian distance is the one we reassign the select to
+            
             //Recalc all distances, if the distance is equal to the min distance in distances, the set cursor coords to it.
             distances.Sort();
             Vector2 temp = new Vector2();
@@ -256,6 +255,7 @@ namespace SpaceIsFun
                 }
             }
 
+            //Whichever has the lowest cartesian distance is the one we reassign the select to
             for (int i = 0; i < starNodes.Count; i++)
             {
                 if (temp == starNodes[i])
