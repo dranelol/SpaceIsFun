@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using Ruminate.GUI.Framework;
 using Ruminate.GUI.Content;
 //using NUnit.Framework;
@@ -116,6 +118,17 @@ namespace SpaceIsFun
         Texture2D starGreyedTexture;
 
         Drawable testDrawable;
+        #endregion
+        
+        // definitions for all the sounds go here!
+        #region sounds
+
+        SoundEffect weaponsSelected;
+        SoundEffect weaponsDeselected;
+        SoundEffect menuClick;
+        SoundEffectInstance IntroMusic;
+        SoundEffectInstance BattleMusic;
+
         #endregion
 
         // 0: cursor over no ship
@@ -247,7 +260,15 @@ namespace SpaceIsFun
 
             #endregion
 
-            
+            #region sounds
+
+            weaponsSelected = Content.Load<SoundEffect>("WeaponsSelected.xnb");
+            weaponsDeselected = Content.Load<SoundEffect>("WeaponsDeselected");
+            menuClick = Content.Load<SoundEffect>("MenuClick");
+            IntroMusic = Content.Load<SoundEffectInstance>("SpaceIsFunIntroMusic");
+            BattleMusic = Content.Load<SoundEffectInstance>("SpaceIsFunBatlleMusic");
+
+            #endregion
             #region player ship construction
 
             Vector2 playerShipStartPosition = new Vector2(50,50);
