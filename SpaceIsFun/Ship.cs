@@ -503,7 +503,7 @@ namespace SpaceIsFun
         {
             if (currentHP == 0)
             {
-                System.Diagnostics.Debug.WriteLine("dead ship");
+                //System.Diagnostics.Debug.WriteLine("dead ship");
             }
             //update the shield
             /*if (roomList[0].getStatus() != "inoperable" || roomList[0].getStatus() != "disabled")

@@ -1629,25 +1629,32 @@ namespace SpaceIsFun
 
                 #region mouse
                 
-                selectedWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponUIDList[1]);
+                selectedWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponUIDList[0]);
                 
                 if (previousMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
                 {
                     // if we've leftclicked
                     System.Diagnostics.Debug.WriteLine("I'm here, clicking!");
-                    //did we click an enemy room?
                     name = (Ship)ShipManager.RetrieveEntity(checkShipHover(currentMouseState));
                     System.Diagnostics.Debug.WriteLine(name.UID);
                     if (name.UID != -1 && name.UID != playerShip.UID)
                     {
                         System.Diagnostics.Debug.WriteLine("Hey, it's an enemy!");
                         selectedEnemy = true;
+
+                        dealDamage(name.UID, playerShip.WeaponUIDList[0]);
+                        selectedWeapon.Charge = 0;
+                        selectedWeapon.ReadyToFire = false;
+                        selectedWeapon.weaponStateMachine.Transition("charging");
+                        cursorState.Transition(idleCursor.Name);
                     }
+
+
 
                  
 
                 }
-
+                /*
                 // if so, get the weapon we're currently selecting
 
                 if (currentKeyState.IsKeyDown(Keys.L) && selectedEnemy == true )
@@ -1663,10 +1670,10 @@ namespace SpaceIsFun
                     //get the enemyID
                 }
 
-
+                */
                 // set the enemy room as the weapon's target
 
-
+                /*
                 if (selectedWeapon.ReadyToFire)
                 {
                     //the weapon is in ready stage
@@ -1677,7 +1684,7 @@ namespace SpaceIsFun
                     //the weapon is no longer ready to fire
                     cursorState.Transition("idleCursor");
                 }
-
+                */
                 // transition to idle cursor on success
                     
 

@@ -346,23 +346,23 @@ namespace SpaceIsFun
                 roomTypes[i] = false;
             }
 
+
+
+            int weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 2, 500, 3));
+            weaponUIDs.Add(weaponUID);
             
 
-            int weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 2, 500, 3));
             weaponUIDs.Add(weaponUID);
-            
 
-            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 2, 500, 3));
             weaponUIDs.Add(weaponUID);
-           
-            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
-            weaponUIDs.Add(weaponUID);
-            
-            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
-            weaponUIDs.Add(weaponUID);
-           
 
-            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 2, 500, 3));
+            weaponUIDs.Add(weaponUID);
+
+
+            weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 2, 500, 3));
             weaponUIDs.Add(weaponUID);
 
             System.Diagnostics.Debug.WriteLine(weaponUIDs.Count);
@@ -1351,7 +1351,7 @@ namespace SpaceIsFun
             //figure out wait time and drawable nonsense
 
             targetShip.TakeDamage(targetWeap.Damage);
-
+            System.Diagnostics.Debug.WriteLine("hp after damage: " + targetShip.CurrentHP.ToString());
         }
 
     }

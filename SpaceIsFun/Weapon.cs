@@ -354,8 +354,8 @@ namespace SpaceIsFun
             charging.update += (GameTime gameTime) =>
             {
                 charge += (int)gameTime.ElapsedGameTime.Milliseconds;
-                System.Diagnostics.Debug.WriteLine("current charge: " + charge.ToString());
-                System.Diagnostics.Debug.WriteLine("charge needed: " + timeToCharge.ToString());
+                //System.Diagnostics.Debug.WriteLine("current charge: " + charge.ToString());
+                //System.Diagnostics.Debug.WriteLine("charge needed: " + timeToCharge.ToString());
                 if (charge >= timeToCharge)
                 {
                     System.Diagnostics.Debug.WriteLine("weapon is ready to fire");
