@@ -1,0 +1,39 @@
+
+coroutine gemini1;
+begin
+    coroutine alpha;
+    begin
+        vprint("one");
+        resume beta;
+        vprint("three");
+        resume gamma;
+        vprint("done");
+    end;
+
+    coroutine beta;
+    begin
+        vprint("two");
+        resume alpha;
+        vprint("five");
+    end;
+
+    coroutine gamma;
+    begin
+        vprint("four");
+        resume beta;
+        vprint("six");
+        resume alpha;
+    end;
+    
+     alpha;resume gemini2;
+     gamma;
+end;
+coroutine gemini2;
+begin
+    procedure point;
+    begin
+        vprint("~~(owo)~~");
+    end;
+   
+    point;resume gemini1;
+end;
