@@ -297,7 +297,7 @@ namespace SpaceIsFun
             roomHighlightSprite = Content.Load<Texture2D>("Room2x2");
             pixel = new Texture2D(GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             pixel.SetData(new[] { Color.Green });
-            crewNoAnimate = Content.Load<Texture2D>("CrewSpritesheet");
+            crewNoAnimate = Content.Load<Texture2D>("crewBlue");
             starTexture = Content.Load<Texture2D>("starNode");
             overworldCursorTexture = Content.Load<Texture2D>("overworldCursor");
             starGreyedTexture = Content.Load<Texture2D>("starNodeGreyed");

@@ -180,7 +180,7 @@ namespace SpaceIsFun
             this.crewSelectedTexture = crewSelectedTexture;
             this.selected = false;
 
-            sprite = new Drawable(crewTexture, position, gPosition, 8, 4, AnimationType.Loop, 0, 8);
+            sprite = new Drawable(crewTexture, position, gPosition, 8, 8, AnimationType.Loop, 0, 8);
 
 
 
@@ -206,7 +206,9 @@ namespace SpaceIsFun
         public override void Update(GameTime gameTime)
         {
             //System.Diagnostics.Debug.WriteLine("crew update");
-            
+            if (selected == true) Sprite.StartFrame = 32;
+            else Sprite.StartFrame = 0;
+
             Sprite.Update(gameTime);
             base.Update(gameTime);
         }
@@ -214,19 +216,10 @@ namespace SpaceIsFun
         public override void Draw(SpriteBatch spriteBatch)
         {
             
-            
-            if (selected == true)
-            {
-                Sprite.SpriteTexture = crewSelectedTexture;
-            }
-
-            if (selected == false)
-            {
-                Sprite.SpriteTexture = crewTexture;
-            }
 
             Sprite.Draw(spriteBatch);
             base.Draw(spriteBatch);
+            System.Diagnostics.Debug.WriteLine(Sprite.Frame);
         }
 
 
@@ -238,11 +231,12 @@ namespace SpaceIsFun
             if (selected == true)
             {
                 selected = false;
+                //Sprite.setStart(0);
             }
-
             else
             {
                 selected = true;
+                //Sprite.setStart(32);
             }
         }
 

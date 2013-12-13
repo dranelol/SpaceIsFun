@@ -408,6 +408,7 @@ namespace SpaceIsFun
                     enemyShipUID1 = ShipManager.AddEntity(new Ship(enemyShipTexture1, gridSprite, gridHighlightSprite, enemyShip1StartPosition, roomUIDs, gridUIDs, weaponUIDs, roomTypes, shipGrid, 0));
                     enemyShip = (Ship)ShipManager.RetrieveEntity(enemyShipUID1);
 
+
                     #region enemy health bars
 
 
@@ -439,6 +440,41 @@ namespace SpaceIsFun
                             j = 3;
                         else
                             j = 0;
+
+=======
+
+                    #region enemy health bars
+
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        // red healthbar
+                        enemyHealth.AddWidget(HealthBar = new Image(32 * i, 0, healthBarLow));
+                        enemyhealthBarTest.Add(HealthBar);
+                    }
+                    for (int i = 0; i < 6; i++)
+                    {
+                        // orange healthbar
+                        enemyHealth.AddWidget(HealthBar = new Image(32 * i, 0, healthBarMed));
+                        enemyhealthBarTest.Add(HealthBar);
+                    }
+                    for (int i = 0; i < playerShip.MaxHP; i++)
+                    {
+                        // green healthbar
+                        enemyHealth.AddWidget(HealthBar = new Image(32 * i, 0, healthBarFull));
+                        enemyhealthBarTest.Add(HealthBar);
+                    }
+
+                    j = 0;
+                    for (int i = 0; i < 19; i++)
+                    {
+                        if (enemyShip.CurrentHP > 6)
+                            j = 9;
+                        else if (enemyShip.CurrentHP > 3)
+                            j = 3;
+                        else
+                            j = 0;
+
 
                         if (i >= enemyShip.CurrentHP + j)
                         {
@@ -538,6 +574,7 @@ namespace SpaceIsFun
 
                     enemyShipUID2 = ShipManager.AddEntity(new Ship(enemyShipTexture2, gridSprite, gridHighlightSprite, enemyShip2StartPosition, roomUIDs, gridUIDs, weaponUIDs, roomTypes, shipGrid, 0));
                     enemyShip = (Ship)ShipManager.RetrieveEntity(enemyShipUID2);
+
 
                     #region enemy health bars
 
@@ -697,6 +734,7 @@ namespace SpaceIsFun
                     weapons[3].Visible = false;
                     weapons[8].Visible = true;
                     weapons[13].Visible = false;
+
                 }
                 else if (weapon4Selected == true)
                 {
@@ -1091,9 +1129,6 @@ namespace SpaceIsFun
                 // Every numeric key press after that switches back and forth between Enabled and Selected
 
                 #region setting gui according to weapon states
-                
-
-                
 
                 #endregion
 
@@ -1562,9 +1597,6 @@ namespace SpaceIsFun
             {
                 #region input handling
 
-
-
-
                 #region mouse
 
                 if (previousMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
@@ -1819,7 +1851,7 @@ namespace SpaceIsFun
 
             hasSelectedCrew.leave += () =>
             {
-
+                
             };
             #endregion
 

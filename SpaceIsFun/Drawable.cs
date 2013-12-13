@@ -22,6 +22,17 @@ namespace SpaceIsFun
     };
 
     /// <summary>
+    /// Four Coordinal Direction 
+    /// </summary>		
+    public enum Direction
+    {
+        Up = 0,		
+        Left = 1,	
+        Down = 2,	
+        Right = 3
+    };
+
+    /// <summary>
     ///  This is the object that holds all the info for drawing and animating an entity
     /// </summary>
     public class Drawable : Object
@@ -258,9 +269,10 @@ namespace SpaceIsFun
         /// Variables that are only used and modified by the methods of this class
         private float lastFrame;	//!< Time the frame was last changed
         private Rectangle src;      //!< Bounding box of individual sprite
-        //private Vector2 offset;   //!< X,Y relative to the texture for the current frame
+        public Direction dir;      //!< Direction a target grid cell is relative to this grid position
         private bool playing;       //!< bool to indicate whether the animation is currently playing or not
         private bool recoil;        //!< indicates direction of oscillation; true indicates left
+        private int frameIndex;     //!< Current frame relative to startFrame
 
         #endregion
 
@@ -279,7 +291,7 @@ namespace SpaceIsFun
             width = spriteTexture.Bounds.Width;
             height = spriteTexture.Bounds.Height;
             frame = 0;
-            speed = 1;
+            speed = 1.0f;
             animLength = 1;
             animType = AnimationType.None;
             numColumns = 1;
@@ -334,7 +346,7 @@ namespace SpaceIsFun
             width = (int)(spriteTexture.Bounds.Width/nCols);
             height = (int)(spriteTexture.Bounds.Height/nRows);
             startFrame = start;
-            speed = 1;
+            speed = 1.0f;
             animLength = length;
             animType = AnimationType.Loop;
             numColumns = nCols;
@@ -359,7 +371,8 @@ namespace SpaceIsFun
             playing = false;
             recoil = false;
             path = new List<Vector2>();
-            frame = startFrame;
+            frameIndex = 0;
+            frame = startFrame + frameIndex;
         }
 
         /// <summary>
@@ -380,70 +393,20 @@ namespace SpaceIsFun
 
             //[DEBUG]/ System.Diagnostics.Debug.WriteLine("updating");
 
-            //[UPDATE ANIMATION FRAME]
-            //1. If this drawable is animated && the time since the last frame change is greater than animation speed
-            //   > Based on the animation type determine the next frame
-            //   > Set the src Vector2 to that coordinates of that frame on the Texture
-            if ((animType != AnimationType.None) && (playing))
-            {
-                lastFrame += (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-                if (lastFrame >= speed * 0.1)
-                {
-                    //[DETERMINE NEXT FRAME]
-                    switch (animType)
-                    {
-                        case AnimationType.Loop:
-                            frame = (frame == (startFrame - 1 + animLength)) ? startFrame : frame + 1;
-                            break;
-                        case AnimationType.Oscillate:
-                            if (!recoil) // If frame animation is forward...
-                            {
-                                if (frame == (startFrame - 1 + animLength))
-                                {
-                                    recoil = true;
-                                    frame--;
-                                }
-                                else frame++;
-                            }
-                            else        // Else if frame animation is reversed
-                            {
-                                if (frame == startFrame)
-                                {
-                                    recoil = false;
-                                    frame++;
-                                }
-                                else frame--;
-                            }
-                            break;
-                        case AnimationType.Single:
-                            if (frame == (startFrame - 1 + animLength)) playing = false;
-                            else frame++;
-                            break;
-                        default:
-                            System.Diagnostics.Debug.WriteLine("Animation Issue");
-                            break;
-                    }
-
-                    //[SET NEXT FRAME]
-                    src.Y = (int)(frame / numColumns) * height;
-                    src.X = (frame % numColumns) * width;
-                }
-            }
-
             if (pathing == true)
             {
-                //[DEBUG]/ System.Diagnostics.Debug.WriteLine("updating");
 
-                // Find the distance to target
-                /*
-				double c = Math.Sqrt(Math.Pow((double)(target.X - position2D.X), 2d) +
-					Math.Pow((double)(target.Y - position2D.Y), 2d));
-                
-				//[DEBUG]/ System.Diagnostics.Debug.WriteLine("target: " + target.ToString());
-                */
                 Vector2 delta = new Vector2(target.X - position2D.X, target.Y - position2D.Y);
+                playing = true;
 
-                //[DEBUG]/ System.Diagnostics.Debug.WriteLine("target: " + target.ToString());
+                //System.Diagnostics.Debug.WriteLine("position: " + delta.ToString());
+
+                // [DETERMINE TARGET DIRECTION]
+                if (position2D.X < target.X) { dir = Direction.Right; }
+                if (position2D.X > target.X) { dir = Direction.Left; }
+                if (position2D.Y > target.Y) { dir = Direction.Up; }
+                if (position2D.Y < target.Y) { dir = Direction.Down; }
+                startFrame += (int)dir * numColumns;
 
                 // If distance to target is less than speed, we're at our destination
                 if (delta.Length() <= (double)speed)
@@ -466,6 +429,7 @@ namespace SpaceIsFun
                         moving = false;
                         target = new Vector2();
                         playing = false;
+                        setStart((int)dir * numColumns);
                     }
                 }
 
@@ -492,22 +456,63 @@ namespace SpaceIsFun
                     delta.Normalize();
                     delta = delta * speed;
                     MoveBy(delta);
+                    //System.Diagnostics.Debug.WriteLine("position: " + delta.ToString());
                 }
 
             }
 
 
+            //[UPDATE ANIMATION FRAME]
+            //1. If this drawable is animated && the time since the last frame change is greater than animation speed
+            //   > Based on the animation type determine the next frame
+            //   > Set the src Vector2 to that coordinates of that frame on the Texture
+            if ((animType != AnimationType.None) && (playing))
+            {
 
-
-
-
-
-
-
-
-            // if we have a current target, figure out how much to move by and move
-
-
+                lastFrame += (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                if (lastFrame >= speed * 0.1)
+                {
+                    //[DETERMINE NEXT FRAME]
+                    switch (animType)
+                    {
+                        case AnimationType.Loop:
+                            frameIndex = (frameIndex < animLength-1) ? frameIndex + 1 : 0;
+                            break;
+                        case AnimationType.Oscillate:
+                            if (!recoil) // If frame animation is forward...
+                            {
+                                if (frameIndex == animLength)
+                                {
+                                    recoil = true;
+                                    frameIndex--;
+                                }
+                                else frameIndex++;
+                            }
+                            else        // Else if frame animation is reversed
+                            {
+                                if (frameIndex == 0)
+                                {
+                                    recoil = false;
+                                    frameIndex++;
+                                }
+                                else frameIndex--;
+                            }
+                            break;
+                        case AnimationType.Single:
+                            if (frameIndex == animLength) playing = false;
+                            else frameIndex++;
+                            break;
+                        default:
+                            System.Diagnostics.Debug.WriteLine("Animation Issue");
+                            break;
+                    }
+                    lastFrame = 0.0f;
+                }
+            }
+            //[SET NEXT FRAME]
+            frame = frameIndex + startFrame;
+            src.Y = (int)(frame / numColumns) * height;
+            src.X = (frame % numColumns) * width;
         }
 
         /// <summary>
@@ -561,6 +566,15 @@ namespace SpaceIsFun
             path.RemoveAt(0);
         }
 
+        /// <summary>
+        /// Changes the start frame and updates the current view
+        /// </summary>
+        /// <param name="path">List of grid X,Y coordinates of the drawable's path </param>
+        public void setStart(int newStart)
+        {
+            startFrame = newStart;
+            frameIndex = 0;
+        }
 
 
         #endregion
