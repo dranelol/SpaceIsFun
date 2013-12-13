@@ -27,9 +27,12 @@ namespace SpaceIsFun
         //Drawable overworldCursorDraw; //Drawable for the cursor
         Vector2 cursorCoords = new Vector2();          //Both the cursor coordinates and the selected node
         SoundEffectInstance ThisIntroSong;
+        
         void setupOverworld()
         {
-            
+            setNodes();
+
+
             overworld.enter += () =>
             {
                 // setup gui elements here
@@ -38,7 +41,7 @@ namespace SpaceIsFun
 
                 //
 
-                setNodes();
+                
 
 
                 //Traverse through starNodes, and assign gray or regular textures based on which node it is
@@ -197,10 +200,15 @@ namespace SpaceIsFun
             Random rand = new Random();
             
             //Add four stars to the list of star nodes at random points on the screen
-            starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
-            starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
-            starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
-            starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
+            //starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
+            //starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
+            //starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
+            //starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
+
+            starNodes.Add(new Vector2(50, 50));
+            starNodes.Add(new Vector2(200, 200));
+            starNodes.Add(new Vector2(500, 500));
+            starNodes.Add(new Vector2(150, 400));
             
         }
 
