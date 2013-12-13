@@ -121,7 +121,7 @@ namespace SpaceIsFun
                     {
                         if (narrative1Resolved == false)
                         {
-                            //Do some shit
+                            //Do some 
                             System.Diagnostics.Debug.WriteLine("Narrative1");
                             narrative1Resolved = true;
                         }
@@ -130,7 +130,7 @@ namespace SpaceIsFun
                     {
                         if (narrative1Resolved && battle1Resolved)
                         {
-                            //Do some more shit if narrative2
+                            //Do some more  if narrative2
                             System.Diagnostics.Debug.WriteLine("Narrative2");
                             narrative2Resolved = true;
                         }
@@ -139,8 +139,8 @@ namespace SpaceIsFun
                     {
                         if (battle1Resolved == false)
                         {
-                            //Battle some shit
-                            System.Diagnostics.Debug.WriteLine("Penises, Penises and lollipops.  Unicorn on top.");
+                            //Battle some 
+                            System.Diagnostics.Debug.WriteLine(",  and lollipops.  Unicorn on top.");
                             battle1Resolved = true;
                         }
                     }
@@ -148,8 +148,8 @@ namespace SpaceIsFun
                     {
                         if (narrative2Resolved)
                         {
-                            //Battle some more shit
-                            System.Diagnostics.Debug.WriteLine("Penises, Penises and lollipops.  Big floppy penises, just don't stop.");
+                            //Battle some more
+                            System.Diagnostics.Debug.WriteLine(",  and lollipops.   just don't stop.");
                             battle2Resolved = true;
                         }
                     }
