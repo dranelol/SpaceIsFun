@@ -622,6 +622,7 @@ namespace SpaceIsFun
 
                     gui.AddWidget(endBattle);
                     battle1Result = true;
+                    masterGameEnd = true;
                 }
 
                 #endregion
