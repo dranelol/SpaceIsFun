@@ -50,8 +50,8 @@ namespace SpaceIsFun
             bool target2Selected = false;
 
 
-            
 
+            
             Ship playerShip = (Ship)ShipManager.RetrieveEntity(playerUID);
             Ship enemyShip;
 
@@ -166,6 +166,19 @@ namespace SpaceIsFun
                 //WidgetEvent wpn1click = new WidgetEvent();
                 gui.AddWidget(saveDataButton);
                 gui.AddWidget(wpnEnable);
+                weapons.Clear();
+
+                if(healthBarTest.Count > 0)
+                {
+                    healthBarTest.Clear();
+                }
+
+                if (energyBarTest.Count > 0)
+                {
+                    energyBarTest.Clear();
+                }
+
+                
 
                 /************************************************************************
                  * Weapon Menu in battle scene:                                         *
@@ -481,7 +494,7 @@ namespace SpaceIsFun
                 }
                 #endregion 
 
-
+                
             };
 
             #endregion
@@ -494,6 +507,33 @@ namespace SpaceIsFun
                 #region keys
 
                 
+                Ship thisShip = (Ship)ShipManager.RetrieveEntity(0);
+
+                if (currentKeyState.IsKeyDown(Keys.T) && previousKeyState.IsKeyUp(Keys.T))
+                {
+                    Crew man = (Crew)CrewManager.RetrieveEntity(0);
+
+                    pather = new Pathfinder(thisShip.ShipGrid, playerShipStartPosition, GridManager);
+
+                    Grid thisGrid = (Grid)GridManager.RetrieveEntity(9);
+
+                    target1 = man.Position;
+
+                    thisGrid = (Grid)GridManager.RetrieveEntity(26);
+
+                    target2 = thisGrid.GridPosition;
+
+                    List<Vector2> path = pather.FindOptimalPath(target1, target2);
+
+                    foreach (Vector2 item in path)
+                    {
+                        Vector2 dumb = new Vector2((item.X / 32), (item.Y / 32));
+
+                        System.Diagnostics.Debug.WriteLine(dumb.ToString());
+                    }
+
+                    man.Move(path);
+                }
                 /*
                 // if the a key is pressed, transition back to the menu
                 if (currentKeyState.IsKeyDown(Keys.A))
@@ -704,6 +744,7 @@ namespace SpaceIsFun
                     {
                         System.Diagnostics.Debug.WriteLine("gained energy!");
                         playerShip.Energy = playerShip.Energy + 1;
+                        
                     }
 
                     // iterate over the energy widgets for the first energy bar, and make the one above the current level visible again
@@ -725,6 +766,7 @@ namespace SpaceIsFun
                     {
                         System.Diagnostics.Debug.WriteLine("gained health!");
                         playerShip.CurrentHP = playerShip.CurrentHP + 1;
+                        
                     }
 
                     /*if (playerShip.CurrentHP > 6)
@@ -779,6 +821,7 @@ namespace SpaceIsFun
                     {
                         System.Diagnostics.Debug.WriteLine("lost health!");
                         playerShip.CurrentHP = playerShip.CurrentHP - 1;
+                        
                     }
 
                     int j = 0;
@@ -1102,6 +1145,8 @@ namespace SpaceIsFun
                 // tear down gui elements
 
                 // remove the energy widgets from the gui
+                
+
                 gui.RemoveWidget(energy1);
                 gui.RemoveWidget(Health);
                 gui.RemoveWidget(wpnEnable);
@@ -1121,10 +1166,7 @@ namespace SpaceIsFun
                 #region input handling
 
 
-                if (currentKeyState.IsKeyDown(Keys.O) && previousKeyState.IsKeyUp(Keys.O))
-                {
-                    cursorState.Transition("targetWeapon");
-                }
+                
                 #region mouse
 
                 #region left click
