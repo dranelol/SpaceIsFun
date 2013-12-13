@@ -180,7 +180,7 @@ namespace SpaceIsFun
             this.crewSelectedTexture = crewSelectedTexture;
             this.selected = false;
 
-            sprite = new Drawable(crewTexture, position);
+            sprite = new Drawable(crewTexture, position, gPosition);
 
 
 
@@ -205,6 +205,8 @@ namespace SpaceIsFun
 
         public override void Update(GameTime gameTime)
         {
+            //System.Diagnostics.Debug.WriteLine("crew update");
+            
             Sprite.Update(gameTime);
             base.Update(gameTime);
         }
@@ -248,9 +250,15 @@ namespace SpaceIsFun
         public void Move(List<Vector2> path)
         {
             //I have a dream that one day this function will exist, that it will tell the sprite where to move, and the sprite will move there as decreed by the mighty A* algorithm given to us by Peter Hart, Nils Nilsson and Bertram Raphael of the hallowed Stanford Research Instituteendregion
-            System.Diagnostics.Debug.WriteLine("Positions Before Move: "+sprite.Position2D.ToString());
+
+            
+            foreach (Vector2 point in path)
+            {
+                Vector2 p = new Vector2((point.X-50) / 32, (point.Y-50) /32 );
+                System.Diagnostics.Debug.WriteLine("Crew Man {0} : {1}", this.UID, p.ToString());
+            }
+            
             sprite.setPath(path);
-            System.Diagnostics.Debug.WriteLine("Positions After Move: " + sprite.Position2D.ToString());
         }
 
         //Function used when serializing an object

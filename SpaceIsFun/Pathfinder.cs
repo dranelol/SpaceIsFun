@@ -90,13 +90,17 @@ namespace SpaceIsFun
         // size of one grid square
         private int sizeofOneGrid = 32;
 
+        private Vector2 offset;
+
         /// <summary>
         /// Constructor
         /// </summary>
-        public Pathfinder(int[,] map, EntityManager manager)
+        public Pathfinder(int[,] map, Vector2 offset ,EntityManager manager)
         {
             mapWidth = map.GetLength(0);
             mapHeight = map.GetLength(1);
+
+            this.offset = offset;
 
             System.Diagnostics.Debug.WriteLine(mapWidth.ToString() + ", " + mapHeight.ToString());
             
@@ -128,7 +132,7 @@ namespace SpaceIsFun
 
                     Grid grid = (Grid)manager.RetrieveEntity(map[x, y]);
 
-                    if (grid.Highlighted == false)  
+                    if (grid.IsWalkable == true)  
                     { 
                         node.Walkable = true;
                     }
@@ -313,7 +317,7 @@ namespace SpaceIsFun
 
             for (int i = closedList.Count - 1; i >= 0; i--)
             {
-                path.Add(new Vector2(closedList[i].Position.X * 32, closedList[i].Position.Y * 32)); //<--------------------------------------------------Change 32 to global variables
+                path.Add(new Vector2((closedList[i].Position.X * 32)+offset.X, (closedList[i].Position.Y * 32)+offset.Y)); //<--------------------------------------------------Change 32 to global variables
             }
 
             return path;
@@ -327,6 +331,8 @@ namespace SpaceIsFun
         /// <returns></returns>
         public List<Vector2> FindOptimalPath(Vector2 start, Vector2 end)
         {
+
+            
             //Vector2 start = new Vector2((int)(source.sprite.X / 64), (int)(source.sprite.X / 64));
             //Vector2 end = new Vector2((int)(target.sprite.X / 64), (int)(target.sprite.X / 64));
             

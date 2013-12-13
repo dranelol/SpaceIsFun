@@ -227,6 +227,27 @@ namespace SpaceIsFun
             }
         }
 
+        /// <summary>
+        /// path of the drawable
+        /// </summary>
+        private Vector2 positionGrid;
+
+        /// <summary>
+        /// parameter for path
+        /// </summary>
+        public Vector2 PositionGrid
+        {
+            get
+            {
+                return positionGrid;
+            }
+
+            set
+            {
+                positionGrid = value;
+            }
+        }
+
         #endregion
 
         #region constructors / destructors
@@ -247,6 +268,20 @@ namespace SpaceIsFun
             frame = 0;
             speed = 2;
             
+        }
+
+        public Drawable(Texture2D sprite, Vector2 position, Vector2 gPosition)
+            : base()
+        {
+            spriteTexture = sprite;
+            position2D = position;
+            positionGrid = gPosition;
+            width = spriteTexture.Bounds.Width;
+            height = spriteTexture.Bounds.Height;
+            path = new List<Vector2>();
+            frame = 0;
+            speed = 2;
+
         }
 
         #endregion
@@ -275,14 +310,20 @@ namespace SpaceIsFun
         public void Update(GameTime gameTime)
         {
 
+            //System.Diagnostics.Debug.WriteLine("position: "+position2D.ToString());
+            
+            //System.Diagnostics.Debug.WriteLine("updating");
+
             
             
             if(pathing == true)
             {
-                System.Diagnostics.Debug.WriteLine("updating");
+
+                //System.Diagnostics.Debug.WriteLine("updating");
                 
                 // find the distance to target
                 //double c = Math.Sqrt(Math.Pow((double)(target.X - position2D.X), 2d) + Math.Pow((double)(target.Y - position2D.Y), 2d));
+                //System.Diagnostics.Debug.WriteLine("target: " + target.ToString());
                 Vector2 delta = new Vector2(target.X - position2D.X, target.Y - position2D.Y);
                 //System.Diagnostics.Debug.WriteLine("target: " + target.ToString());
 
@@ -294,8 +335,11 @@ namespace SpaceIsFun
                     // if path is not empty, pop path and update new target
                     if (path.Count != 0)
                     {
+                        this.positionGrid = target;
+                        //System.Diagnostics.Debug.WriteLine("Draw Position: "+positionGrid.ToString());
                         target = path[0];
                         path.RemoveAt(0);
+                        
                     }
 
                     // if path is empty, stop moving, stop pathing, set target to null
@@ -304,6 +348,7 @@ namespace SpaceIsFun
                         pathing = false;
                         moving = false;
                         target = new Vector2();
+                        
                     }
 
 
@@ -394,7 +439,13 @@ namespace SpaceIsFun
         public void setPath(List<Vector2> path)
         {
 
-            System.Diagnostics.Debug.WriteLine("setpath");
+
+
+
+            //System.Diagnostics.Debug.WriteLine("setpath");
+
+            
+
             this.path = path;
             pathing = true;
             moving = true;

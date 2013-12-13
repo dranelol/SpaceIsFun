@@ -378,7 +378,9 @@ namespace SpaceIsFun
         }
 
         /// <summary>
-        /// the grids contained in the room
+
+        /// the grids contained in the room, in order of how they will be filled
+
         /// </summary>
         private List<int> roomGrids;
         
@@ -471,6 +473,7 @@ namespace SpaceIsFun
             hullBreach = false;
 
             roomGrids = new List<int>();
+
         }
 
         public Room(SerializationInfo si, StreamingContext sc)
@@ -502,6 +505,7 @@ namespace SpaceIsFun
             inoperable = (State)si.GetValue("inoperable", typeof(State));
             disabled = (State)si.GetValue("disabled", typeof(State));
 
+
         }
 
 
@@ -526,6 +530,8 @@ namespace SpaceIsFun
         /// <param name="spriteBatch">main spriteBatch object</param>
         public override void Draw(SpriteBatch spriteBatch)
         {
+            
+            
             if (highlighted == true)
             {
                 Sprite.SpriteTexture = roomHighlightTexture;
