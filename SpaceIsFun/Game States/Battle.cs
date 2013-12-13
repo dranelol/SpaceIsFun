@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
@@ -30,6 +31,8 @@ namespace SpaceIsFun
         Point selectRectEnd = new Point();
 
         List<int> currentEnemyShips = new List<int>();
+
+        SoundEffectInstance ThisBattleSong;
 
         void setupBattle(int playerUID)
         {
@@ -313,7 +316,11 @@ namespace SpaceIsFun
                 // weapons GUI: 
                 // weapon slots 1-5 for each:
                 // filled or not, enabled or not, charging or not
-
+                #region music
+                ThisBattleSong = BattleMusic.CreateInstance();
+                ThisBattleSong.IsLooped = true;
+                ThisBattleSong.Play();
+                #endregion
                 // Rebecca's Code
 
                 // weapon enabling
@@ -1090,6 +1097,8 @@ namespace SpaceIsFun
             #region battle state leave
             battle.leave += () =>
             {
+                //Get rid of the music
+                ThisBattleSong.Stop();
                 // tear down gui elements
 
                 // remove the energy widgets from the gui
