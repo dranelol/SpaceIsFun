@@ -19,6 +19,9 @@ namespace SpaceIsFun
         /// </summary>
         /// 
 
+        int roomUID;
+        bool[] roomTypes;
+        int weaponUID;
 
         bool multiSelecting = false;
 
@@ -43,9 +46,155 @@ namespace SpaceIsFun
             bool target2Selected = false;
 
 
+            #region enemyship construction 1
+            if (gameStateUID == 0)
+            {
+                gridUIDs = new List<int>();
+                roomUIDs = new List<int>();
+                weaponUIDs = new List<int>();
+                gridWidth = enemyShipTexture1.Bounds.Width / 32;
+                gridHeight = enemyShipTexture1.Bounds.Height / 32;
+                shipGrid = new int[gridWidth, gridHeight];
+                // grid creation for the player ship
+                for (int i = 0; i < enemyShipTexture1.Bounds.Width / 32; i++)
+                {
+                    // in each column, iterate over the ship sprite's height
+                    for (int j = 0; j < enemyShipTexture1.Bounds.Height / 32; j++)
+                    {
+                        // create a new grid object for i,j
+                        //shipGrid[i, j] = new Grid(gridTexture, highlightTexture, new Vector2(i * 32 + position.X, j * 32 + position.Y), new Vector2(i, j));
+                        Grid toAdd = new Grid(gridSprite, gridHighlightSprite,
+                                   new Vector2(i * 32 + enemyShip1StartPosition.X, j * 32 + enemyShip1StartPosition.Y),
+                                   new Vector2(i, j));
+
+                        int UID = GridManager.AddEntity(toAdd);
+                        gridUIDs.Add(UID);
+                        shipGrid[i, j] = UID;
+                    }
+                }
+
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 1, enemyShip1StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUIDs.Add(roomUID);
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 4, enemyShip1StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUIDs.Add(roomUID);
+
+                roomTypes = new bool[11];
+
+                for (int i = 0; i < 11; i++)
+                {
+                    roomTypes[i] = false;
+                }
+
+                weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+                weaponUIDs.Add(weaponUID);
+
+                weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+                weaponUIDs.Add(weaponUID);
+
+                weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+                weaponUIDs.Add(weaponUID);
+
+                weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+                weaponUIDs.Add(weaponUID);
+
+                weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+                weaponUIDs.Add(weaponUID);
+
+                System.Diagnostics.Debug.WriteLine(weaponUIDs.Count);
+
+
+                enemyShipUID1 = ShipManager.AddEntity(new Ship(enemyShipTexture1, gridSprite, gridHighlightSprite, enemyShip1StartPosition, roomUIDs, gridUIDs, weaponUIDs, roomTypes, shipGrid, 0));
+
+
+                foreach (var item in weaponUIDs)
+                {
+                    WeaponToShip[item] = enemyShipUID1;
+                }
+
+
+                WeaponToShip[weaponUID] = enemyShipUID1;
+                setRoomGridDictionary(enemyShipUID1);
+                setUnwalkableGrids(enemyShipUID1);
+            }
+            #endregion
+
+            #region enemy ship construction 2
+            if (gameStateUID == 2)
+            {
+                //enemyShipStartPosition = new Vector2(400, 50);
+                gridUIDs = new List<int>();
+                roomUIDs = new List<int>();
+                weaponUIDs = new List<int>();
+                gridWidth = enemyShipTexture2.Bounds.Width / 32;
+                gridHeight = enemyShipTexture2.Bounds.Height / 32;
+                shipGrid = new int[gridWidth, gridHeight];
+                // grid creation for the player ship
+                for (int i = 0; i < enemyShipTexture2.Bounds.Width / 32; i++)
+                {
+                    // in each column, iterate over the ship sprite's height
+                    for (int j = 0; j < enemyShipTexture2.Bounds.Height / 32; j++)
+                    {
+                        // create a new grid object for i,j
+                        //shipGrid[i, j] = new Grid(gridTexture, highlightTexture, new Vector2(i * 32 + position.X, j * 32 + position.Y), new Vector2(i, j));
+                        Grid toAdd = new Grid(gridSprite, gridHighlightSprite,
+                                   new Vector2(i * 32 + enemyShip2StartPosition.X, j * 32 + enemyShip2StartPosition.Y),
+                                   new Vector2(i, j));
+
+                        int UID = GridManager.AddEntity(toAdd);
+                        gridUIDs.Add(UID);
+                        shipGrid[i, j] = UID;
+                    }
+                }
+
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 1, enemyShip2StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUIDs.Add(roomUID);
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 4, enemyShip2StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUIDs.Add(roomUID);
+
+                roomTypes = new bool[11];
+
+                for (int i = 0; i < 11; i++)
+                {
+                    roomTypes[i] = false;
+                }
+
+                weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+                weaponUIDs.Add(weaponUID);
+
+                weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+                weaponUIDs.Add(weaponUID);
+
+                weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+                weaponUIDs.Add(weaponUID);
+
+                weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+                weaponUIDs.Add(weaponUID);
+
+                weaponUID = WeaponManager.AddEntity(new Weapon(gridSprite, 0, 0, 10, 500, 3));
+                weaponUIDs.Add(weaponUID);
+
+                System.Diagnostics.Debug.WriteLine(weaponUIDs.Count);
+
+
+                enemyShipUID2 = ShipManager.AddEntity(new Ship(enemyShipTexture2, gridSprite, gridHighlightSprite, enemyShip2StartPosition, roomUIDs, gridUIDs, weaponUIDs, roomTypes, shipGrid, 0));
+
+
+
+                foreach (var item in weaponUIDs)
+                {
+                    WeaponToShip[item] = enemyShipUID2;
+                }
+
+
+                WeaponToShip[weaponUID] = enemyShipUID2;
+                setRoomGridDictionary(enemyShipUID2);
+                setUnwalkableGrids(enemyShipUID2);
+            }
+            #endregion 
 
             Ship playerShip = (Ship)ShipManager.RetrieveEntity(playerUID);
             Ship enemyShip;
+            
             if (gameStateUID == 0)
             {
                 enemyShip = (Ship)ShipManager.RetrieveEntity(enemyShipUID1);
@@ -57,7 +206,7 @@ namespace SpaceIsFun
                 enemyShip = (Ship)ShipManager.RetrieveEntity(enemyShipUID2);
                 currentEnemyShips.Add(enemyShipUID2);
             }
-
+            
             Pathfinder pather = new Pathfinder(playerShip.ShipGrid, playerShipStartPosition ,GridManager);
 
             
@@ -831,10 +980,10 @@ namespace SpaceIsFun
                     // note: this should only happen if the two points are on the player's ship
                     else if (multiSelecting == true && checkShipHover(selectRectStart) == playerShipUID && checkShipHover(selectRectEnd) == playerShipUID)
                     {
-                        int x1 = (selectRectStart.X - 50) / 32;
-                        int y1 = (selectRectStart.Y - 50) / 32;
-                        int x2 = (selectRectEnd.X - 50) / 32;
-                        int y2 = (selectRectEnd.Y - 50) / 32;
+                        int x1 = (selectRectStart.X - (int)playerShipStartPosition.X) / 32;
+                        int y1 = (selectRectStart.Y - (int)playerShipStartPosition.Y) / 32;
+                        int x2 = (selectRectEnd.X - (int)playerShipStartPosition.X) / 32;
+                        int y2 = (selectRectEnd.Y - (int)playerShipStartPosition.Y) / 32;
 
                         // swap points if they need to be
                         int temp;
