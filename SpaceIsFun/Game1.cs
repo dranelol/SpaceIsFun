@@ -603,7 +603,9 @@ namespace SpaceIsFun
             introState.Transitions.Add(overworld.Name, overworld);
 
 
+
             stateMachine.Start(startMenu);
+
 
             #endregion
 
