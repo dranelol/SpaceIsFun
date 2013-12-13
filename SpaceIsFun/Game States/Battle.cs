@@ -1261,7 +1261,7 @@ namespace SpaceIsFun
                                 int count = 0;
                                 foreach (var item in CrewToRoom.Values)
                                 {
-                                    if (thisRoomUID == item)
+                                    if (thisRoomUID == item && selectedCrewMembers.Contains(item) == false)
                                     {
                                         count++;
                                     }
@@ -1371,6 +1371,10 @@ namespace SpaceIsFun
                                             }
                                         }
 
+                                        if (CrewToRoom[thisCrew.UID] == thisRoomUID)
+                                        {
+                                            continue;
+                                        }
 
                                         List<Vector2> path = pather.FindOptimalPath(thisCrew.Position, thisGrid.GridPosition);
                                         thisCrew.Move(path);
