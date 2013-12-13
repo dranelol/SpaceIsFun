@@ -1356,9 +1356,6 @@ namespace SpaceIsFun
             {
                 #region input handling
 
-
-
-
                 #region mouse
 
                 if (previousMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
@@ -1613,7 +1610,7 @@ namespace SpaceIsFun
 
             hasSelectedCrew.leave += () =>
             {
-
+                
             };
             #endregion
 
