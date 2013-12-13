@@ -366,8 +366,6 @@ namespace SpaceIsFun
                     System.Diagnostics.Debug.WriteLine(weaponUIDs.Count);
 
 
-<<<<<<< HEAD
-=======
                     enemyShipUID1 = ShipManager.AddEntity(new Ship(enemyShipTexture1, gridSprite, gridHighlightSprite, enemyShip1StartPosition, roomUIDs, gridUIDs, weaponUIDs, roomTypes, shipGrid, 0));
 
 
@@ -476,7 +474,7 @@ namespace SpaceIsFun
                 }
                 #endregion 
 
->>>>>>> 05e17d7a56ededf01fd2a84902956ef74db544b8
+
             };
 
             #endregion
