@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
@@ -23,12 +24,15 @@ namespace SpaceIsFun
         List<Drawable> starNodeDraws = new List<Drawable>(); //Drawable objects to correlate to the star nodes
         int starNodeSelectedIndex = 0; //The index in the list of nodes for the star that is selected
         Vector2 starNodeSelected; //Vector that correlates with the selected star
-        Drawable overworldCursorDraw; //Drawable for the cursor
+        //Drawable overworldCursorDraw; //Drawable for the cursor
         Vector2 cursorCoords = new Vector2();          //Both the cursor coordinates and the selected node
-
+        SoundEffectInstance ThisIntroSong;
+        
         void setupOverworld()
         {
-            
+            setNodes();
+
+
             overworld.enter += () =>
             {
                 // setup gui elements here
@@ -37,19 +41,53 @@ namespace SpaceIsFun
 
                 //
 
-                setNodes();
+                starNodeDraws.Clear();
+
+                System.Diagnostics.Debug.WriteLine("Narr Bool 1: " + narrative1Resolved.ToString());
+                System.Diagnostics.Debug.WriteLine("Narr Bool 2: " + narrative2Resolved.ToString());
+                System.Diagnostics.Debug.WriteLine("Battle Bool 1: " + battle1Resolved.ToString());
+                System.Diagnostics.Debug.WriteLine("Battle Bool 2: " + battle2Resolved.ToString());
+
 
                 //Traverse through starNodes, and assign gray or regular textures based on which node it is
+
+                #region music
+                ThisIntroSong = IntroMusic.CreateInstance();
+                ThisIntroSong.IsLooped = true;
+                ThisIntroSong.Play();
+                #endregion
                 for (int i = 0; i < starNodes.Count; i++)
                 {
                     if (i == (int)NodeState.Narrative1 || i == (int)NodeState.Battle1)
                     {
+                        
+                        
                         starNodeDraws.Add(new Drawable(starTexture, starNodes[i]));
                     }
                     else if (i == (int)NodeState.Battle2 || i == (int)NodeState.Narrative2)
                     {
+                        
+
                         starNodeDraws.Add(new Drawable(starGreyedTexture, starNodes[i]));
                     }
+                }
+                //Reset the sprite textures of the stars based on the current state of the narrative and battle resolutions
+                if (battle1Resolved == true)
+                {
+                    starNodeDraws[2].SpriteTexture = starGreyedTexture;
+                }
+                if (narrative1Resolved == true)
+                {
+                    starNodeDraws[0].SpriteTexture = starGreyedTexture;
+                }
+                if (battle1Resolved == true && narrative1Resolved == true)
+                {
+                    starNodeDraws[1].SpriteTexture = starTexture;
+                }
+                if (narrative2Resolved == true)
+                {
+                    starNodeDraws[1].SpriteTexture = starGreyedTexture;
+                    starNodeDraws[3].SpriteTexture = starTexture;
                 }
             };
 
@@ -81,10 +119,12 @@ namespace SpaceIsFun
                     resetNodes();
                 }
                 
-                //Reset the sprite textures of the stars based on the current state of the narrative and battle resolutions
+                
+
+                /*
                 if (battle1Resolved && narrative1Resolved)
                 {
-                    starNodeDraws[1].SpriteTexture = starTexture;
+                    
                 }
                 if (narrative2Resolved)
                 {
@@ -106,6 +146,7 @@ namespace SpaceIsFun
                 {
                     starNodeDraws[3].SpriteTexture = starGreyedTexture;
                 }
+                 */
 
                 //Win condition
                 if (narrative1Resolved && narrative2Resolved && battle1Resolved && battle2Resolved)
@@ -121,36 +162,48 @@ namespace SpaceIsFun
                     {
                         if (narrative1Resolved == false)
                         {
-                            //Do some shit
-                            System.Diagnostics.Debug.WriteLine("Narrative1");
-                            narrative1Resolved = true;
+                            //Do some 
+                            //System.Diagnostics.Debug.WriteLine("Narrative1");
+                    
+                            stateMachine.Transition(narrative.Name);
+
+                            
                         }
                     }
                     else if (starNodeSelectedIndex == (int)NodeState.Narrative2)
                     {
                         if (narrative1Resolved && battle1Resolved)
                         {
-                            //Do some more shit if narrative2
-                            System.Diagnostics.Debug.WriteLine("Narrative2");
-                            narrative2Resolved = true;
+                            //Do some more  if narrative2
+                            //System.Diagnostics.Debug.WriteLine("Narrative2");
+                            
+                           
+                            stateMachine.Transition(narrative.Name);
                         }
                     }
                     else if (starNodeSelectedIndex == (int)NodeState.Battle1)
                     {
                         if (battle1Resolved == false)
                         {
-                            //Battle some shit
-                            System.Diagnostics.Debug.WriteLine("Penises, Penises and lollipops.  Unicorn on top.");
+                            //Battle some 
+                            //System.Diagnostics.Debug.WriteLine(",  and lollipops.  Unicorn on top.");
+
+                           
                             battle1Resolved = true;
+                            stateMachine.Transition(battle.Name);
+                            
                         }
                     }
                     else if (starNodeSelectedIndex == (int)NodeState.Battle2)
                     {
                         if (narrative2Resolved)
                         {
-                            //Battle some more shit
-                            System.Diagnostics.Debug.WriteLine("Penises, Penises and lollipops.  Big floppy penises, just don't stop.");
+                            //Battle some more
+                            //System.Diagnostics.Debug.WriteLine(",  and lollipops.   just don't stop.");
+                            gameStateUID = 2;
                             battle2Resolved = true;
+                            stateMachine.Transition(battle.Name);
+                            
                         }
                     }
                 }
@@ -160,13 +213,15 @@ namespace SpaceIsFun
                
 
                 cursorCoords = starNodes[starNodeSelectedIndex];
-                overworldCursorDraw = new Drawable(overworldCursorTexture, cursorCoords);
+                overworldCursorDraw.MoveTo(cursorCoords);
                
 
             };
 
             overworld.leave += () =>
             {
+                //Stop the music on exit
+                ThisIntroSong.Stop();
                 // remove gui elements here
             };
         }
@@ -180,10 +235,15 @@ namespace SpaceIsFun
             Random rand = new Random();
             
             //Add four stars to the list of star nodes at random points on the screen
-            starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
-            starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
-            starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
-            starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
+            //starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
+            //starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
+            //starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
+            //starNodes.Add(new Vector2(rand.Next(50, graphics.PreferredBackBufferWidth), rand.Next(100, graphics.PreferredBackBufferHeight - 100)));
+
+            starNodes.Add(new Vector2(50, 50));
+            starNodes.Add(new Vector2(200, 200));
+            starNodes.Add(new Vector2(500, 500));
+            starNodes.Add(new Vector2(150, 400));
             
         }
 

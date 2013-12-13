@@ -553,7 +553,6 @@ namespace SpaceIsFun
         /// <param name="path">List of grid X,Y coordinates of the drawable's path </param>
         public void setPath(List<Vector2> path)
         {
-            //[DEBUG/ System.Diagnostics.Debug.WriteLine("setpath");
             this.path = path;
             pathing = true;
             moving = true;

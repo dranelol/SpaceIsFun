@@ -6,13 +6,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Runtime.Serialization;
 
 namespace SpaceIsFun
 {
     /// <summary>
     /// This contains all the info of a room on a ship 
     /// </summary>
-    public partial class Room : Entity
+    [Serializable] public partial class Room : Entity, ISerializable
     {
         #region fields
         /// <summary>
@@ -377,7 +378,9 @@ namespace SpaceIsFun
         }
 
         /// <summary>
+
         /// the grids contained in the room, in order of how they will be filled
+
         /// </summary>
         private List<int> roomGrids;
         
@@ -470,7 +473,41 @@ namespace SpaceIsFun
             hullBreach = false;
 
             roomGrids = new List<int>();
+
         }
+
+        public Room(SerializationInfo si, StreamingContext sc)
+        {
+            roomPosition = (Vector2)si.GetValue("roomPosition", typeof(Vector2));
+            position = (Vector2)si.GetValue("position", typeof(Vector2));
+            sprite = (Drawable)si.GetValue("sprite", typeof(Drawable));
+            roomTexture = (Texture2D)si.GetValue("roomTexture", typeof(Texture2D));
+            roomHighlightTexture = (Texture2D)si.GetValue("roomHighlightTexture", typeof(Texture2D));
+            highlighted = si.GetBoolean("highlighted");
+            isMannable = si.GetBoolean("isMannable");
+            roomType = si.GetInt32("roomType");
+            maxEnergy = si.GetInt32("maxEnergy");
+            currentAvailableEnergy = si.GetInt32("currentAvailableEnergy");
+            isManned = si.GetInt32("isManned");
+            roomHealth = si.GetInt32("roomHealth");
+            aflame = si.GetBoolean("aflame");
+            hullBreach = si.GetBoolean("hullBreach");
+            width = si.GetInt32("width");
+            height = si.GetInt32("height");
+            roomO2 = si.GetInt32("roomO2");
+            roomShape = (Globals.roomShape)si.GetValue("roomShape", typeof(Globals.roomShape));
+            typeOfRoom = (Globals.roomType)si.GetValue("typeOfRoom", typeof(Globals.roomType));
+            roomSize = si.GetInt32("roomSize");
+            roomGrids = (List<int>)si.GetValue("roomGrids", typeof(List<int>));
+            roomStateMachine = (StateMachine)si.GetValue("roomStateMachine", typeof(StateMachine));
+            normal = (State)si.GetValue("normal", typeof(State));
+            damaged = (State)si.GetValue("damaged", typeof(State));
+            inoperable = (State)si.GetValue("inoperable", typeof(State));
+            disabled = (State)si.GetValue("disabled", typeof(State));
+
+
+        }
+
 
         #endregion
 
@@ -621,6 +658,38 @@ namespace SpaceIsFun
         {
             return roomStateMachine.CurrentState.Name;
         }
+
+        public virtual void GetObjectData(SerializationInfo si, StreamingContext sc)
+        {
+            si.AddValue("roomPosition", roomPosition, typeof(Vector2));
+            si.AddValue("position", position, typeof(Vector2));
+            si.AddValue("sprite", sprite, typeof(Drawable));
+            si.AddValue("roomTexture", roomTexture, typeof(Texture2D));
+            si.AddValue("roomHighlightTexture", roomHighlightTexture, typeof(Texture2D));
+            si.AddValue("highlighted", highlighted);
+            si.AddValue("isMannable", isMannable);
+            si.AddValue("roomType", roomType);
+            si.AddValue("maxEnergy", maxEnergy);
+            si.AddValue("currentAvailableEnergy", currentAvailableEnergy);
+            si.AddValue("isManned", isManned);
+            si.AddValue("roomHealth", roomHealth);
+            si.AddValue("aflame", aflame);
+            si.AddValue("hullBreach", hullBreach);
+            si.AddValue("width", width);
+            si.AddValue("height", height);
+            si.AddValue("roomO2", roomO2);
+            si.AddValue("roomShape", roomShape, typeof(Globals.roomShape));
+            si.AddValue("typeOfRoom", typeOfRoom, typeof(Globals.roomType));
+            si.AddValue("roomSize", roomSize);
+            si.AddValue("roomGrids", roomGrids, typeof(List<int>));
+            si.AddValue("roomStateMachine", roomStateMachine, typeof(StateMachine));
+            si.AddValue("normal", normal, typeof(State));
+            si.AddValue("damaged", damaged, typeof(State));
+            si.AddValue("inoperable", inoperable, typeof(State));
+            si.AddValue("disabled", disabled, typeof(State));
+        }
+
+
         #endregion
 
 

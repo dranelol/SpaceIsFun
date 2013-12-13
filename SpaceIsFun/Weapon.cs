@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Runtime.Serialization;
+
 
 namespace SpaceIsFun
 {
     /// <summary>
     /// Pew pew, its a weapon!
     /// </summary>
-    class Weapon : Entity
+    [Serializable] class Weapon : Entity, ISerializable
     {
         #region fields
         /// <summary>
@@ -282,6 +285,36 @@ namespace SpaceIsFun
 
         }
 
+        //Constructor used when loading/deserializing objects
+        public Weapon(SerializationInfo si, StreamingContext sc)
+        {
+            readyToFire = si.GetBoolean("readyToFire");
+            aimedAtTarget = si.GetBoolean("aimedAtTarget");
+            timeToCharge = si.GetInt32("timeToCharge");
+            charged = si.GetBoolean("charged");
+            is_charging = si.GetBoolean("is_charging");
+            damage = si.GetInt32("damage");
+            charge = si.GetInt32("charge");
+            requiredPower = si.GetInt32("requiredPower");
+            enoughPower = si.GetBoolean("enoughPower");
+            currentTarget = si.GetInt32("currentTarget");
+
+            try
+            {
+                weaponStateMachine = (StateMachine) si.GetValue("weaponStateMachine", typeof(StateMachine));
+                ready = (State) si.GetValue("ready", typeof(State));
+                disabled = (State) si.GetValue("disabled", typeof(State));
+                charging = (State) si.GetValue("charging", typeof(State));
+                enroute = (State) si.GetValue("enroute", typeof(State));
+                weapon_list = (List<Weapon>) si.GetValue("weapon_list", typeof(List<Weapon>));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Problem deserializing Weapon attributes of non-standard types");
+                Console.WriteLine(e.ToString());
+            }
+
+        }
 
         #endregion
 
@@ -321,11 +354,11 @@ namespace SpaceIsFun
             charging.update += (GameTime gameTime) =>
             {
                 charge += (int)gameTime.ElapsedGameTime.Milliseconds;
-                System.Diagnostics.Debug.WriteLine("current charge: " + charge.ToString());
-                System.Diagnostics.Debug.WriteLine("charge needed: " + timeToCharge.ToString());
+                //System.Diagnostics.Debug.WriteLine("current charge: " + charge.ToString());
+                //System.Diagnostics.Debug.WriteLine("charge needed: " + timeToCharge.ToString());
                 if (charge >= timeToCharge)
                 {
-                    System.Diagnostics.Debug.WriteLine("pew pew time");
+                    System.Diagnostics.Debug.WriteLine("weapon is ready to fire");
                     readyToFire = true;
                 }
 
@@ -416,7 +449,8 @@ namespace SpaceIsFun
             if (weaponStateMachine.CurrentState == ready )
             {
                 //fire
-               
+
+                //play the fire sound!
 
 
             }
@@ -430,6 +464,26 @@ namespace SpaceIsFun
             Is_charging = false;
         }
 
+        //Method used when saving/serializing objects
+        public virtual void GetObjectData(SerializationInfo si, StreamingContext sc)
+        {
+            si.AddValue("readyToFire", readyToFire);
+            si.AddValue("aimedAtTarget", aimedAtTarget);
+            si.AddValue("timeToCharge", timeToCharge);
+            si.AddValue("charged", charged);
+            si.AddValue("is_charging", is_charging);
+            si.AddValue("damage", damage);
+            si.AddValue("charge", charge);
+            si.AddValue("requiredPower", requiredPower);
+            si.AddValue("enoughPower", enoughPower);
+            si.AddValue("currentTarget", currentTarget);
+            si.AddValue("weaponStateMachine", weaponStateMachine, typeof(StateMachine));
+            si.AddValue("ready", ready, typeof(State));
+            si.AddValue("disabled", disabled, typeof(State));
+            si.AddValue("charging", charging, typeof(State));
+            si.AddValue("enroute", enroute, typeof(State));
+            si.AddValue("weapon_list", weapon_list, typeof(List<Weapon>));
+        }
 
         #endregion
 
