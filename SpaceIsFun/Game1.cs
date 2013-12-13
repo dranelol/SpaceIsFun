@@ -1201,6 +1201,8 @@ namespace SpaceIsFun
             FileStream stream = new FileStream(fileName, FileMode.Open);
             State new_CurrentState = (State)formatter.Deserialize(stream);
             //TODO transition state machine to this state
+            //
+            //
 
             //Loads "objects" dictionary from save to Entity managers. Keys and Values will be transferred from save file.
             RoomManager.setObjects((Dictionary<int, Entity>)formatter.Deserialize(stream));
