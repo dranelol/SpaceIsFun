@@ -602,7 +602,7 @@ namespace SpaceIsFun
 
             introState.Transitions.Add(overworld.Name, overworld);
 
-            stateMachine.Start(narrative);
+            stateMachine.Start(startMenu);
             #endregion
 
             // set up any UI elements here

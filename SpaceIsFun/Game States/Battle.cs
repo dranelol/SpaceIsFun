@@ -254,6 +254,8 @@ namespace SpaceIsFun
             Panel Shields = new Panel(5, 80, (32 * playerShip.MaxShields) + 8, 40);
             /*END Lance's code*/
 
+            Panel wpnEnable = new Panel(500, screenHeight - 128, 416 + 8, 75);
+
             Image energyBar1;
             Image HealthBar;
             Image sBubble;
@@ -281,6 +283,7 @@ namespace SpaceIsFun
             hasSelectedCrew.Transitions.Add(hasSelectedCrew.Name, hasSelectedCrew);
             targetWeapon.Transitions.Add(idleCursor.Name, idleCursor);
             targetWeapon.Transitions.Add(hasSelectedCrew.Name, hasSelectedCrew);
+
             cursorState.Start(idleCursor);
 
 
@@ -329,7 +332,7 @@ namespace SpaceIsFun
 
                 //WidgetEvent wpn1click = new WidgetEvent();
 
-                Panel wpnEnable = new Panel(500, screenHeight - 128, 416 + 8, 75);
+                
                 gui.AddWidget(wpnEnable);
 
                 /************************************************************************
@@ -1112,6 +1115,9 @@ namespace SpaceIsFun
 
                 // remove the energy widgets from the gui
                 gui.RemoveWidget(energy1);
+                gui.RemoveWidget(Health);
+                gui.RemoveWidget(wpnEnable);
+                gui.RemoveWidget(Shields);
 
                 foreach (int UID in currentEnemyShips)
                 {
