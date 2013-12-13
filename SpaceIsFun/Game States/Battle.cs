@@ -45,6 +45,7 @@ namespace SpaceIsFun
             bool target1Selected = false;
             bool target2Selected = false;
 
+<<<<<<< HEAD
             #region enemyship construction 1
             if (gameStateUID == 0)
             {
@@ -190,6 +191,9 @@ namespace SpaceIsFun
                 setUnwalkableGrids(enemyShipUID2);
             }
             #endregion 
+=======
+
+>>>>>>> 4655adee5c9b99cbc3bdbd7b00d6c1aafa582fa7
 
             Ship playerShip = (Ship)ShipManager.RetrieveEntity(playerUID);
             Ship enemyShip;

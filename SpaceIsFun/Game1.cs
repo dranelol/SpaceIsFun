@@ -350,8 +350,13 @@ namespace SpaceIsFun
             
 
             #region enemy ship construction 1
+<<<<<<< HEAD
             /*
             //Vector2 enemyShipStartPosition = new Vector2(400,50);
+=======
+            Vector2 enemyShipStartPosition;
+            enemyShipStartPosition = new Vector2(400, 50);
+>>>>>>> 4655adee5c9b99cbc3bdbd7b00d6c1aafa582fa7
             gridUIDs = new List<int>();
             roomUIDs = new List<int>();
             weaponUIDs = new List<int>();
