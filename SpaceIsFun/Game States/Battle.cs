@@ -507,13 +507,13 @@ namespace SpaceIsFun
 
                     man.Move(path);
                 }
-
+                /*
                 // if the a key is pressed, transition back to the menu
                 if (currentKeyState.IsKeyDown(Keys.A))
                 {
                     stateMachine.Transition(startMenu.Name);
                 }
-
+                */
                 /*if (currentKeyState.IsKeyDown(Keys.D1) && previousKeyState.IsKeyUp(Keys.D1))
                 {
                     Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
