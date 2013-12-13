@@ -56,16 +56,16 @@ namespace SpaceIsFun
                 currentEnemyShips.Add(enemyShipUID2);
             }
 
-            Pathfinder pather = new Pathfinder(playerShip.ShipGrid, playerShipStartPosition ,GridManager);
+            Pathfinder pather = new Pathfinder(playerShip.ShipGrid, playerShipStartPosition, GridManager);
 
-            
+
 
             // sets up seven energy bars for the ship
             Panel energy1 = new Panel(4, screenHeight - 256, 40, 256 - 8);
 
             /*Lance's code*/
             Panel Health = new Panel(5, 5, (32 * playerShip.MaxHP) + 8, 72);
-            Panel Shields = new Panel(5, 80, (32 * playerShip.MaxShields)+8, 40);
+            Panel Shields = new Panel(5, 80, (32 * playerShip.MaxShields) + 8, 40);
             /*END Lance's code*/
 
             Image energyBar1;
@@ -134,19 +134,19 @@ namespace SpaceIsFun
 
                 // weapon enabling
 
-               // this panel will hold all the login GUI objects
+                // this panel will hold all the login GUI objects
 
                 //WidgetEvent wpn1click = new WidgetEvent();
 
-                Panel wpnEnable = new Panel(500, screenHeight - 128, 388+8, 75);
+                Panel wpnEnable = new Panel(500, screenHeight - 128, 416 + 8, 75);
                 gui.AddWidget(wpnEnable);
 
                 // Create and add weapon disable buttons
-                Button wpn1Disable = new Button(0, 0, 100, "WPN 1: Disable");
-                Button wpn2Disable = new Button(130, 0, 100, "WPN 2: Disable");
-                Button wpn3Disable = new Button(260, 0, 100, "WPN 3: Disable");
-                Button wpn4Disable = new Button(65, 35, 100, "WPN 4: Disable");
-                Button wpn5Disable = new Button(195, 35, 100, "WPN 5: Disable");
+                Button wpn1Disable = new Button(0, 0, 120, "WPN 1: Disabled");
+                Button wpn2Disable = new Button(139, 0, 120, "WPN 2: Disabled");
+                Button wpn3Disable = new Button(278, 0, 120, "WPN 3: Disabled");
+                Button wpn4Disable = new Button(67, 35, 120, "WPN 4: Disabled");
+                Button wpn5Disable = new Button(207, 35, 120, "WPN 5: Disabled");
                 wpnEnable.AddWidget(wpn1Disable);
                 weapons.Add(wpn1Disable);
                 wpnEnable.AddWidget(wpn2Disable);
@@ -159,11 +159,11 @@ namespace SpaceIsFun
                 weapons.Add(wpn5Disable);
 
                 // Create and add weapon enable buttons
-                Button wpn1Enable = new Button(0, 0, 100, "WPN 1: Enable");
-                Button wpn2Enable = new Button(130, 0, 100, "WPN 2: Enable");
-                Button wpn3Enable = new Button(260, 0, 100, "WPN 3: Enable");
-                Button wpn4Enable = new Button(65, 35, 100, "WPN 4: Enable");
-                Button wpn5Enable = new Button(195, 35, 100, "WPN 5: Enable");
+                Button wpn1Enable = new Button(0, 0, 120, "WPN 1: Enabled");
+                Button wpn2Enable = new Button(140, 0, 120, "WPN 2: Enabled");
+                Button wpn3Enable = new Button(280, 0, 120, "WPN 3: Enabled");
+                Button wpn4Enable = new Button(70, 35, 120, "WPN 4: Enabled");
+                Button wpn5Enable = new Button(210, 35, 120, "WPN 5: Enabled");
                 wpnEnable.AddWidget(wpn1Enable);
                 weapons.Add(wpn1Enable);
                 wpnEnable.AddWidget(wpn2Enable);
@@ -175,14 +175,32 @@ namespace SpaceIsFun
                 wpnEnable.AddWidget(wpn5Enable);
                 weapons.Add(wpn5Enable);
 
-                for (int i = 5; i < 10; i++)
+                // Create and add weapon select buttons
+                Button wpn1Select = new Button(0, 0, 120, "WPN 1: Selected");
+                Button wpn2Select = new Button(140, 0, 120, "WPN 2: Selected");
+                Button wpn3Select = new Button(280, 0, 120, "WPN 3: Selected");
+                Button wpn4Select = new Button(70, 35, 120, "WPN 4: Selected");
+                Button wpn5Select = new Button(210, 35, 120, "WPN 5: Selected");
+                wpnEnable.AddWidget(wpn1Select);
+                weapons.Add(wpn1Select);
+                wpnEnable.AddWidget(wpn2Select);
+                weapons.Add(wpn2Select);
+                wpnEnable.AddWidget(wpn3Select);
+                weapons.Add(wpn3Select);
+                wpnEnable.AddWidget(wpn4Select);
+                weapons.Add(wpn4Select);
+                wpnEnable.AddWidget(wpn5Select);
+                weapons.Add(wpn5Select);
+
+
+                for (int i = 5; i < 15; i++)
                     weapons[i].Visible = false;
 
-                    //playerShip.WeaponSlots[1];
-                    //WeaponManager.
+                //playerShip.WeaponSlots[1];
+                //WeaponManager.
 
 
-                    // Rebecca's code end
+                // Rebecca's code end
 
 
                 // adds all the energy bars to the gui
@@ -217,19 +235,19 @@ namespace SpaceIsFun
 
                 for (int i = 0; i < playerShip.CurrentShields; i++)
                 {
-                    Shields.AddWidget(sBubble = new Image(32*i, 0, shieldBubble));
+                    Shields.AddWidget(sBubble = new Image(32 * i, 0, shieldBubble));
                     shieldTest.Add(sBubble);
                 }
-                    /*END Lance's*/
+                /*END Lance's*/
 
-                    // add as many energy widgets as there is ship energy to one entire energy bar
-                    for (int i = 0; i < playerShip.Energy; i++)
-                    {
-                        energy1.AddWidget(energyBar1 = new Image(0, (256 - 16 - 8 - 8) - i * 16, energyBarSprite));
-                        energyBarTest.Add(energyBar1);
-                    }
+                // add as many energy widgets as there is ship energy to one entire energy bar
+                for (int i = 0; i < playerShip.Energy; i++)
+                {
+                    energy1.AddWidget(energyBar1 = new Image(0, (256 - 16 - 8 - 8) - i * 16, energyBarSprite));
+                    energyBarTest.Add(energyBar1);
+                }
 
-                
+
             };
 
             #endregion
@@ -509,8 +527,8 @@ namespace SpaceIsFun
                         else if (playerShip.CurrentHP > 3)
                             j = 3;
                         else
-                            j = 0; 
-                        
+                            j = 0;
+
                         if (i < playerShip.CurrentHP + j)
                         {
                             healthBarTest[i].Visible = true;
@@ -532,7 +550,7 @@ namespace SpaceIsFun
                     for (int i = 0; i < 19; i++)
                     {
                         if (playerShip.CurrentHP > 6)
-                            j = 9; 
+                            j = 9;
                         else if (playerShip.CurrentHP > 3)
                             j = 3;
                         else
@@ -555,7 +573,7 @@ namespace SpaceIsFun
                         playerShip.CurrentShields = playerShip.CurrentShields - 1;
                     }
                     for (int i = 0; i < playerShip.MaxShields; i++)
-                        if(i >= playerShip.CurrentShields)
+                        if (i >= playerShip.CurrentShields)
                             shieldTest[i].Visible = false;
                 }
                 #endregion
@@ -569,7 +587,7 @@ namespace SpaceIsFun
                         playerShip.CurrentShields = playerShip.CurrentShields + 1;
                     }
                     for (int i = 0; i < playerShip.MaxShields; i++)
-                        if(i < playerShip.CurrentShields)
+                        if (i < playerShip.CurrentShields)
                             shieldTest[i].Visible = true;
                 }
                 #endregion
@@ -577,21 +595,25 @@ namespace SpaceIsFun
                 #region keys.1
                 if (currentKeyState.IsKeyDown(Keys.D1) == true && previousKeyState.IsKeyUp(Keys.D1) == true)
                 {
+                    
                     int num = 0;
-                    if (weapons[num].Visible)
+                    if (weapons[num].Visible || weapons[num + 10].Visible)
                     {
                         // enable weapon 1
                         weapons[num].Visible = false;
-                        weapons[num+5].Visible = true;
+                        weapons[num + 5].Visible = true;
+                        weapons[num + 10].Visible = false;
                     }
                     else
                     {
-                        // disable weapon 1
-                        weapons[num].Visible = true;
+                        // select weapon 1
+                        weapons[num].Visible = false;
                         weapons[num + 5].Visible = false;
+                        weapons[num + 10].Visible = true;
                     }
 
-                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[num]);
+
+                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
 
                     // if weapon 1 is currently disabled
                     if (thisWeapon.weaponStateMachine.CurrentState.Name == "disabled")
@@ -611,18 +633,22 @@ namespace SpaceIsFun
                 if (currentKeyState.IsKeyDown(Keys.D2) == true && previousKeyState.IsKeyUp(Keys.D2) == true)
                 {
                     int num = 1;
-                    if (weapons[num].Visible)
+                    if (weapons[num].Visible || weapons[num + 10].Visible)
                     {
+                        // enable weapon 2
                         weapons[num].Visible = false;
                         weapons[num + 5].Visible = true;
+                        weapons[num + 10].Visible = false;
                     }
                     else
                     {
-                        weapons[num].Visible = true;
+                        // select weapon 2
+                        weapons[num].Visible = false;
                         weapons[num + 5].Visible = false;
+                        weapons[num + 10].Visible = true;
                     }
 
-                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[num]);
+                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[1]);
 
                     // if weapon 2 is currently disabled
                     if (thisWeapon.weaponStateMachine.CurrentState.Name == "disabled")
@@ -642,18 +668,22 @@ namespace SpaceIsFun
                 if (currentKeyState.IsKeyDown(Keys.D3) == true && previousKeyState.IsKeyUp(Keys.D3) == true)
                 {
                     int num = 2;
-                    if (weapons[num].Visible)
+                    if (weapons[num].Visible || weapons[num + 10].Visible)
                     {
+                        // enable weapon 3
                         weapons[num].Visible = false;
                         weapons[num + 5].Visible = true;
+                        weapons[num + 10].Visible = false;
                     }
                     else
                     {
-                        weapons[num].Visible = true;
+                        // select weapon 3
+                        weapons[num].Visible = false;
                         weapons[num + 5].Visible = false;
+                        weapons[num + 10].Visible = true;
                     }
 
-                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[num]);
+                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[2]);
 
                     // if weapon 3 is currently disabled
                     if (thisWeapon.weaponStateMachine.CurrentState.Name == "disabled")
@@ -673,18 +703,22 @@ namespace SpaceIsFun
                 if (currentKeyState.IsKeyDown(Keys.D4) == true && previousKeyState.IsKeyUp(Keys.D4) == true)
                 {
                     int num = 3;
-                    if (weapons[num].Visible)
+                    if (weapons[num].Visible || weapons[num + 10].Visible)
                     {
+                        // enable weapon 4
                         weapons[num].Visible = false;
                         weapons[num + 5].Visible = true;
+                        weapons[num + 10].Visible = false;
                     }
                     else
                     {
-                        weapons[num].Visible = true;
+                        // select weapon 4
+                        weapons[num].Visible = false;
                         weapons[num + 5].Visible = false;
-                    };
+                        weapons[num + 10].Visible = true;
+                    }
 
-                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[num]);
+                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[3]);
 
                     // if weapon 4 is currently disabled
                     if (thisWeapon.weaponStateMachine.CurrentState.Name == "disabled")
@@ -704,18 +738,22 @@ namespace SpaceIsFun
                 if (currentKeyState.IsKeyDown(Keys.D5) == true && previousKeyState.IsKeyUp(Keys.D5) == true)
                 {
                     int num = 4;
-                    if (weapons[num].Visible)
+                    if (weapons[num].Visible || weapons[num + 10].Visible)
                     {
+                        // enable weapon 5
                         weapons[num].Visible = false;
                         weapons[num + 5].Visible = true;
+                        weapons[num + 10].Visible = false;
                     }
                     else
                     {
-                        weapons[num].Visible = true;
+                        // select weapon 5
+                        weapons[num].Visible = false;
                         weapons[num + 5].Visible = false;
+                        weapons[num + 10].Visible = true;
                     }
 
-                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[num]);
+                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[4]);
 
                     // if weapon 5 is currently disabled
                     if (thisWeapon.weaponStateMachine.CurrentState.Name == "disabled")
@@ -810,7 +848,7 @@ namespace SpaceIsFun
             {
                 #region input handling
 
-                
+
 
                 #region mouse
 
@@ -867,8 +905,8 @@ namespace SpaceIsFun
                             for (int j = y1; j <= y2; j++)
                             {
                                 System.Diagnostics.Debug.WriteLine("Selected Grid {0},{1}", i, j);
-                                
-                                Vector2 blah = new Vector2(i,j);
+
+                                Vector2 blah = new Vector2(i, j);
                                 foreach (int x in GridManager.RetrieveKeys())
                                 {
                                     Grid grid = (Grid)GridManager.RetrieveEntity(x);
@@ -893,8 +931,8 @@ namespace SpaceIsFun
 
                                 }*/
 
-                                
-                                
+
+
 
                                 var crewMembers = CrewManager.RetrieveKeys();
 
@@ -994,7 +1032,7 @@ namespace SpaceIsFun
             {
                 #region input handling
 
-                
+
 
 
                 #region mouse
@@ -1005,7 +1043,7 @@ namespace SpaceIsFun
 
                     //deselect the crew, go to idlecursor
 
-                    
+
 
                     selectedCrewMembers.Clear();
                     cursorState.Transition(idleCursor.Name);
@@ -1028,12 +1066,12 @@ namespace SpaceIsFun
                         // transition to idle cursor on success
 
                         // todo: room-filling algorithm
-                     
 
-                        if(checkShipHover(currentMouseState) == playerShipUID)
+
+                        if (checkShipHover(currentMouseState) == playerShipUID)
                         {
                             Vector2 targetGridVector = getGridHover(currentMouseState, playerShipUID);
-                            
+
 
                             //System.Diagnostics.Debug.WriteLine("target grid: "+targetGrid);
 
@@ -1089,13 +1127,13 @@ namespace SpaceIsFun
 
                         }
 
-                    
+
 
                     }
 
                     else
                     {
-                    // we got more than one man
+                        // we got more than one man
 
                         // did we click on a room on our ship?
                         if (checkShipHover(currentMouseState) == playerShipUID)
@@ -1129,19 +1167,19 @@ namespace SpaceIsFun
                                         if (thisRoomUID == GridToRoom[item])
                                         {
                                             theGrids.Add(item);
-                                            
+
                                         }
-                                        
+
                                     }
                                     //add their positions to a list
                                     List<Tuple<int, int>> gridPositions = new List<Tuple<int, int>>();
                                     foreach (var item in theGrids)
                                     {
-                                        Grid gridInRoom = (Grid)GridManager.RetrieveEntity(item); 
+                                        Grid gridInRoom = (Grid)GridManager.RetrieveEntity(item);
                                         //System.Diagnostics.Debug.WriteLine(item);
                                         //System.Diagnostics.Debug.WriteLine(gridInRoom.GridPosition.ToString());
-                                        gridPositions.Add(new Tuple<int,int>((int)gridInRoom.GridPosition.X, (int)gridInRoom.GridPosition.Y));
-                                        
+                                        gridPositions.Add(new Tuple<int, int>((int)gridInRoom.GridPosition.X, (int)gridInRoom.GridPosition.Y));
+
                                     }
 
                                     foreach (var item in gridPositions)
@@ -1160,21 +1198,21 @@ namespace SpaceIsFun
                                     }
                                     */
                                     // loop through crew members, for each one, find the next available grid and assign him that target
-                                    for(int i=0;i<selectedCrewMembers.Count;i++)
+                                    for (int i = 0; i < selectedCrewMembers.Count; i++)
                                     {
 
                                         //if there are more selected crew than available room spaces, do nothing
-                                        if (selectedCrewMembers.Count > (thisRoom.RoomSize-count))
+                                        if (selectedCrewMembers.Count > (thisRoom.RoomSize - count))
                                         {
                                             //break;
                                         }
-                                        
+
                                         // get the next available grid
                                         int targetGridUID = 0;
                                         foreach (int roomGridID in theGrids)
                                         {
 
-                                            
+
 
                                             // if this grid is filled by a man
 
@@ -1190,7 +1228,7 @@ namespace SpaceIsFun
                                             if (skipGrid == true)
                                             {
                                                 System.Diagnostics.Debug.WriteLine("skipGrid: " + skipGrid.ToString());
-                                                    
+
 
                                                 continue;
                                             }
@@ -1199,7 +1237,7 @@ namespace SpaceIsFun
                                                 targetGridUID = roomGridID;
                                                 break;
                                             }
-                                            
+
                                         }
 
 
