@@ -59,6 +59,16 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
+    <Compile Include="Grid.png">
+      <Name>Grid</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Room2x2.png">
+      <Name>Room2x2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="SimpleFont.spritefont">
       <Name>SimpleFont</Name>
       <Importer>FontDescriptionImporter</Importer>
@@ -78,13 +88,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Grid.png">
-      <Name>Grid</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="GridHighlight.png">
       <Name>GridHighlight</Name>
       <Importer>TextureImporter</Importer>
@@ -92,20 +95,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Room2x2.png">
-      <Name>Room2x2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="Room2x2highlight.png">
       <Name>Room2x2highlight</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="GridNotWalkable.png">
-      <Name>GridNotWalkable</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -182,6 +173,54 @@
   <ItemGroup>
     <Compile Include="ship01.png">
       <Name>ship01</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="SpaceIsFunIntro.mp3">
+      <Name>SpaceIsFunIntro</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MenuClick.mp3">
+      <Name>MenuClick</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+    </Compile>
+    <Compile Include="SpaceIsFunBatlle.mp3">
+      <Name>SpaceIsFunBatlle</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+    </Compile>
+    <Compile Include="WeaponsDeselected.mp3">
+      <Name>WeaponsDeselected</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+    </Compile>
+    <Compile Include="WeaponsSelected.mp3">
+      <Name>WeaponsSelected</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GridNotWalkable.png">
+      <Name>GridNotWalkable</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ship02Flipped.png">
+      <Name>ship02Flipped</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="ship03Flipped.png">
+      <Name>ship03Flipped</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
