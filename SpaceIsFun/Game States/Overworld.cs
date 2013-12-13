@@ -41,7 +41,10 @@ namespace SpaceIsFun
 
                 //
 
-                
+                System.Diagnostics.Debug.WriteLine("Narr 1: " + narrative1Resolved.ToString());
+                System.Diagnostics.Debug.WriteLine("Narr 2: " + narrative2Resolved.ToString());
+                System.Diagnostics.Debug.WriteLine("Battle 1: " + battle1Resolved.ToString());
+                System.Diagnostics.Debug.WriteLine("Battle 1: " + battle2Resolved.ToString());
 
 
                 //Traverse through starNodes, and assign gray or regular textures based on which node it is
@@ -134,10 +137,10 @@ namespace SpaceIsFun
                         {
                             //Do some 
                             //System.Diagnostics.Debug.WriteLine("Narrative1");
+                    
+                            stateMachine.Transition(narrative.Name);
 
-                            stateMachine.Transition(battle.Name);
-
-                            narrative1Resolved = true;
+                            
                         }
                     }
                     else if (starNodeSelectedIndex == (int)NodeState.Narrative2)
@@ -147,7 +150,8 @@ namespace SpaceIsFun
                             //Do some more  if narrative2
                             //System.Diagnostics.Debug.WriteLine("Narrative2");
                             
-                            narrative2Resolved = true;
+                           
+                            stateMachine.Transition(narrative.Name);
                         }
                     }
                     else if (starNodeSelectedIndex == (int)NodeState.Battle1)
@@ -157,9 +161,10 @@ namespace SpaceIsFun
                             //Battle some 
                             //System.Diagnostics.Debug.WriteLine(",  and lollipops.  Unicorn on top.");
 
-                            gameStateUID = 2;
-                            stateMachine.Transition(battle.Name);
+                           
                             battle1Resolved = true;
+                            stateMachine.Transition(battle.Name);
+                            
                         }
                     }
                     else if (starNodeSelectedIndex == (int)NodeState.Battle2)
@@ -167,8 +172,11 @@ namespace SpaceIsFun
                         if (narrative2Resolved)
                         {
                             //Battle some more
-                            System.Diagnostics.Debug.WriteLine(",  and lollipops.   just don't stop.");
+                            //System.Diagnostics.Debug.WriteLine(",  and lollipops.   just don't stop.");
+                            gameStateUID = 2;
                             battle2Resolved = true;
+                            stateMachine.Transition(battle.Name);
+                            
                         }
                     }
                 }

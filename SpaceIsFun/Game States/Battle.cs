@@ -1053,6 +1053,7 @@ namespace SpaceIsFun
                 if (currentKeyState.IsKeyDown(Keys.NumPad0))
                 {
                     stateMachine.Transition("overworld");
+                    battle1Result = true;
                 }
 
                 // end Rebecca's code
