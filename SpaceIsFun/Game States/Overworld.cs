@@ -16,7 +16,9 @@ namespace SpaceIsFun
         //States for what the nodes can be
         enum NodeState { Narrative1, Narrative2, Battle1, Battle2 }
 
-        
+        //Let github see my comments
+        String comments;
+
         List<Vector2> starNodes = new List<Vector2>(); //A list of star nodes
         List<Drawable> starNodeDraws = new List<Drawable>(); //Drawable objects to correlate to the star nodes
         int starNodeSelectedIndex = 0; //The index in the list of nodes for the star that is selected
