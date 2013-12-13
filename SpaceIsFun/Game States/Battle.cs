@@ -73,23 +73,23 @@ namespace SpaceIsFun
                     }
                 }
 
-                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 1, playerShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 3, enemyShip1StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
                 roomUIDs.Add(roomUID);
-                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 3, playerShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 5, 3, enemyShip1StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
                 roomUIDs.Add(roomUID);
-                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 5, playerShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 7, 2, enemyShip1StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
                 roomUIDs.Add(roomUID);
-                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 5, 2, playerShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 7, 4, enemyShip1StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
                 roomUIDs.Add(roomUID);
-                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 5, 4, playerShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 9, 2, enemyShip1StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
                 roomUIDs.Add(roomUID);
-                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 7, 2, playerShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 9, 4, enemyShip1StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
                 roomUIDs.Add(roomUID);
-                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 7, 4, playerShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 11, 1, enemyShip1StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
                 roomUIDs.Add(roomUID);
-                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 9, 3, playerShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 11, 3, enemyShip1StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
                 roomUIDs.Add(roomUID);
-                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 11, 3, playerShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 11, 5, enemyShip1StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
                 roomUIDs.Add(roomUID);
 
                 roomTypes = new bool[11];
@@ -127,6 +127,7 @@ namespace SpaceIsFun
 
 
                 WeaponToShip[weaponUID] = enemyShipUID1;
+                setRoomToShipDictionary(enemyShipUID1, roomUIDs);
                 setRoomGridDictionary(enemyShipUID1);
                 setUnwalkableGrids(enemyShipUID1);
             }
@@ -160,23 +161,23 @@ namespace SpaceIsFun
                     }
                 }
 
-                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 1, playerShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 3, enemyShip2StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
                 roomUIDs.Add(roomUID);
-                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 3, playerShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 5, 3, enemyShip2StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
                 roomUIDs.Add(roomUID);
-                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 5, playerShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 7, 2, enemyShip2StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
                 roomUIDs.Add(roomUID);
-                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 5, 2, playerShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 7, 4, enemyShip2StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
                 roomUIDs.Add(roomUID);
-                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 5, 4, playerShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 9, 2, enemyShip2StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
                 roomUIDs.Add(roomUID);
-                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 7, 2, playerShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 9, 4, enemyShip2StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
                 roomUIDs.Add(roomUID);
-                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 7, 4, playerShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 11, 1, enemyShip2StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
                 roomUIDs.Add(roomUID);
-                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 9, 3, playerShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 11, 3, enemyShip2StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
                 roomUIDs.Add(roomUID);
-                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 11, 3, playerShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+                roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 11, 5, enemyShip2StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
                 roomUIDs.Add(roomUID);
 
                 roomTypes = new bool[11];
@@ -215,6 +216,7 @@ namespace SpaceIsFun
 
 
                 WeaponToShip[weaponUID] = enemyShipUID2;
+                setRoomToShipDictionary(enemyShipUID2, roomUIDs);
                 setRoomGridDictionary(enemyShipUID2);
                 setUnwalkableGrids(enemyShipUID2);
             }
@@ -1041,6 +1043,10 @@ namespace SpaceIsFun
                         System.Diagnostics.Debug.WriteLine("x1, y1 {0},{1}", x1, y1);
                         System.Diagnostics.Debug.WriteLine("x2, y2 {0},{1}", x2, y2);
 
+
+
+                        System.Diagnostics.Debug.WriteLine("Amount of rooms: "+RoomManager.RetrieveKeys().Count.ToString());   
+
                         for (int i = x1; i <= x2; i++)
                         {
                             for (int j = y1; j <= y2; j++)
@@ -1056,9 +1062,12 @@ namespace SpaceIsFun
                                     {
                                         System.Diagnostics.Debug.WriteLine("Filled: " + FilledRooms[x].ToString());
                                         System.Diagnostics.Debug.WriteLine("Walkable: " + grid.IsWalkable.ToString());
+                                        
                                         break;
                                     }
                                 }
+
+                                
 
                                 /*for (i = 0; i < playerShip.ShipGrid.GetLength(0); i++)
                                 {
@@ -1287,9 +1296,9 @@ namespace SpaceIsFun
 
                                 // loop through CrewToRoom, count any hits in the values; if count is less than or equal to the room's size then continue
                                 int count = 0;
-                                foreach (var item in CrewToRoom.Values)
+                                foreach (var item in CrewToRoom.Keys)
                                 {
-                                    if (thisRoomUID == item && selectedCrewMembers.Contains(item) == false)
+                                    if (thisRoomUID == CrewToRoom[item] && selectedCrewMembers.Contains(item) == false)
                                     {
                                         count++;
                                     }
