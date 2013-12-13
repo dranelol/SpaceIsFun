@@ -979,10 +979,10 @@ namespace SpaceIsFun
                     // note: this should only happen if the two points are on the player's ship
                     else if (multiSelecting == true && checkShipHover(selectRectStart) == playerShipUID && checkShipHover(selectRectEnd) == playerShipUID)
                     {
-                        int x1 = (selectRectStart.X - 50) / 32;
-                        int y1 = (selectRectStart.Y - 50) / 32;
-                        int x2 = (selectRectEnd.X - 50) / 32;
-                        int y2 = (selectRectEnd.Y - 50) / 32;
+                        int x1 = (selectRectStart.X - (int)playerShipStartPosition.X) / 32;
+                        int y1 = (selectRectStart.Y - (int)playerShipStartPosition.Y) / 32;
+                        int x2 = (selectRectEnd.X - (int)playerShipStartPosition.X) / 32;
+                        int y2 = (selectRectEnd.Y - (int)playerShipStartPosition.Y) / 32;
 
                         // swap points if they need to be
                         int temp;
