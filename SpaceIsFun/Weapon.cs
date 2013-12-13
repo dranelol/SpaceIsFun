@@ -326,7 +326,7 @@ namespace SpaceIsFun
                 System.Diagnostics.Debug.WriteLine("charge needed: " + timeToCharge.ToString());
                 if (charge >= timeToCharge)
                 {
-                    System.Diagnostics.Debug.WriteLine("pew pew time");
+                    System.Diagnostics.Debug.WriteLine("weapon is ready to fire");
                     readyToFire = true;
                 }
 

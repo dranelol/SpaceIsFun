@@ -890,9 +890,13 @@ namespace SpaceIsFun
                     }
 
                     // if weapon 1 is charging
-                    else if (thisWeapon.weaponStateMachine.CurrentState.Name == "charging")
+                    else if (thisWeapon.weaponStateMachine.CurrentState.Name == "ready")
                     {
                         // go to target weapon state, try to assign target
+                        if (cursorState.CurrentState.Name == "idleCursor")
+                        {
+                            cursorState.Transition("targetWeapon");
+                        }
                     }
                 }
                 #endregion
@@ -1038,6 +1042,11 @@ namespace SpaceIsFun
                 #endregion
 
                 #endregion
+
+                if (currentKeyState.IsKeyDown(Keys.NumPad0))
+                {
+                    stateMachine.Transition("overworld");
+                }
 
                 // end Rebecca's code
 
