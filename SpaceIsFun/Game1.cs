@@ -237,8 +237,8 @@ namespace SpaceIsFun
 
             #region textures
             shipTexture = Content.Load<Texture2D>("ship01");
-            enemyShipTexture1 = Content.Load<Texture2D>("ship02");
-            enemyShipTexture2 = Content.Load<Texture2D>("ship03");
+            enemyShipTexture1 = Content.Load<Texture2D>("ship02Flipped");
+            enemyShipTexture2 = Content.Load<Texture2D>("ship03Flipped");
             energyBar = Content.Load<Texture2D>("energyBar");
             healthBarFull = Content.Load<Texture2D>("healthBarFull");
             healthBarMed = Content.Load<Texture2D>("healthBarMed");
