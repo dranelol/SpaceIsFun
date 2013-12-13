@@ -192,6 +192,8 @@ namespace SpaceIsFun
 
         Drawable overworldCursorDraw;
 
+        public bool masterGameEnd = false;
+
         /// <summary>
         /// width of the current screen, in pixels
         /// </summary>
