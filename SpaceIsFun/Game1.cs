@@ -571,7 +571,7 @@ namespace SpaceIsFun
 
             introState.Transitions.Add(overworld.Name, overworld);
 
-            stateMachine.Start(battle);
+            stateMachine.Start(startMenu);
             #endregion
 
             // set up any UI elements here
