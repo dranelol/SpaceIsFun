@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Runtime.Serialization;
 
 
 namespace SpaceIsFun
@@ -14,7 +15,7 @@ namespace SpaceIsFun
     /// <summary>
     /// A grid of the ship
     /// </summary>
-    public class Grid : Entity
+    [Serializable] public class Grid : Entity, ISerializable
     {
         #region fields
         /// <summary>
@@ -172,6 +173,18 @@ namespace SpaceIsFun
             hullBreach = false;
             aflame = false;
         }
+        public Grid(SerializationInfo si, StreamingContext sc)
+            : base()
+        {
+            gridPosition = (Vector2)si.GetValue("gridPosition", typeof(Vector2));
+            isWalkable = si.GetBoolean("isWalkable");
+            sprite = (Drawable)si.GetValue("sprite", typeof(Drawable));
+            gridTexture = (Texture2D)si.GetValue("gridTexture", typeof(Texture2D));
+            highlightTexture = (Texture2D)si.GetValue("highlightTexture", typeof(Texture2D));
+            highlighted = si.GetBoolean("highlighted");
+            aflame = si.GetBoolean("aflame");
+            hullBreach = si.GetBoolean("hullBreach");
+        }
 
         #endregion
 
@@ -216,6 +229,20 @@ namespace SpaceIsFun
                 highlighted = true;
             }
         }
+
+        public virtual void GetObjectData(SerializationInfo si, StreamingContext sc)
+        {
+            si.AddValue("gridPosition", gridPosition, typeof(Vector2));
+            si.AddValue("isWalkable", isWalkable);
+            si.AddValue("sprite", sprite, typeof(Drawable));
+            si.AddValue("gridTexture", gridTexture, typeof(Texture2D));
+            si.AddValue("highlightTexture", highlightTexture, typeof(Texture2D));
+            si.AddValue("highlighted", highlighted);
+            si.AddValue("aflame", aflame);
+            si.AddValue("hullBreach", hullBreach);
+        }
+
+
         #endregion
 
 

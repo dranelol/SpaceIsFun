@@ -6,13 +6,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Runtime.Serialization;
 
 namespace SpaceIsFun
 {
     /// <summary>
     /// Its a ship!
     /// </summary>
-    class Ship : Entity
+    [Serializable] class Ship : Entity, ISerializable
     {
         #region fields
         /// <summary>
@@ -466,6 +467,30 @@ namespace SpaceIsFun
 
         }
 
+        public Ship(SerializationInfo si, StreamingContext sc)
+            : base()
+        {
+            maxHP = si.GetInt32("maxHP");
+            currentHP = si.GetInt32("currentHP");
+            currentShields = si.GetInt32("currentShields");
+            maxShields = si.GetInt32("maxShields");
+            energy = si.GetInt32("energy");
+            shipO2 = si.GetInt32("shipO2");
+            sprite = (Drawable)si.GetValue("sprite", typeof(Drawable));
+            shipGrid = (int[,])si.GetValue("shipGrid", typeof(int[,]));
+            roomList = (bool[])si.GetValue("roomList", typeof(bool[]));
+            roomGridDict = (Dictionary<int, int>)si.GetValue("roomGridDict", typeof(Dictionary<int, int>));
+            gridWidth = si.GetInt32("gridWidth");
+            gridHeight = si.GetInt32("gridHeight");
+            default_weap = (Weapon) si.GetValue("default_weap", typeof(Weapon));
+            roomUIDList = (List<int>)si.GetValue("roomUIDList", typeof(List<int>));
+            gridUIDList = (List<int>)si.GetValue("gridUIDList", typeof(List<int>));
+            weaponUIDList = (List<int>)si.GetValue("weaponUIDList", typeof(List<int>));
+            weaponSlots = (int[])si.GetValue("weaponSlots", typeof(int[]));
+            weaponMountPoints = (Point[])si.GetValue("weaponMountPoints", typeof(Point[]));
+            owner = si.GetInt32("owner");
+        }
+
         #endregion
 
         #region methods
@@ -534,7 +559,30 @@ namespace SpaceIsFun
         }
 
 
-        
+        public virtual void GetObjectData(SerializationInfo si, StreamingContext sc)
+        {
+            si.AddValue("maxHP", maxHP);
+            si.AddValue("currentHP", currentHP);
+            si.AddValue("currentShields", currentShields);
+            si.AddValue("maxShields", maxShields);
+            si.AddValue("energy", energy);
+            si.AddValue("shipO2", shipO2);
+            si.AddValue("sprite", sprite, typeof(Drawable));
+            si.AddValue("shipGrid", shipGrid, typeof(int[,]));
+            si.AddValue("roomList", roomList, typeof(bool[]));
+            si.AddValue("roomGridDict", roomGridDict, typeof(Dictionary<int, int>));
+            si.AddValue("gridWidth", gridWidth);
+            si.AddValue("default_weap", default_weap, typeof(Weapon));
+            si.AddValue("gridHeight", gridHeight);
+            si.AddValue("roomUIDList", roomUIDList, typeof(List<int>));
+            si.AddValue("gridUIDList", gridUIDList, typeof(List<int>));
+            si.AddValue("weaponUIDList", weaponUIDList, typeof(List<int>));
+            si.AddValue("weaponSlots", weaponSlots, typeof(int[]));
+            si.AddValue("weaponMountPoints", weaponMountPoints, typeof(Point[]));
+            si.AddValue("owner", owner);
+
+
+        }
 
         
 

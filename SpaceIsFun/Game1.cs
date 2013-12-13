@@ -10,6 +10,9 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 using Ruminate.GUI.Framework;
 using Ruminate.GUI.Content;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 //using NUnit.Framework;
 //using Rhino.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -98,6 +101,7 @@ namespace SpaceIsFun
         Dictionary<int, int> CrewToShip = new Dictionary<int, int>();
         Dictionary<int, int> CrewToRoom = new Dictionary<int, int>();
         Dictionary<int, bool> FilledRooms = new Dictionary<int, bool>();
+
         #endregion
 
         // definitions for all the textures go here
@@ -235,9 +239,6 @@ namespace SpaceIsFun
 
             // init managers
 
-            // ALL OF THIS STUFF HAS BEEN MOVED TO LOAD CONTENT
-
-            // maybe move it back when we can... 
             
 
             
@@ -381,6 +382,7 @@ namespace SpaceIsFun
             setUnwalkableGrids(playerShipUID);
             filledRoomUIDs = setCrewDictionary(playerShipUID);
             setFilledDict(playerShipUID, filledRoomUIDs);
+
 
             //playerShip = new Ship(shipTexture, gridSprite, gridHighlightSprite, new Vector2(50, 50), roomUIDs, gridUIDs, weaponUIDs, roomTypes);
 
@@ -768,10 +770,12 @@ namespace SpaceIsFun
 
                 GridManager.Draw(spriteBatch);
                 RoomManager.Draw(spriteBatch);
+
                 //System.Diagnostics.Debug.WriteLine("before crew draw");
                 CrewManager.Draw(spriteBatch);
                 //System.Diagnostics.Debug.WriteLine("after crew draw");
                 WeaponManager.Draw(spriteBatch);
+
 
 
                 if (multiSelecting == true)
@@ -1139,6 +1143,7 @@ namespace SpaceIsFun
 
         }
 
+
         public List<int> setCrewDictionary(int shipUID)
         {
             Ship thisShip = (Ship)ShipManager.RetrieveEntity(shipUID);
@@ -1175,7 +1180,9 @@ namespace SpaceIsFun
 
 
             int mans = 0;
+
             List<int> filledRoomUIDs = new List<int>();
+
             foreach (int i in gridRoomKeys)
             {
                 if (mans == 3)
@@ -1191,13 +1198,17 @@ namespace SpaceIsFun
 
                 CrewToShip[crewUID] = shipUID;
                 CrewToRoom[crewUID] = GridToRoom[i];
+
                 filledRoomUIDs.Add(i);
+
 
                 mans++;
             }
 
 
+
             return filledRoomUIDs;
+
         }
 
         public void setRoomToShipDictionary(int shipUID, List<int> roomUIDs)
@@ -1208,6 +1219,83 @@ namespace SpaceIsFun
             }
 
         }
+
+
+        //For now, just appends current state to save file
+        public void saveState(string fileName)
+        {
+            IFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(fileName, FileMode.Append);
+            formatter.Serialize(stream, stateMachine.CurrentState);
+            stream.Close();
+        }
+
+        public void saveData(string fileName)
+        {
+            IFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(fileName, FileMode.Create);
+            stream.Close();  //This is a bit odd but
+            //Each function appends to the file.  Opening and closing here
+            //just erases the previous file if there was one, and creates a new one.
+            //Closes file so there aren't multiple streams to the same file open.
+
+            saveState(fileName);
+
+            //These dump the dictionary<int, Entity> objects from EntityManager
+            RoomManager.dumpObjects(fileName);
+            GridManager.dumpObjects(fileName);
+            CrewManager.dumpObjects(fileName);
+            WeaponManager.dumpObjects(fileName);
+            ShipManager.dumpObjects(fileName);
+
+            FileStream stream2 = new FileStream(fileName, FileMode.Append);
+            formatter.Serialize(stream2, GridToRoom);
+            formatter.Serialize(stream2, RoomToShip);
+            formatter.Serialize(stream2, WeaponToShip);
+            formatter.Serialize(stream2, CrewToShip);
+            formatter.Serialize(stream2, CrewToRoom);
+            formatter.Serialize(stream2, FilledRooms);
+
+            stream2.Close();
+
+
+        }
+
+        public void loadData(string fileName)
+        {
+            //Load and set currentState in stateMachine
+            //May need to do more
+
+            IFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(fileName, FileMode.Open);
+            State new_CurrentState = (State)formatter.Deserialize(stream);
+            //TODO transition state machine to this state
+            //
+            //
+
+            //Loads "objects" dictionary from save to Entity managers. Keys and Values will be transferred from save file.
+            RoomManager.setObjects((Dictionary<int, Entity>)formatter.Deserialize(stream));
+            GridManager.setObjects((Dictionary<int, Entity>)formatter.Deserialize(stream));
+            CrewManager.setObjects((Dictionary<int, Entity>)formatter.Deserialize(stream));
+            WeaponManager.setObjects((Dictionary<int, Entity>)formatter.Deserialize(stream));
+            ShipManager.setObjects((Dictionary<int, Entity>)formatter.Deserialize(stream));
+
+            Dictionary<int, int> temp;
+            Dictionary<int, bool> temp2;
+            temp = (Dictionary<int, int>)formatter.Deserialize(stream);
+            GridToRoom = new Dictionary<int, int>(temp);
+            temp = (Dictionary<int, int>)formatter.Deserialize(stream);
+            RoomToShip = new Dictionary<int, int>(temp);
+            temp = (Dictionary<int, int>)formatter.Deserialize(stream);
+            WeaponToShip = new Dictionary<int, int>(temp);
+            temp = (Dictionary<int, int>)formatter.Deserialize(stream);
+            CrewToShip = new Dictionary<int, int>(temp);
+            temp = (Dictionary<int, int>)formatter.Deserialize(stream);
+            CrewToRoom = new Dictionary<int, int>(temp);
+            temp2 = (Dictionary<int, bool>)formatter.Deserialize(stream);
+            FilledRooms = new Dictionary<int, bool>(temp2);
+        }
+
 
         public void setFilledDict(int shipUID, List<int> filledRoomUIDs)
         {
@@ -1227,7 +1315,7 @@ namespace SpaceIsFun
 
             }
         }
-
+        
         public void dealDamage(int shipUID, int weaponUID)
         {
             Ship targetShip = (Ship)ShipManager.RetrieveEntity(shipUID);

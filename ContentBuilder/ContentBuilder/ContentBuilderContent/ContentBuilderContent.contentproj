@@ -132,6 +132,7 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
+
   <ItemGroup>
     <Compile Include="shieldBubble.png">
       <Name>shieldBubble</Name>

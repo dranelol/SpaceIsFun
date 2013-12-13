@@ -331,7 +331,6 @@ namespace SpaceIsFun
                 // this panel will hold all the login GUI objects
 
                 //WidgetEvent wpn1click = new WidgetEvent();
-
                 
                 gui.AddWidget(wpnEnable);
 
@@ -468,7 +467,6 @@ namespace SpaceIsFun
                     energy1.AddWidget(energyBar1 = new Image(0, (256 - 16 - 8 - 8) - i * 16, energyBarSprite));
                     energyBarTest.Add(energyBar1);
                 }
-
 
 
             };
@@ -776,6 +774,7 @@ namespace SpaceIsFun
                             //don't worry about red(3)
                         else
                             j = 0;
+
                             //we are in red, hp and bars finally line up
 
                         if (i < playerShip.CurrentHP + j)
@@ -805,6 +804,7 @@ namespace SpaceIsFun
                     for (int i = 0; i < 19; i++)
                     {
                         if (playerShip.CurrentHP > 6)
+
                             j = 9; 
                             // we are still in green 
                             //don't worry about orange(6) and yellow(3)
@@ -1135,7 +1135,6 @@ namespace SpaceIsFun
             idleCursor.update += (GameTime gameTime) =>
             {
                 #region input handling
-
 
 
                 if (currentKeyState.IsKeyDown(Keys.O) && previousKeyState.IsKeyUp(Keys.O))

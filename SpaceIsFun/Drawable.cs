@@ -309,13 +309,16 @@ namespace SpaceIsFun
         /// <param name="gameTime">current game time</param>
         public void Update(GameTime gameTime)
         {
+
             //System.Diagnostics.Debug.WriteLine("position: "+position2D.ToString());
             
             //System.Diagnostics.Debug.WriteLine("updating");
+
             
             
             if(pathing == true)
             {
+
                 //System.Diagnostics.Debug.WriteLine("updating");
                 
                 // find the distance to target
@@ -435,6 +438,7 @@ namespace SpaceIsFun
         /// <param name="path"></param>
         public void setPath(List<Vector2> path)
         {
+
 
 
 

@@ -5,6 +5,9 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 using System.Reflection;
 
 
@@ -13,7 +16,7 @@ namespace SpaceIsFun
     public class EntityManager
     {
         protected Dictionary<int, Entity> objects = new Dictionary<int, Entity>();
-
+        
         protected List<Entity> addList = new List<Entity>();
 
         protected List<Entity> deleteList = new List<Entity>();
@@ -65,6 +68,7 @@ namespace SpaceIsFun
         /// <param name="gameTime">current game time</param>
         public void Update(GameTime gameTime)
         {
+            
             /*
             // add any objects that need to be added
             foreach (Entity entity in addList)
@@ -146,6 +150,31 @@ namespace SpaceIsFun
         public Dictionary<int,Entity>.KeyCollection RetrieveKeys()
         {
             return objects.Keys;
+        }
+
+        //This will dump the entire dictionary "objects" to the file completely: keys and objects.
+        //It APPENDS to the file.
+        public void dumpObjects(string fileName)
+        {
+            IFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(fileName, FileMode.Append);
+            formatter.Serialize(stream, objects);
+            stream.Close();
+
+        }
+
+        public void setObjects(Dictionary<int, Entity> obj)
+        {
+            objects = new Dictionary<int, Entity>(obj); //copy constructor
+            int count = 0;
+
+            //This should make count = last used key
+            foreach (int i in objects.Keys.ToArray())
+                count = i;
+
+            UIDcurrent = count;
+            //should be last assigned UID
+
         }
 
 
