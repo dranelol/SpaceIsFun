@@ -240,10 +240,7 @@ namespace SpaceIsFun
                 currentEnemyShips.Add(enemyShipUID2);
             }
 
-
             Pathfinder pather = new Pathfinder(playerShip.ShipGrid, playerShipStartPosition, GridManager);
-
-
 
 
             // sets up seven energy bars for the ship
@@ -1114,6 +1111,7 @@ namespace SpaceIsFun
             idleCursor.update += (GameTime gameTime) =>
             {
                 #region input handling
+
 
 
                 if (currentKeyState.IsKeyDown(Keys.O) && previousKeyState.IsKeyUp(Keys.O))
