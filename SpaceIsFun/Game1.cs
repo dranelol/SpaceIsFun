@@ -1164,7 +1164,7 @@ namespace SpaceIsFun
             Ship targetShip = (Ship)ShipManager.RetrieveEntity(shipUID);
             Weapon targetWeap = (Weapon)WeaponManager.RetrieveEntity(weaponUID);
 
-            //figure out wait time
+            //figure out wait time and drawable nonsense
 
             targetShip.TakeDamage(targetWeap.Damage);
 

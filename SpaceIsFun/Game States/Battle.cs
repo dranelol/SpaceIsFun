@@ -1281,10 +1281,14 @@ namespace SpaceIsFun
                    
                     if (currentKeyState.IsKeyDown(Keys.NumPad1))
                     {
+                        //you want to activate weapon 1 to target the enemy
                         selectedWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponUIDList[1]);
+                        //get weapon 1
                         selectedWeapon.IsSelected = true;
                         selectedWeapon.start_charging();
+                        //start its charging
                         selectedWeapon.CurrentTarget = enemyShip.UID;
+                        //get the enemyID
                     }
 
 
@@ -1293,8 +1297,11 @@ namespace SpaceIsFun
 
                     if (selectedWeapon.ReadyToFire)
                     {
+                        //the weapon is in ready stage
                         dealDamage(name.UID, selectedWeapon.UID);
+                        //call weapon damage function in game1
                         selectedWeapon.ReadyToFire = false;
+                        //the weapon is no longer ready to fire
                     }
 
                     // transition to idle cursor on success
