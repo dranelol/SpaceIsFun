@@ -602,11 +602,9 @@ namespace SpaceIsFun
 
             introState.Transitions.Add(overworld.Name, overworld);
 
-<<<<<<< HEAD
+
             stateMachine.Start(startMenu);
-=======
-            stateMachine.Start(narrative);
->>>>>>> 207231286debf26fcbe706c767cc5ce4de9f36bd
+
             #endregion
 
             // set up any UI elements here
@@ -625,13 +623,13 @@ namespace SpaceIsFun
             setupBattle(playerShipUID);
             setupPauseState();
             setupOverworld();
-<<<<<<< HEAD
+
             setupIntro();
 
-=======
+
             setupNarrative();
             overworldCursorDraw = new Drawable(overworldCursorTexture, cursorCoords);
->>>>>>> 207231286debf26fcbe706c767cc5ce4de9f36bd
+
             #endregion
 
         }
