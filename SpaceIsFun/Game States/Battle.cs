@@ -141,6 +141,11 @@ namespace SpaceIsFun
                 Panel wpnEnable = new Panel(500, screenHeight - 128, 416 + 8, 75);
                 gui.AddWidget(wpnEnable);
 
+                /************************************************************************
+                 * Weapon Menu in battle scene:                                         *
+                 * Create a GUI that displayes button per weapon (5 buttons).           *
+                 * 15 buttons in total (5 for Disabled, 5 for Enabled, 5 for Selected). *
+                 ************************************************************************/
                 // Create and add weapon disable buttons
                 Button wpn1Disable = new Button(0, 0, 120, "WPN 1: Disabled");
                 Button wpn2Disable = new Button(139, 0, 120, "WPN 2: Disabled");
@@ -192,7 +197,7 @@ namespace SpaceIsFun
                 wpnEnable.AddWidget(wpn5Select);
                 weapons.Add(wpn5Select);
 
-
+                // Hide Enabled and Selected buttons
                 for (int i = 5; i < 15; i++)
                     weapons[i].Visible = false;
 
@@ -205,33 +210,56 @@ namespace SpaceIsFun
 
                 // adds all the energy bars to the gui
                 gui.AddWidget(energy1);
+
                 /*Lance's*/
                 gui.AddWidget(Health);
                 gui.AddWidget(Shields);
 
-
-
-                Texture2D HB;
-                if (playerShip.CurrentHP > 3)
-                    for (int i = 0; i < 3; i++)
-                    {
-                        HB = healthBarLow; // red healthbar
-                        Health.AddWidget(HealthBar = new Image(32 * i, 0, HB));
-                        healthBarTest.Add(HealthBar);
-                    }
-                if (playerShip.CurrentHP > 6)
-                    for (int i = 0; i < 6; i++)
-                    {
-                        HB = healthBarMed; // orange healthbar
-                        Health.AddWidget(HealthBar = new Image(32 * i, 0, HB));
-                        healthBarTest.Add(HealthBar);
-                    }
-                for (int i = 0; i < playerShip.CurrentHP; i++)
+                /*create the health bar:
+                 *first add the 3 red bars
+                 *second add the 6 orange bars
+                 *  (3 over the red bars)
+                 *third add the 10 green bars
+                 *  (6 over the orange)
+                 *      (3 over the red as well)
+                 *finally make any bars more over the starting
+                 * health of the ship invisible
+                 */
+                for (int i = 0; i < 3; i++)
                 {
-                    HB = healthBarFull; // green healthbar
-                    Health.AddWidget(HealthBar = new Image(32 * i, 0, HB));
+                    // red healthbar
+                    Health.AddWidget(HealthBar = new Image(32 * i, 0, healthBarLow));
                     healthBarTest.Add(HealthBar);
                 }
+                for (int i = 0; i < 6; i++)
+                {
+                    // orange healthbar
+                    Health.AddWidget(HealthBar = new Image(32 * i, 0, healthBarMed));
+                    healthBarTest.Add(HealthBar);
+                }
+                for (int i = 0; i < playerShip.MaxHP; i++)
+                {
+                    // green healthbar
+                    Health.AddWidget(HealthBar = new Image(32 * i, 0, healthBarFull));
+                    healthBarTest.Add(HealthBar);
+                }
+
+                int j = 0;
+                for (int i = 0; i < 19; i++)
+                {
+                    if (playerShip.CurrentHP > 6)
+                        j = 9;
+                    else if (playerShip.CurrentHP > 3)
+                        j = 3;
+                    else
+                        j = 0;
+
+                    if (i >= playerShip.CurrentHP + j)
+                    {
+                        healthBarTest[i].Visible = false;
+                    }
+                }
+                
 
                 for (int i = 0; i < playerShip.CurrentShields; i++)
                 {
@@ -519,15 +547,41 @@ namespace SpaceIsFun
                         playerShip.CurrentHP = playerShip.CurrentHP + 1;
                     }
 
+                    /*if (playerShip.CurrentHP > 6)
+                        healthBarFull = Content.Load<Texture2D>("healthBarFull");
+                    else if (playerShip.CurrentHP > 3)
+                        healthBarFull = Content.Load<Texture2D>("healthBarMed");
+                    else
+                        healthBarFull = Content.Load<Texture2D>("healthBarLow");
+
+                    for (int i = 0; i < playerShip.MaxHP; i++)
+                    {
+                        if (i < playerShip.CurrentHP)
+                        {
+                            energyBarTest[i].Visible = true;
+                        }
+                    }*/
+
                     int j = 0;
+                    /*
+                     * there are 19 bars
+                     * 0 - 3   : red
+                     * 4 - 9   : orange
+                     * 10 - 19 : green
+                     */
                     for (int i = 0; i < 19; i++)
                     {
                         if (playerShip.CurrentHP > 6)
                             j = 9;
+                            // we are still in green 
+                            //don't worry about orange(6) and yellow(3)
                         else if (playerShip.CurrentHP > 3)
                             j = 3;
+                            //we are in orange 
+                            //don't worry about red(3)
                         else
                             j = 0;
+                            //we are in red, hp and bars finally line up
 
                         if (i < playerShip.CurrentHP + j)
                         {
@@ -547,14 +601,25 @@ namespace SpaceIsFun
                     }
 
                     int j = 0;
+                    /*
+                     * there are 19 bars
+                     * 0 - 3   : red
+                     * 4 - 9   : orange
+                     * 10 - 19 : green
+                     */
                     for (int i = 0; i < 19; i++)
                     {
                         if (playerShip.CurrentHP > 6)
-                            j = 9;
+                            j = 9; 
+                            // we are still in green 
+                            //don't worry about orange(6) and yellow(3)
                         else if (playerShip.CurrentHP > 3)
                             j = 3;
+                            //we are in orange 
+                            //don't worry about red(3) 
                         else
                             j = 0;
+                            //we are in red, hp and bars finally line up
 
                         if (i >= playerShip.CurrentHP + j)
                         {
@@ -592,6 +657,17 @@ namespace SpaceIsFun
                 }
                 #endregion
 
+                // Rebecca's code
+
+                #region weapon keys
+                // For each numeric key press (D1-D5), weapons are enabled and selected.
+                // Initially, all weapons are Disabled.
+                // When numeric key is pressed, the corresponding weapon is Enabled and starts charging
+                // When numeric key is pressed again, the corresponding weapon is Selected and waits for a target to be selected
+                // Every numeric key press after that switches back and forth between Enabled and Selected
+
+                
+
                 #region keys.1
                 if (currentKeyState.IsKeyDown(Keys.D1) == true && previousKeyState.IsKeyUp(Keys.D1) == true)
                 {
@@ -600,16 +676,16 @@ namespace SpaceIsFun
                     if (weapons[num].Visible || weapons[num + 10].Visible)
                     {
                         // enable weapon 1
-                        weapons[num].Visible = false;
-                        weapons[num + 5].Visible = true;
-                        weapons[num + 10].Visible = false;
+                        weapons[num].Visible = false;//weapon disabled
+                        weapons[num + 5].Visible = true;//weapon enabled
+                        weapons[num + 10].Visible = false;//weapon selected
                     }
                     else
                     {
                         // select weapon 1
-                        weapons[num].Visible = false;
-                        weapons[num + 5].Visible = false;
-                        weapons[num + 10].Visible = true;
+                        weapons[num].Visible = false;//weapon disabled
+                        weapons[num + 5].Visible = false;//weapon enabled
+                        weapons[num + 10].Visible = true;//weapon selected
                     }
 
 
@@ -635,17 +711,17 @@ namespace SpaceIsFun
                     int num = 1;
                     if (weapons[num].Visible || weapons[num + 10].Visible)
                     {
-                        // enable weapon 2
-                        weapons[num].Visible = false;
-                        weapons[num + 5].Visible = true;
-                        weapons[num + 10].Visible = false;
+                        // enable weapon 1
+                        weapons[num].Visible = false;//weapon disabled
+                        weapons[num + 5].Visible = true;//weapon enabled
+                        weapons[num + 10].Visible = false;//weapon selected
                     }
                     else
                     {
-                        // select weapon 2
-                        weapons[num].Visible = false;
-                        weapons[num + 5].Visible = false;
-                        weapons[num + 10].Visible = true;
+                        // select weapon 1
+                        weapons[num].Visible = false;//weapon disabled
+                        weapons[num + 5].Visible = false;//weapon enabled
+                        weapons[num + 10].Visible = true;//weapon selected
                     }
 
                     Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[1]);
@@ -670,17 +746,17 @@ namespace SpaceIsFun
                     int num = 2;
                     if (weapons[num].Visible || weapons[num + 10].Visible)
                     {
-                        // enable weapon 3
-                        weapons[num].Visible = false;
-                        weapons[num + 5].Visible = true;
-                        weapons[num + 10].Visible = false;
+                        // enable weapon 1
+                        weapons[num].Visible = false;//weapon disabled
+                        weapons[num + 5].Visible = true;//weapon enabled
+                        weapons[num + 10].Visible = false;//weapon selected
                     }
                     else
                     {
-                        // select weapon 3
-                        weapons[num].Visible = false;
-                        weapons[num + 5].Visible = false;
-                        weapons[num + 10].Visible = true;
+                        // select weapon 1
+                        weapons[num].Visible = false;//weapon disabled
+                        weapons[num + 5].Visible = false;//weapon enabled
+                        weapons[num + 10].Visible = true;//weapon selected
                     }
 
                     Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[2]);
@@ -705,17 +781,17 @@ namespace SpaceIsFun
                     int num = 3;
                     if (weapons[num].Visible || weapons[num + 10].Visible)
                     {
-                        // enable weapon 4
-                        weapons[num].Visible = false;
-                        weapons[num + 5].Visible = true;
-                        weapons[num + 10].Visible = false;
+                        // enable weapon 1
+                        weapons[num].Visible = false;//weapon disabled
+                        weapons[num + 5].Visible = true;//weapon enabled
+                        weapons[num + 10].Visible = false;//weapon selected
                     }
                     else
                     {
-                        // select weapon 4
-                        weapons[num].Visible = false;
-                        weapons[num + 5].Visible = false;
-                        weapons[num + 10].Visible = true;
+                        // select weapon 1
+                        weapons[num].Visible = false;//weapon disabled
+                        weapons[num + 5].Visible = false;//weapon enabled
+                        weapons[num + 10].Visible = true;//weapon selected
                     }
 
                     Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[3]);
@@ -740,17 +816,17 @@ namespace SpaceIsFun
                     int num = 4;
                     if (weapons[num].Visible || weapons[num + 10].Visible)
                     {
-                        // enable weapon 5
-                        weapons[num].Visible = false;
-                        weapons[num + 5].Visible = true;
-                        weapons[num + 10].Visible = false;
+                        // enable weapon 1
+                        weapons[num].Visible = false;//weapon disabled
+                        weapons[num + 5].Visible = true;//weapon enabled
+                        weapons[num + 10].Visible = false;//weapon selected
                     }
                     else
                     {
-                        // select weapon 5
-                        weapons[num].Visible = false;
-                        weapons[num + 5].Visible = false;
-                        weapons[num + 10].Visible = true;
+                        // select weapon 1
+                        weapons[num].Visible = false;//weapon disabled
+                        weapons[num + 5].Visible = false;//weapon enabled
+                        weapons[num + 10].Visible = true;//weapon selected
                     }
 
                     Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[4]);
@@ -769,6 +845,9 @@ namespace SpaceIsFun
                 }
                 #endregion
 
+                #endregion
+
+                // end Rebecca's code
 
 
                 #region weapons testing: keys.y, keys.u

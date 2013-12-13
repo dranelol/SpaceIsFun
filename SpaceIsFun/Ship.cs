@@ -417,7 +417,7 @@ namespace SpaceIsFun
             roomGridDict = new Dictionary<int,int>();
             System.Diagnostics.Debug.WriteLine("initting ship");
             // set some default values 
-            maxHP = currentHP = 10;
+            currentHP = maxHP = 10; 
             energy = 10;
             maxShields = currentShields = 4;
 
