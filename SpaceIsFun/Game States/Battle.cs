@@ -475,7 +475,7 @@ namespace SpaceIsFun
                         else
                             j = 0;
 
-
+>>>>>>> 7088aa4524ecda21e16c2b4da509023775d904ef
                         if (i >= enemyShip.CurrentHP + j)
                         {
                             enemyhealthBarTest[i].Visible = false;
@@ -579,6 +579,12 @@ namespace SpaceIsFun
                     #region enemy health bars
 
 
+=======
+
+                    #region enemy health bars
+
+
+>>>>>>> 7088aa4524ecda21e16c2b4da509023775d904ef
                     for (int i = 0; i < 3; i++)
                     {
                         // red healthbar
@@ -1129,7 +1135,17 @@ namespace SpaceIsFun
                 // Every numeric key press after that switches back and forth between Enabled and Selected
 
                 #region setting gui according to weapon states
+<<<<<<< HEAD
+                
 
+                
+
+=======
+                
+
+                
+
+>>>>>>> 7088aa4524ecda21e16c2b4da509023775d904ef
                 #endregion
 
                 #region keys.1
