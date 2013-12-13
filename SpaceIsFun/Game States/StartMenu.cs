@@ -26,7 +26,7 @@ namespace SpaceIsFun
             {
                 // instead of going to a battle, go to an overworld instead
                 //stateMachine.Transition(overworld.Name);
-                stateMachine.Transition(battle.Name);
+                stateMachine.Transition(introState.Name);
                 
             }));
 

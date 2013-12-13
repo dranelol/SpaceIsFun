@@ -16,11 +16,13 @@ namespace SpaceIsFun
     {
         int narrativeUID;
 
-        int narrativeState = 0;
+        bool narrativeState = false;
+        bool outState = false;
+        bool twoHappened = false;
 
         Panel introPanelOne = new Panel(300, 300, 800, 500);
-        Ruminate.GUI.Content.
-        TextBox Test = new TextBox(50, 200);
+        
+        
 
         Label introOne = new Label(0, 0, "Your first assignment is to take care of the ship attacking the neighboring planet Gymnopedies");
         Label introTwo = new Label(0, 0, "What? You already have? Well then. What do you even need me here for?");
@@ -29,14 +31,16 @@ namespace SpaceIsFun
         //      Label introOne = new Label(0, 0, "hwerl");
         void setupNarrative()
         {
+
+            introPanelOne.AddWidget(introOne);
+            introPanelOne.AddWidget(introTwo);
+            introPanelOne.AddWidget(introThree);
+            introPanelOne.AddWidget(introFour);
             narrative.enter += () =>
             {
                 // setup gui elements here
     
-                introPanelOne.AddWidget(introOne);
-                introPanelOne.AddWidget(introTwo);
-                introPanelOne.AddWidget(introThree);
-                introPanelOne.AddWidget(introFour);
+                
                 gui.AddWidget(introPanelOne);
          //       gui.AddWidget(introPanelOne);
                 introPanelOne.Visible = true;
@@ -61,20 +65,51 @@ namespace SpaceIsFun
 
                 #endregion
 
-                if (battle1Resolved == false && battle2Resolved == false)
-                    introOne.Visible = true;
-
-                if(battle1Resolved == true && battle2Resolved == false && introTwo.Visible == false)
+                if (battle1Resolved == false && battle2Resolved == false && narrative1Resolved == false)
                 {
+                    
+                    introTwo.Visible = false;
+                    introThree.Visible = false;
+                    introFour.Visible = false;
+                    
                     introOne.Visible = true;
-                    narrativeState = 1;
+                    narrative1Resolved = true;
                 }
 
-                if (battle1Resolved == true && battle2Resolved == true && battle1Result == true)
-                    introThree.Visible = true;
+                else if(battle1Resolved == true && battle2Resolved == false && narrative2Resolved == false && twoHappened == false && outState==false)
+                {
+                    
+                    introTwo.Visible = false;
+                    introThree.Visible = false;
+                    introFour.Visible = false;
 
-                if (battle1Resolved == true && battle2Resolved == true && battle1Result == false)
+
+                    introOne.Visible = true;
+                    narrative1Resolved = true;
+                    narrativeState = true;
+                    
+                  
+                }
+
+                else if (battle1Resolved == true && battle2Resolved == false && battle1Result == true && narrative1Resolved==true && outState == false)
+                {
+                    introOne.Visible = false;
+                    introTwo.Visible = false;
+                    introFour.Visible = false;
+                    
+                    introThree.Visible = true;
+                    narrative2Resolved = true;
+                }
+
+                else if (battle1Resolved == true && battle2Resolved == false && battle1Result == false && narrative1Resolved==true && outState == false)
+                {
+                    introOne.Visible = false;
+                    introTwo.Visible = false;
+                    introThree.Visible = false;
+                    
                     introFour.Visible = true;
+                    narrative2Resolved = true;
+                }
                     
 
 
@@ -85,11 +120,13 @@ namespace SpaceIsFun
 
                 if (currentKeyState.IsKeyUp(Keys.Space) == true && previousKeyState.IsKeyDown(Keys.Space) == true)
                 {
-                    if (narrativeState == 1)
+                    if (narrativeState == true && outState == false)
                     {
                         introOne.Visible = false;
                         introTwo.Visible = true;
-                        narrativeState--;
+                        narrativeState = false;
+                        outState = true;
+                        twoHappened = true;
                     }
                     else
                     {
@@ -97,6 +134,7 @@ namespace SpaceIsFun
                         introTwo.Visible = false;
                         introThree.Visible = false;
                         introFour.Visible = false;
+                        outState = false;
                         stateMachine.Transition(overworld.Name);
                     }
                 }                

@@ -41,7 +41,10 @@ namespace SpaceIsFun
 
                 //
 
-                
+                System.Diagnostics.Debug.WriteLine("Narr 1: " + narrative1Resolved.ToString());
+                System.Diagnostics.Debug.WriteLine("Narr 2: " + narrative2Resolved.ToString());
+                System.Diagnostics.Debug.WriteLine("Battle 1: " + battle1Resolved.ToString());
+                System.Diagnostics.Debug.WriteLine("Battle 1: " + battle2Resolved.ToString());
 
 
                 //Traverse through starNodes, and assign gray or regular textures based on which node it is
@@ -132,36 +135,48 @@ namespace SpaceIsFun
                     {
                         if (narrative1Resolved == false)
                         {
-                            //Do some shit
-                            System.Diagnostics.Debug.WriteLine("Narrative1");
-                            narrative1Resolved = true;
+                            //Do some 
+                            //System.Diagnostics.Debug.WriteLine("Narrative1");
+                    
+                            stateMachine.Transition(narrative.Name);
+
+                            
                         }
                     }
                     else if (starNodeSelectedIndex == (int)NodeState.Narrative2)
                     {
                         if (narrative1Resolved && battle1Resolved)
                         {
-                            //Do some more shit if narrative2
-                            System.Diagnostics.Debug.WriteLine("Narrative2");
-                            narrative2Resolved = true;
+                            //Do some more  if narrative2
+                            //System.Diagnostics.Debug.WriteLine("Narrative2");
+                            
+                           
+                            stateMachine.Transition(narrative.Name);
                         }
                     }
                     else if (starNodeSelectedIndex == (int)NodeState.Battle1)
                     {
                         if (battle1Resolved == false)
                         {
-                            //Battle some shit
-                            System.Diagnostics.Debug.WriteLine("Penises, Penises and lollipops.  Unicorn on top.");
+                            //Battle some 
+                            //System.Diagnostics.Debug.WriteLine(",  and lollipops.  Unicorn on top.");
+
+                           
                             battle1Resolved = true;
+                            stateMachine.Transition(battle.Name);
+                            
                         }
                     }
                     else if (starNodeSelectedIndex == (int)NodeState.Battle2)
                     {
                         if (narrative2Resolved)
                         {
-                            //Battle some more shit
-                            System.Diagnostics.Debug.WriteLine("Penises, Penises and lollipops.  Big floppy penises, just don't stop.");
+                            //Battle some more
+                            //System.Diagnostics.Debug.WriteLine(",  and lollipops.   just don't stop.");
+                            gameStateUID = 2;
                             battle2Resolved = true;
+                            stateMachine.Transition(battle.Name);
+                            
                         }
                     }
                 }
