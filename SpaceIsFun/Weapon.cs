@@ -35,7 +35,19 @@ namespace SpaceIsFun
                 readyToFire = value;
             }
         }
+        private bool isSelected = false;
 
+        public bool IsSelected
+        {
+            get
+            {
+                return IsSelected;
+            }
+            set
+            {
+                isSelected = value;
+            }
+        }
         /// <summary>
         /// True if the weapon has a target, false if not
         /// </summary>
@@ -301,6 +313,7 @@ namespace SpaceIsFun
         {
             charging.enter += () =>
             {
+                charge = 0;
             };
 
             start_charging();
@@ -336,6 +349,7 @@ namespace SpaceIsFun
         {
             ready.enter += () =>
             {
+
             };
 
 
@@ -399,10 +413,10 @@ namespace SpaceIsFun
 
         public void launch_weapon(int target)
         {
-            if (weaponStateMachine.CurrentState == ready && currentTarget != -1)
+            if (weaponStateMachine.CurrentState == ready )
             {
-
                 //fire
+               
 
 
             }

@@ -124,6 +124,7 @@ namespace SpaceIsFun
         /// <param name="nextState">the name of the state to transition to</param>
         public void Transition(string nextState)
         {
+            System.Diagnostics.Debug.WriteLine(nextState);
             // if there's no current state running, and we've somehow tried to  transition, throw an exception
             if(currentState == null)
             {

@@ -22,9 +22,10 @@ namespace SpaceIsFun
         int roomUID;
         bool[] roomTypes;
         int weaponUID;
-
+        Weapon selectedWeapon;
+        bool selectedEnemy;
+        Ship name;
         bool multiSelecting = false;
-
         Point selectRectStart = new Point();
         Point selectRectEnd = new Point();
 
@@ -194,7 +195,9 @@ namespace SpaceIsFun
 
             Ship playerShip = (Ship)ShipManager.RetrieveEntity(playerUID);
             Ship enemyShip;
-            
+
+            enemyShip = (Ship)ShipManager.RetrieveEntity(enemyShipUID1);
+
             if (gameStateUID == 0)
             {
                 enemyShip = (Ship)ShipManager.RetrieveEntity(enemyShipUID1);
@@ -244,7 +247,8 @@ namespace SpaceIsFun
             idleCursor.Transitions.Add(targetWeapon.Name, targetWeapon);
             hasSelectedCrew.Transitions.Add(idleCursor.Name, idleCursor);
             hasSelectedCrew.Transitions.Add(hasSelectedCrew.Name, hasSelectedCrew);
-
+            targetWeapon.Transitions.Add(idleCursor.Name, idleCursor);
+            targetWeapon.Transitions.Add(hasSelectedCrew.Name, hasSelectedCrew);
             cursorState.Start(idleCursor);
 
 
@@ -380,7 +384,7 @@ namespace SpaceIsFun
                         energyBarTest.Add(energyBar1);
                     }
 
-                
+                currentEnemyShips.Add(enemyShip.UID);
             };
 
             #endregion
@@ -961,7 +965,10 @@ namespace SpaceIsFun
             {
                 #region input handling
 
-                
+                if (currentKeyState.IsKeyDown(Keys.O))
+                {
+                    cursorState.Transition("targetWeapon");
+                }
 
                 #region mouse
 
@@ -1413,30 +1420,71 @@ namespace SpaceIsFun
                 #region input handling
 
                 #region mouse
-
+                
+                selectedWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponUIDList[1]);
+                
                 if (previousMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
                 {
                     // if we've leftclicked
+                    System.Diagnostics.Debug.WriteLine("I'm here, clicking!");
+                    //did we click an enemy room?
+                    name = (Ship)ShipManager.RetrieveEntity(checkShipHover(currentMouseState));
+                    System.Diagnostics.Debug.WriteLine(name.UID);
+                    if (name.UID != -1 && name.UID != playerShip.UID)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Hey, it's an enemy!");
+                        selectedEnemy = true;
+                    }
 
-                    // did we click an enemy room?
+                 
 
-                    // if so, get the weapon we're currently selecting
-
-                    // set the enemy room as the weapon's target
-
-                    // transition to idle cursor on success
                 }
+
+                // if so, get the weapon we're currently selecting
+
+                if (currentKeyState.IsKeyDown(Keys.L) && selectedEnemy == true )
+                {
+                    System.Diagnostics.Debug.WriteLine("I'm targeting a ship!");
+                    //you want to activate weapon 1 to target the enemy
+                    selectedWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponUIDList[1]);
+                    //get weapon 1
+                    selectedWeapon.IsSelected = true;
+                    selectedWeapon.start_charging();
+                    //start its charging
+                    selectedWeapon.CurrentTarget = enemyShip.UID;
+                    //get the enemyID
+                }
+
+
+                // set the enemy room as the weapon's target
+
+
+                if (selectedWeapon.ReadyToFire)
+                {
+                    //the weapon is in ready stage
+                    System.Diagnostics.Debug.WriteLine("I'm ready to pew pew!");
+                    dealDamage(name.UID, selectedWeapon.UID);
+                    //call weapon damage function in game1
+                    selectedWeapon.ReadyToFire = false;
+                    //the weapon is no longer ready to fire
+                    cursorState.Transition("idleCursor");
+                }
+
+                // transition to idle cursor on success
+                    
 
                 if (previousMouseState.RightButton == ButtonState.Released && currentMouseState.RightButton == ButtonState.Pressed)
                 {
                     // if we've rightclicked
 
-                    //Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
+                    selectedWeapon.IsSelected = false;
 
                     // transition to idle cursor
 
                     cursorState.Transition("idleCursor");
                 }
+
+                
 
                 #endregion
                 #endregion
