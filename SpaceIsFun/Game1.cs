@@ -837,6 +837,9 @@ namespace SpaceIsFun
             foreach (int key in thisShip.RoomUIDList)
             {
                 Room room = (Room)RoomManager.RetrieveEntity(key);
+                
+                // Rebecca's room grids
+                // each room is built with one grid at a time within the grid map
                 switch (room.RoomShape)
                 {
                     // Case for a 2 by 2 room.
