@@ -22,7 +22,9 @@ namespace SpaceIsFun
         int roomUID;
         bool[] roomTypes;
         int weaponUID;
-
+        Weapon selectedWeapon;
+        bool selectedEnemy;
+        Ship name;
         bool multiSelecting = false;
         Point selectRectStart = new Point();
         Point selectRectEnd = new Point();
@@ -245,7 +247,8 @@ namespace SpaceIsFun
             idleCursor.Transitions.Add(targetWeapon.Name, targetWeapon);
             hasSelectedCrew.Transitions.Add(idleCursor.Name, idleCursor);
             hasSelectedCrew.Transitions.Add(hasSelectedCrew.Name, hasSelectedCrew);
-
+            targetWeapon.Transitions.Add(idleCursor.Name, idleCursor);
+            targetWeapon.Transitions.Add(hasSelectedCrew.Name, hasSelectedCrew);
             cursorState.Start(idleCursor);
 
 
@@ -962,7 +965,10 @@ namespace SpaceIsFun
             {
                 #region input handling
 
-                
+                if (currentKeyState.IsKeyDown(Keys.O))
+                {
+                    cursorState.Transition("targetWeapon");
+                }
 
                 #region mouse
 
@@ -1414,52 +1420,58 @@ namespace SpaceIsFun
                 #region input handling
 
                 #region mouse
-                Weapon selectedWeapon;
+                
                 selectedWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponUIDList[1]);
-                bool selectedEnemy;
+                
                 if (previousMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
                 {
                     // if we've leftclicked
-                    
-                    // did we click an enemy room?
-                    Ship name = (Ship)ShipManager.RetrieveEntity(checkShipHover(currentMouseState));
-                    
-                    if (checkShipHover(currentMouseState) != 1 && name.UID != playerShip.UID)
+                    System.Diagnostics.Debug.WriteLine("I'm here, clicking!");
+                    //did we click an enemy room?
+                    name = (Ship)ShipManager.RetrieveEntity(checkShipHover(currentMouseState));
+                    System.Diagnostics.Debug.WriteLine(name.UID);
+                    if (name.UID != -1 && name.UID != playerShip.UID)
                     {
+                        System.Diagnostics.Debug.WriteLine("Hey, it's an enemy!");
                         selectedEnemy = true;
                     }
 
-                    // if so, get the weapon we're currently selecting
-                   
-                    if (currentKeyState.IsKeyDown(Keys.NumPad1))
-                    {
-                        //you want to activate weapon 1 to target the enemy
-                        selectedWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponUIDList[1]);
-                        //get weapon 1
-                        selectedWeapon.IsSelected = true;
-                        selectedWeapon.start_charging();
-                        //start its charging
-                        selectedWeapon.CurrentTarget = enemyShip.UID;
-                        //get the enemyID
-                    }
-
-
-                    // set the enemy room as the weapon's target
-                  
-
-                    if (selectedWeapon.ReadyToFire)
-                    {
-                        //the weapon is in ready stage
-                        dealDamage(name.UID, selectedWeapon.UID);
-                        //call weapon damage function in game1
-                        selectedWeapon.ReadyToFire = false;
-                        //the weapon is no longer ready to fire
-                    }
-
-                    // transition to idle cursor on success
-                    cursorState.Transition("idleCursor");
+                 
 
                 }
+
+                // if so, get the weapon we're currently selecting
+
+                if (currentKeyState.IsKeyDown(Keys.L) && selectedEnemy == true )
+                {
+                    System.Diagnostics.Debug.WriteLine("I'm targeting a ship!");
+                    //you want to activate weapon 1 to target the enemy
+                    selectedWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponUIDList[1]);
+                    //get weapon 1
+                    selectedWeapon.IsSelected = true;
+                    selectedWeapon.start_charging();
+                    //start its charging
+                    selectedWeapon.CurrentTarget = enemyShip.UID;
+                    //get the enemyID
+                }
+
+
+                // set the enemy room as the weapon's target
+
+
+                if (selectedWeapon.ReadyToFire)
+                {
+                    //the weapon is in ready stage
+                    System.Diagnostics.Debug.WriteLine("I'm ready to pew pew!");
+                    dealDamage(name.UID, selectedWeapon.UID);
+                    //call weapon damage function in game1
+                    selectedWeapon.ReadyToFire = false;
+                    //the weapon is no longer ready to fire
+                    cursorState.Transition("idleCursor");
+                }
+
+                // transition to idle cursor on success
+                    
 
                 if (previousMouseState.RightButton == ButtonState.Released && currentMouseState.RightButton == ButtonState.Pressed)
                 {

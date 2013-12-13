@@ -313,6 +313,7 @@ namespace SpaceIsFun
         {
             charging.enter += () =>
             {
+                charge = 0;
             };
 
             start_charging();
