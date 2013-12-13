@@ -123,10 +123,22 @@ namespace SpaceIsFun
         // 2: cursor over enemy ship
         int shipCursorFocus;
 
+        //UID Lists
+        List<int> gridUIDs = new List<int>();
+        List<int> roomUIDs = new List<int>();
+        List<int> weaponUIDs = new List<int>();
+        List<int> filledRoomUIDs = new List<int>();
+
+        //Grid Size Settings
+        int gridWidth;
+        int gridHeight;
+        int[,] shipGrid;
+
 
         // ship start offset
-        Vector2 playerShipStartPosition = new Vector2(100, 100);
-        Vector2 enemyShipStartPosition = new Vector2(400, 100);
+        Vector2 playerShipStartPosition = new Vector2(25, 175);
+        Vector2 enemyShip1StartPosition = new Vector2(660, 490);
+        Vector2 enemyShip2StartPosition = new Vector2(660, 490);
 
         public bool battle1Resolved = false;
         public bool battle2Resolved = false;
@@ -178,10 +190,10 @@ namespace SpaceIsFun
             : base()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 1024;
-            graphics.PreferredBackBufferHeight = 768;
-            screenWidth = 1024;
-            screenHeight = 768;
+            graphics.PreferredBackBufferWidth = 1200;
+            graphics.PreferredBackBufferHeight =1024;
+            screenWidth = 1200;
+            screenHeight = 1024;
             Content.RootDirectory = "Content";
 			Console.WriteLine("Muahahaha!");
         }
@@ -250,14 +262,11 @@ namespace SpaceIsFun
             
             #region player ship construction
 
-            Vector2 playerShipStartPosition = new Vector2(50,50);
-            List<int> gridUIDs = new List<int>();
-            List<int> roomUIDs = new List<int>();
-            List<int> weaponUIDs = new List<int>();
-            List<int> filledRoomUIDs = new List<int>();
-            int gridWidth = shipTexture.Bounds.Width / 32;
-            int gridHeight = shipTexture.Bounds.Height / 32;
-            int [,] shipGrid = new int[gridWidth, gridHeight];
+            //Vector2 playerShipStartPosition = new Vector2(50,50);
+            
+            gridWidth = shipTexture.Bounds.Width / 32;
+            gridHeight = shipTexture.Bounds.Height / 32;
+            shipGrid = new int[gridWidth, gridHeight];
             // initialize the player's ship
 
             // TODO: initialize all objects for a ship outside of the ship itself
@@ -338,8 +347,11 @@ namespace SpaceIsFun
 
             #endregion
 
+            
+
             #region enemy ship construction 1
-            Vector2 enemyShipStartPosition = new Vector2(400,50);
+            /*
+            //Vector2 enemyShipStartPosition = new Vector2(400,50);
             gridUIDs = new List<int>();
             roomUIDs = new List<int>();
             weaponUIDs = new List<int>();
@@ -355,7 +367,7 @@ namespace SpaceIsFun
                     // create a new grid object for i,j
                     //shipGrid[i, j] = new Grid(gridTexture, highlightTexture, new Vector2(i * 32 + position.X, j * 32 + position.Y), new Vector2(i, j));
                     Grid toAdd = new Grid(gridSprite, gridHighlightSprite,
-                               new Vector2(i * 32 + enemyShipStartPosition.X, j * 32 + enemyShipStartPosition.Y),
+                               new Vector2(i * 32 + enemyShip1StartPosition.X, j * 32 + enemyShip1StartPosition.Y),
                                new Vector2(i, j));
 
                     int UID = GridManager.AddEntity(toAdd);
@@ -364,9 +376,9 @@ namespace SpaceIsFun
                 }
             }
 
-            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 1, enemyShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 1, enemyShip1StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
             roomUIDs.Add(roomUID);
-            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 4, enemyShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 4, enemyShip1StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
             roomUIDs.Add(roomUID);
 
             roomTypes = new bool[11];
@@ -406,11 +418,12 @@ namespace SpaceIsFun
             WeaponToShip[weaponUID] = enemyShipUID1;
             setRoomGridDictionary(enemyShipUID1);
             setUnwalkableGrids(enemyShipUID1);
-
+            */
             #endregion
 
             #region enemy ship construction 2
-            enemyShipStartPosition = new Vector2(400, 50);
+            /*
+            //enemyShipStartPosition = new Vector2(400, 50);
             gridUIDs = new List<int>();
             roomUIDs = new List<int>();
             weaponUIDs = new List<int>();
@@ -426,7 +439,7 @@ namespace SpaceIsFun
                     // create a new grid object for i,j
                     //shipGrid[i, j] = new Grid(gridTexture, highlightTexture, new Vector2(i * 32 + position.X, j * 32 + position.Y), new Vector2(i, j));
                     Grid toAdd = new Grid(gridSprite, gridHighlightSprite,
-                               new Vector2(i * 32 + enemyShipStartPosition.X, j * 32 + enemyShipStartPosition.Y),
+                               new Vector2(i * 32 + enemyShip2StartPosition.X, j * 32 + enemyShip2StartPosition.Y),
                                new Vector2(i, j));
 
                     int UID = GridManager.AddEntity(toAdd);
@@ -435,9 +448,9 @@ namespace SpaceIsFun
                 }
             }
 
-            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 1, enemyShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 1, enemyShip2StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
             roomUIDs.Add(roomUID);
-            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 4, enemyShipStartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
+            roomUID = RoomManager.AddEntity(new Room(roomHighlightSprite, roomHighlightSprite, 3, 4, enemyShip2StartPosition, Globals.roomShape.TwoXTwo, Globals.roomType.EMPTY_ROOM, 2, 2));
             roomUIDs.Add(roomUID);
 
             roomTypes = new bool[11];
@@ -477,7 +490,7 @@ namespace SpaceIsFun
             WeaponToShip[weaponUID] = enemyShipUID2;
             setRoomGridDictionary(enemyShipUID2);
             setUnwalkableGrids(enemyShipUID2);
-
+            */
             #endregion
             // load fonts
 
