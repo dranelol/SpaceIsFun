@@ -43,6 +43,7 @@ namespace SpaceIsFun
 
             Ship playerShip = (Ship)ShipManager.RetrieveEntity(playerUID);
             Ship enemyShip;
+            enemyShip = (Ship)ShipManager.RetrieveEntity(enemyShipUID1);
             if (gameStateUID == 0)
             {
                 enemyShip = (Ship)ShipManager.RetrieveEntity(enemyShipUID1);
@@ -226,7 +227,7 @@ namespace SpaceIsFun
                         energyBarTest.Add(energyBar1);
                     }
 
-                currentEnemyShips.Add(enemyShipUID);
+                currentEnemyShips.Add(enemyShip.UID);
             };
 
             #endregion
@@ -1259,42 +1260,58 @@ namespace SpaceIsFun
                 #region input handling
 
                 #region mouse
-
+                Weapon selectedWeapon;
+                selectedWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponUIDList[1]);
+                bool selectedEnemy;
                 if (previousMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
                 {
                     // if we've leftclicked
                     
                     // did we click an enemy room?
                     Ship name = (Ship)ShipManager.RetrieveEntity(checkShipHover(currentMouseState));
-                    bool selectedEnemy;
+                    
                     if (checkShipHover(currentMouseState) != 1 && name.UID != playerShip.UID)
                     {
                         selectedEnemy = true;
                     }
 
                     // if so, get the weapon we're currently selecting
-                    Weapon selectedWeapon;
+                   
                     if (currentKeyState.IsKeyDown(Keys.NumPad1))
+                    {
                         selectedWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponUIDList[1]);
+                        selectedWeapon.IsSelected = true;
+                        selectedWeapon.start_charging();
+                        selectedWeapon.CurrentTarget = enemyShip.UID;
+                    }
 
 
                     // set the enemy room as the weapon's target
-                    //selectedWeapon.CurrentTarget=whichever enemy ship get's instantiated UID's
-                    
+                  
+
+                    if (selectedWeapon.ReadyToFire)
+                    {
+                        dealDamage(name.UID, selectedWeapon.UID);
+                        selectedWeapon.ReadyToFire = false;
+                    }
 
                     // transition to idle cursor on success
+                    cursorState.Transition("idleCursor");
+
                 }
 
                 if (previousMouseState.RightButton == ButtonState.Released && currentMouseState.RightButton == ButtonState.Pressed)
                 {
                     // if we've rightclicked
 
-                    //Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
+                    selectedWeapon.IsSelected = false;
 
                     // transition to idle cursor
 
                     cursorState.Transition("idleCursor");
                 }
+
+                
 
                 #endregion
                 #endregion

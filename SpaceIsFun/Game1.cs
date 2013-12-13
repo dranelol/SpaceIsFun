@@ -1148,5 +1148,14 @@ namespace SpaceIsFun
 
             }
         }
+
+        public void dealDamage(int shipUID, int weaponUID)
+        {
+            Ship targetShip = (Ship)ShipManager.RetrieveEntity(shipUID);
+            Weapon targetWeap = (Weapon)WeaponManager.RetrieveEntity(weaponUID);
+            targetShip.TakeDamage(targetWeap.Damage);
+
+        }
+
     }
 }
