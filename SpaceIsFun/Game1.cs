@@ -890,7 +890,7 @@ namespace SpaceIsFun
             Ship thisShip = (Ship)ShipManager.RetrieveEntity(shipUID);
 
             Dictionary<int, int> roomGridDict = new Dictionary<int, int>();
-
+            
             foreach (int key in thisShip.RoomUIDList)
             {
                 Room room = (Room)RoomManager.RetrieveEntity(key);
@@ -1114,6 +1114,7 @@ namespace SpaceIsFun
         /// </summary>
         public void setUnwalkableGrids(int shipUID)
         {
+
             Ship thisShip = (Ship)ShipManager.RetrieveEntity(shipUID);
             for (int i = 0; i < thisShip.ShipGrid.GetLength(0); i++)
             {

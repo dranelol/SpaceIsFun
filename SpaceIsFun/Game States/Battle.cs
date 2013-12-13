@@ -92,6 +92,13 @@ namespace SpaceIsFun
             List<Widget> shieldTest = new List<Widget>();
             List<Button> weapons = new List<Button>();
 
+            Button saveDataButton = new Button(1000, 50, 50, "Save Data", (Widget widget) =>
+            {
+                saveData("testytest");
+                saveState("testytest");
+
+            });
+
             int shipStartEnergy = playerShip.Energy;
 
             Point currentlySelectedPlayerGrid = new Point(-1, -1);
@@ -157,7 +164,7 @@ namespace SpaceIsFun
                 // this panel will hold all the login GUI objects
 
                 //WidgetEvent wpn1click = new WidgetEvent();
-                
+                gui.AddWidget(saveDataButton);
                 gui.AddWidget(wpnEnable);
 
                 /************************************************************************
@@ -486,33 +493,7 @@ namespace SpaceIsFun
 
                 #region keys
 
-                Ship thisShip = (Ship)ShipManager.RetrieveEntity(0);
-
-                if (currentKeyState.IsKeyDown(Keys.T) && previousKeyState.IsKeyUp(Keys.T))
-                {
-                    Crew man = (Crew)CrewManager.RetrieveEntity(0);
-
-                    pather = new Pathfinder(thisShip.ShipGrid, playerShipStartPosition, GridManager);
-
-                    Grid thisGrid = (Grid)GridManager.RetrieveEntity(9);
-
-                    target1 = man.Position;
-
-                    thisGrid = (Grid)GridManager.RetrieveEntity(26);
-
-                    target2 = thisGrid.GridPosition;
-
-                    List<Vector2> path = pather.FindOptimalPath(target1, target2);
-
-                    foreach (Vector2 item in path)
-                    {
-                        Vector2 dumb = new Vector2((item.X / 32), (item.Y / 32));
-
-                        System.Diagnostics.Debug.WriteLine(dumb.ToString());
-                    }
-
-                    man.Move(path);
-                }
+                
                 /*
                 // if the a key is pressed, transition back to the menu
                 if (currentKeyState.IsKeyDown(Keys.A))
@@ -1125,11 +1106,7 @@ namespace SpaceIsFun
                 gui.RemoveWidget(Health);
                 gui.RemoveWidget(wpnEnable);
                 gui.RemoveWidget(Shields);
-
-                foreach (int UID in currentEnemyShips)
-                {
-                    ShipManager.DeleteEntity(UID);
-                }
+                gui.RemoveWidget(saveDataButton);
             };
             #endregion
             #endregion
