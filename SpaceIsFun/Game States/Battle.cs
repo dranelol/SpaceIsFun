@@ -501,9 +501,7 @@ namespace SpaceIsFun
 
                 #region keys
 
-                System.Diagnostics.Debug.WriteLine("wWeapons after: " + weapons.Count.ToString());
-                System.Diagnostics.Debug.WriteLine("health after: " + healthBarTest.Count.ToString());
-                System.Diagnostics.Debug.WriteLine("energyBarTest after: " + energyBarTest.Count.ToString());
+                
                 
                 Ship thisShip = (Ship)ShipManager.RetrieveEntity(0);
 

@@ -41,10 +41,12 @@ namespace SpaceIsFun
 
                 //
 
-                System.Diagnostics.Debug.WriteLine("Narr 1: " + narrative1Resolved.ToString());
-                System.Diagnostics.Debug.WriteLine("Narr 2: " + narrative2Resolved.ToString());
-                System.Diagnostics.Debug.WriteLine("Battle 1: " + battle1Resolved.ToString());
-                System.Diagnostics.Debug.WriteLine("Battle 1: " + battle2Resolved.ToString());
+                starNodeDraws.Clear();
+
+                System.Diagnostics.Debug.WriteLine("Narr Bool 1: " + narrative1Resolved.ToString());
+                System.Diagnostics.Debug.WriteLine("Narr Bool 2: " + narrative2Resolved.ToString());
+                System.Diagnostics.Debug.WriteLine("Battle Bool 1: " + battle1Resolved.ToString());
+                System.Diagnostics.Debug.WriteLine("Battle Bool 2: " + battle2Resolved.ToString());
 
 
                 //Traverse through starNodes, and assign gray or regular textures based on which node it is
@@ -58,12 +60,34 @@ namespace SpaceIsFun
                 {
                     if (i == (int)NodeState.Narrative1 || i == (int)NodeState.Battle1)
                     {
+                        
+                        
                         starNodeDraws.Add(new Drawable(starTexture, starNodes[i]));
                     }
                     else if (i == (int)NodeState.Battle2 || i == (int)NodeState.Narrative2)
                     {
+                        
+
                         starNodeDraws.Add(new Drawable(starGreyedTexture, starNodes[i]));
                     }
+                }
+                //Reset the sprite textures of the stars based on the current state of the narrative and battle resolutions
+                if (battle1Resolved == true)
+                {
+                    starNodeDraws[2].SpriteTexture = starGreyedTexture;
+                }
+                if (narrative1Resolved == true)
+                {
+                    starNodeDraws[0].SpriteTexture = starGreyedTexture;
+                }
+                if (battle1Resolved == true && narrative1Resolved == true)
+                {
+                    starNodeDraws[1].SpriteTexture = starTexture;
+                }
+                if (narrative2Resolved == true)
+                {
+                    starNodeDraws[1].SpriteTexture = starGreyedTexture;
+                    starNodeDraws[3].SpriteTexture = starTexture;
                 }
             };
 
@@ -95,10 +119,12 @@ namespace SpaceIsFun
                     resetNodes();
                 }
                 
-                //Reset the sprite textures of the stars based on the current state of the narrative and battle resolutions
+                
+
+                /*
                 if (battle1Resolved && narrative1Resolved)
                 {
-                    starNodeDraws[1].SpriteTexture = starTexture;
+                    
                 }
                 if (narrative2Resolved)
                 {
@@ -120,6 +146,7 @@ namespace SpaceIsFun
                 {
                     starNodeDraws[3].SpriteTexture = starGreyedTexture;
                 }
+                 */
 
                 //Win condition
                 if (narrative1Resolved && narrative2Resolved && battle1Resolved && battle2Resolved)
