@@ -167,6 +167,29 @@ namespace SpaceIsFun
         public bool narrative1Resolved = false;
         public bool narrative2Resolved = false;
 
+        public int weaponSlotsIndex;
+        public int selectedWeaponUID;
+
+        public bool weapon1Enabled = false;
+        public bool weapon1Selected = false;
+        public bool weapon1Disabled = true;
+
+        public bool weapon2Enabled = false;
+        public bool weapon2Selected = false;
+        public bool weapon2Disabled = true;
+
+        public bool weapon3Enabled = false;
+        public bool weapon3Selected = false;
+        public bool weapon3Disabled = true;
+
+        public bool weapon4Enabled = false;
+        public bool weapon4Selected = false;
+        public bool weapon4Disabled = true;
+
+        public bool weapon5Enabled = false;
+        public bool weapon5Selected = false;
+        public bool weapon5Disabled = true;
+
         Drawable overworldCursorDraw;
 
         /// <summary>
