@@ -40,16 +40,14 @@ namespace SpaceIsFun
 
                 setNodes();
 
-<<<<<<< HEAD
+
                 //Traverse through starNodes, and assign gray or regular textures based on which node it is
-=======
+
                 #region music
                 ThisIntroSong = IntroMusic.CreateInstance();
                 ThisIntroSong.IsLooped = true;
                 ThisIntroSong.Play();
                 #endregion
-
->>>>>>> ed40203d41385f4cdf2448f60d1ee13966b9eea0
                 for (int i = 0; i < starNodes.Count; i++)
                 {
                     if (i == (int)NodeState.Narrative1 || i == (int)NodeState.Battle1)

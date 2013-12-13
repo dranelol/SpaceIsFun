@@ -417,12 +417,9 @@ namespace SpaceIsFun
             if (weaponStateMachine.CurrentState == ready )
             {
                 //fire
-<<<<<<< HEAD
-               
 
-=======
                 //play the fire sound!
->>>>>>> ed40203d41385f4cdf2448f60d1ee13966b9eea0
+
 
             }
 
