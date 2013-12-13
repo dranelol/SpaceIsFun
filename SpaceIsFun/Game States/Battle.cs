@@ -865,12 +865,17 @@ namespace SpaceIsFun
                 // When numeric key is pressed again, the corresponding weapon is Selected and waits for a target to be selected
                 // Every numeric key press after that switches back and forth between Enabled and Selected
 
+                #region setting gui according to weapon states
+                Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
+
                 
+
+                #endregion
 
                 #region keys.1
                 if (currentKeyState.IsKeyDown(Keys.D1) == true && previousKeyState.IsKeyUp(Keys.D1) == true)
                 {
-                    
+                    /*
                     int num = 0;
                     if (weapons[num].Visible || weapons[num + 10].Visible)
                     {
@@ -886,9 +891,9 @@ namespace SpaceIsFun
                         weapons[num + 5].Visible = false;//weapon enabled
                         weapons[num + 10].Visible = true;//weapon selected
                     }
+                    */
 
-
-                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
+                    //Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[0]);
 
                     // if weapon 1 is currently disabled
                     if (thisWeapon.weaponStateMachine.CurrentState.Name == "disabled")
@@ -927,7 +932,7 @@ namespace SpaceIsFun
                         weapons[num + 10].Visible = true;//weapon selected
                     }
 
-                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[1]);
+                    thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[1]);
 
                     // if weapon 2 is currently disabled
                     if (thisWeapon.weaponStateMachine.CurrentState.Name == "disabled")
@@ -962,7 +967,7 @@ namespace SpaceIsFun
                         weapons[num + 10].Visible = true;//weapon selected
                     }
 
-                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[2]);
+                    thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[2]);
 
                     // if weapon 3 is currently disabled
                     if (thisWeapon.weaponStateMachine.CurrentState.Name == "disabled")
@@ -997,7 +1002,7 @@ namespace SpaceIsFun
                         weapons[num + 10].Visible = true;//weapon selected
                     }
 
-                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[3]);
+                    thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[3]);
 
                     // if weapon 4 is currently disabled
                     if (thisWeapon.weaponStateMachine.CurrentState.Name == "disabled")
@@ -1032,7 +1037,7 @@ namespace SpaceIsFun
                         weapons[num + 10].Visible = true;//weapon selected
                     }
 
-                    Weapon thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[4]);
+                    thisWeapon = (Weapon)WeaponManager.RetrieveEntity(playerShip.WeaponSlots[4]);
 
                     // if weapon 5 is currently disabled
                     if (thisWeapon.weaponStateMachine.CurrentState.Name == "disabled")
@@ -1570,8 +1575,8 @@ namespace SpaceIsFun
 
 
                     }
-
-
+                    selectedCrewMembers.Clear();
+                    cursorState.Transition(idleCursor.Name);
                 }
 
                 #endregion
