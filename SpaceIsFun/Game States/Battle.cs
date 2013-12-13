@@ -206,14 +206,10 @@ namespace SpaceIsFun
                 enemyShip = (Ship)ShipManager.RetrieveEntity(enemyShipUID2);
                 currentEnemyShips.Add(enemyShipUID2);
             }
-<<<<<<< HEAD
 
-            Pathfinder pather = new Pathfinder(playerShip.ShipGrid, playerShipStartPosition, GridManager);
-
-=======
             
             Pathfinder pather = new Pathfinder(playerShip.ShipGrid, playerShipStartPosition ,GridManager);
->>>>>>> 8602d16ba2f60750009c1b3249ee30912a6b5851
+
 
 
             // sets up seven energy bars for the ship

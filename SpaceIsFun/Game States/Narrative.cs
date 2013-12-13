@@ -14,7 +14,7 @@ namespace SpaceIsFun
 {
     public partial class Game1 : Game
     {
-        void setupNarrative
+        void setupNarrative()
         {
             narrative.enter += () =>
             {
