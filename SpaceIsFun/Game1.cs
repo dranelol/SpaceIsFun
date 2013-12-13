@@ -248,7 +248,7 @@ namespace SpaceIsFun
             gridHighlightSprite = Content.Load<Texture2D>("GridNotWalkable");
             energyBarSprite = Content.Load<Texture2D>("energyBar");
             roomSprite = Content.Load<Texture2D>("Room2x2");
-            roomHighlightSprite = Content.Load<Texture2D>("Room2x2highlight");
+            roomHighlightSprite = Content.Load<Texture2D>("Room2x2");
             pixel = new Texture2D(GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             pixel.SetData(new[] { Color.Green });
             crewNoAnimate = Content.Load<Texture2D>("crewNoAnimate");
