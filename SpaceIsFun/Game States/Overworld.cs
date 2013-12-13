@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
@@ -23,9 +24,9 @@ namespace SpaceIsFun
         List<Drawable> starNodeDraws = new List<Drawable>(); //Drawable objects to correlate to the star nodes
         int starNodeSelectedIndex = 0; //The index in the list of nodes for the star that is selected
         Vector2 starNodeSelected; //Vector that correlates with the selected star
-        Drawable overworldCursorDraw; //Drawable for the cursor
+        //Drawable overworldCursorDraw; //Drawable for the cursor
         Vector2 cursorCoords = new Vector2();          //Both the cursor coordinates and the selected node
-
+        SoundEffectInstance ThisIntroSong;
         void setupOverworld()
         {
             
@@ -39,7 +40,14 @@ namespace SpaceIsFun
 
                 setNodes();
 
+
                 //Traverse through starNodes, and assign gray or regular textures based on which node it is
+
+                #region music
+                ThisIntroSong = IntroMusic.CreateInstance();
+                ThisIntroSong.IsLooped = true;
+                ThisIntroSong.Play();
+                #endregion
                 for (int i = 0; i < starNodes.Count; i++)
                 {
                     if (i == (int)NodeState.Narrative1 || i == (int)NodeState.Battle1)
@@ -167,13 +175,15 @@ namespace SpaceIsFun
                
 
                 cursorCoords = starNodes[starNodeSelectedIndex];
-                overworldCursorDraw = new Drawable(overworldCursorTexture, cursorCoords);
+                overworldCursorDraw.MoveTo(cursorCoords);
                
 
             };
 
             overworld.leave += () =>
             {
+                //Stop the music on exit
+                ThisIntroSong.Stop();
                 // remove gui elements here
             };
         }

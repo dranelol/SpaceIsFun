@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
@@ -30,6 +31,8 @@ namespace SpaceIsFun
         Point selectRectEnd = new Point();
 
         List<int> currentEnemyShips = new List<int>();
+
+        SoundEffectInstance ThisBattleSong;
 
         void setupBattle(int playerUID)
         {
@@ -66,10 +69,7 @@ namespace SpaceIsFun
                 currentEnemyShips.Add(enemyShipUID2);
             }
 
-
             Pathfinder pather = new Pathfinder(playerShip.ShipGrid, playerShipStartPosition, GridManager);
-
-
 
 
             // sets up seven energy bars for the ship
@@ -142,7 +142,11 @@ namespace SpaceIsFun
                 // weapons GUI: 
                 // weapon slots 1-5 for each:
                 // filled or not, enabled or not, charging or not
-
+                #region music
+                ThisBattleSong = BattleMusic.CreateInstance();
+                ThisBattleSong.IsLooped = true;
+                ThisBattleSong.Play();
+                #endregion
                 // Rebecca's Code
 
                 // weapon enabling
@@ -890,9 +894,13 @@ namespace SpaceIsFun
                     }
 
                     // if weapon 1 is charging
-                    else if (thisWeapon.weaponStateMachine.CurrentState.Name == "charging")
+                    else if (thisWeapon.weaponStateMachine.CurrentState.Name == "ready")
                     {
                         // go to target weapon state, try to assign target
+                        if (cursorState.CurrentState.Name == "idleCursor")
+                        {
+                            cursorState.Transition("targetWeapon");
+                        }
                     }
                 }
                 #endregion
@@ -1039,6 +1047,11 @@ namespace SpaceIsFun
 
                 #endregion
 
+                if (currentKeyState.IsKeyDown(Keys.NumPad0))
+                {
+                    stateMachine.Transition("overworld");
+                }
+
                 // end Rebecca's code
 
 
@@ -1097,6 +1110,8 @@ namespace SpaceIsFun
             #region battle state leave
             battle.leave += () =>
             {
+                //Get rid of the music
+                ThisBattleSong.Stop();
                 // tear down gui elements
 
                 // remove the energy widgets from the gui
@@ -1118,6 +1133,7 @@ namespace SpaceIsFun
             idleCursor.update += (GameTime gameTime) =>
             {
                 #region input handling
+
 
 
                 if (currentKeyState.IsKeyDown(Keys.O) && previousKeyState.IsKeyUp(Keys.O))

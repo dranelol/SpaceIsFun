@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using Ruminate.GUI.Framework;
 using Ruminate.GUI.Content;
 //using NUnit.Framework;
@@ -61,6 +63,8 @@ namespace SpaceIsFun
         StateMachine stateMachine;
 
         State startMenu, battle, overworld, narrative, pauseState, introState;
+
+        Boolean battleStatus;
 
         /// <summary>
         /// the GUI object
@@ -119,6 +123,17 @@ namespace SpaceIsFun
 
         Drawable testDrawable;
         #endregion
+        
+        // definitions for all the sounds go here!
+        #region sounds
+
+        SoundEffect weaponsSelected;
+        SoundEffect weaponsDeselected;
+        SoundEffect menuClick;
+        SoundEffect IntroMusic;
+        SoundEffect BattleMusic;
+
+        #endregion
 
         // 0: cursor over no ship
         // 1: cursor over player ship
@@ -144,8 +159,11 @@ namespace SpaceIsFun
 
         public bool battle1Resolved = false;
         public bool battle2Resolved = false;
+        public bool battle1Result = false;
         public bool narrative1Resolved = false;
         public bool narrative2Resolved = false;
+
+        Drawable overworldCursorDraw;
 
         /// <summary>
         /// width of the current screen, in pixels
@@ -259,6 +277,16 @@ namespace SpaceIsFun
             starGreyedTexture = Content.Load<Texture2D>("starNodeGreyed");
             #endregion
 
+
+            #region sounds
+
+            weaponsSelected = Content.Load<SoundEffect>("WeaponsSelected");
+            weaponsDeselected = Content.Load<SoundEffect>("WeaponsDeselected");
+            menuClick = Content.Load<SoundEffect>("MenuClick");
+            IntroMusic = Content.Load<SoundEffect>("SpaceIsFunIntro");
+            BattleMusic = Content.Load<SoundEffect>("SpaceIsFunBatlle");
+
+            #endregion
 
             #region player ship construction
 
@@ -526,6 +554,8 @@ namespace SpaceIsFun
             gui.AddText("error", new Ruminate.GUI.Framework.Text(font, Color.Red));
             gui.AddText("password", new Ruminate.GUI.Framework.Text(font, Color.TransparentBlack));
             gui.AddText("empty", new Ruminate.GUI.Framework.Text(font, Color.LightSlateGray));
+            gui.AddText("Oh, so you’re off to explore space are you? Good for you, though you might be forewarned that the Demonstrably Erratic Mostly-flying Object spacecraft that you’ve been assigned might be a bit, err, unique",
+                new Ruminate.GUI.Framework.Text(font, Color.White));
 
 
             #region stuff from initialize
@@ -568,10 +598,15 @@ namespace SpaceIsFun
 
             narrative.Transitions.Add(overworld.Name, overworld);
             narrative.Transitions.Add(pauseState.Name, pauseState);
+            narrative.Transitions.Add(battle.Name, battle);
 
             introState.Transitions.Add(overworld.Name, overworld);
 
+<<<<<<< HEAD
             stateMachine.Start(startMenu);
+=======
+            stateMachine.Start(narrative);
+>>>>>>> 207231286debf26fcbe706c767cc5ce4de9f36bd
             #endregion
 
             // set up any UI elements here
@@ -590,8 +625,13 @@ namespace SpaceIsFun
             setupBattle(playerShipUID);
             setupPauseState();
             setupOverworld();
+<<<<<<< HEAD
             setupIntro();
 
+=======
+            setupNarrative();
+            overworldCursorDraw = new Drawable(overworldCursorTexture, cursorCoords);
+>>>>>>> 207231286debf26fcbe706c767cc5ce4de9f36bd
             #endregion
 
         }
@@ -645,7 +685,7 @@ namespace SpaceIsFun
             #region input handling
 
             // initial pass on game pausing logic
-
+                /*
             // if space is pressed
             if (currentKeyState.IsKeyDown(Keys.Space) == true && previousKeyState.IsKeyUp(Keys.Space) == true)
             {
@@ -661,6 +701,7 @@ namespace SpaceIsFun
                     stateMachine.Transition(pauseState.Name);
                 }
             }
+                 * */
 
 
             #endregion
@@ -692,6 +733,7 @@ namespace SpaceIsFun
 
                     item.Draw(spriteBatch);
                 }
+                
                 overworldCursorDraw.Draw(spriteBatch);
                 spriteBatch.End();
             }

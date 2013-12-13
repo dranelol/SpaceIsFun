@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -325,7 +326,7 @@ namespace SpaceIsFun
                 System.Diagnostics.Debug.WriteLine("charge needed: " + timeToCharge.ToString());
                 if (charge >= timeToCharge)
                 {
-                    System.Diagnostics.Debug.WriteLine("pew pew time");
+                    System.Diagnostics.Debug.WriteLine("weapon is ready to fire");
                     readyToFire = true;
                 }
 
@@ -416,7 +417,8 @@ namespace SpaceIsFun
             if (weaponStateMachine.CurrentState == ready )
             {
                 //fire
-               
+
+                //play the fire sound!
 
 
             }
