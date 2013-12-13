@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="Crew.cs" />
     <Compile Include="EntityManager.cs" />
+    <Compile Include="Game States\IntroState.cs" />
     <Compile Include="Game States\Narrative.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Drawable.cs" />
