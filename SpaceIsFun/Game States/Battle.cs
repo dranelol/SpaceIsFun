@@ -42,6 +42,8 @@ namespace SpaceIsFun
             bool target1Selected = false;
             bool target2Selected = false;
 
+
+
             Ship playerShip = (Ship)ShipManager.RetrieveEntity(playerUID);
             Ship enemyShip;
             if (gameStateUID == 0)

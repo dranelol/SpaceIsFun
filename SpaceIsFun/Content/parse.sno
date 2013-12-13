@@ -1,0 +1,177 @@
+*Author: Merrick Young
+*CLID: mjy4050
+*Class: CMPS 450
+*Date Due: 2013-11-19
+*Time Due: 12:30 PM
+*I certify this is my own code and I came up with the procedures on my own.
+ letter = SPAN("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+ digit = SPAN("1234567890")
+
+ number = digit *number | digit
+ identifier = *identifier letter | *identifier digit | letter
+
+ type_list = simple_variable "," *type_list | simple_variable
+ type = "integer" | "real" | "Boolean"
+ owntype = "own" type
+* Coroutine/Procedure Statement
+
+ coroutine_head = "coroutina" arb "_s_t_a_r_t_"
+ coroutine_dec  = coroutine_head arb "end"
+ coroutine_begin = "_s_t_a_r_t_"
+ comment = "comment" arb ";"
+* Coroutine Scope
+
+* Input file
+ output   = "Give a file name"
+ filename = input
+ input( 'READLINE' , 1 , , filename ) :s(OK)
+ output = "Failed to read input file" :(END)
+OK
+
+ numberOfCoroutines = 0
+ scope_level = 0
+ scope_max = 0
+
+* Read Input logic from here til the label EOF
+ a = READLINE :s(READIN)
+ output = "No input" :(END)
+ output =
+
+* Block: Read Input
+* Description: Consumes the READLINE variable into the program variable.
+READIN
+* Find Coroutine
+           a "begin" :s(CBEGIN)
+CBEGINR    a "end"   :s(CEND)
+CENDR      a "coroutine" :s(COPLUS)f(PARSECONTINUE)
+* Count Scope
+* Increment if "begin" is seen. Decrement if "end" is seen.
+CBEGIN
+           scope_level = scope_level + 1
+           a "begin" = scope_level "begin"
+           (scope_max + 1) scope_level :s(SCOPE_MAX)
+           :(CBEGINR)
+* Find max. 
+SCOPE_MAX scope_max = scope_level :(CBEGINR)
+CEND  a "end" = scope_level "end"
+      scope_level = scope_level - 1 :(CENDR)
+* Keep track of the number of coroutines. Useful for debugging.
+COPLUS numberOfCoroutines = numberOfCoroutines + 1
+PARSECONTINUE
+* Concatinate the line to the rest of the program.
+ program = program a
+ a = READLINE :s(READIN)f(EOF) 
+EOF
+* end Read Input
+
+* Comments aren't needed to convert into legal ALGOL 60
+DESTROYCOMMENTS program comment  = "" :s(DESTROYCOMMENTS)
+
+* Legal ALGOL 60 does not require whitespace.
+KILLALLSPACES program " " = "" :s(KILLALLSPACES)
+
+* Block: Scope Filter
+* This is done to separate the coroutine blocks from every other kind of block.
+* This is a way to handle scope. That way I only have to worry about the scope of the 
+* coroutines in relation to one another. It converts the coroutine to "coroutina" to
+* "count" it and not find it again.
+CHANGECOBEGINS program ("coroutine" (arb $ coroutinehead) "begin") :s(CCBSUCCESS)f(CCBFAIL)
+CCBSUCCESS     coroutinehead = "coroutina" coroutinehead "_s_t_a_r_t_"
+               program ("coroutine" arb "begin") = coroutinehead :(CHANGECOBEGINS)
+CCBFAIL
+* end Scope Filter
+
+* Block: Replace Coroutines
+* Description: This block takes all coroutines in a legal ALGOL 60 program
+* and converts them into procedures. The best way to think about it is a big search and replace.
+* Find the next coroutine,
+* Check if its begin and end are the same scope,
+*   If no, check if nested,
+*    If no, check if other block
+*   If yes, parse coroutine and translate into procedure
+*   Replace coroutine with procedure.
+REPLACECOROUTINE program coroutine_dec . completecoroutine :s(CHECKSCOPE)f(ENDREPLACECOROUTINE)
+* Block: Check Scope
+* Description: Check to see if begin and end found are the same scope.
+* If they are, then continue parsing.
+* If they aren't;
+*  Check to see if there's an inner coroutine.
+*    If so make the inner coroutine the new coroutine to be checked.
+*    If not, then there's some other block in there and it should be
+*    resolved by making it no longer visible by the scope checker.
+CHECKSCOPE
+         oldcoroutine = completecoroutine
+         labelcounter = 1
+*         coroutineresettoggle = 0
+         completecoroutine (("coroutina" arb) . coroutinehead (number . begin_level)  "_s_t_a_r_t_")
+         completecoroutine (begin_level "_s_t_a_r_t_" arb (number . end_level) "end") $ coroutinebody
+*        begin_level and end_level are interesting because they carry the scope number of
+         end_level begin_level :s(PARSEDATCOROUTINE)
+         coroutinebody ("_s_t_a_r_t_" arb (("coroutina" arb  "end") . nestedcoroutine))  :s(HANDLENESTEDCOROUTINE)f(CHECKOTHERBLOCK)
+HANDLENESTEDCOROUTINE
+ completecoroutine = nestedcoroutine :(CHECKSCOPE)
+FIXOTHERBLOCK
+         newcoroutinebody = coroutinebody
+         newcoroutinebody (number "begin") = "beSTUPIDgin"
+         newcoroutinebody (number "end")   =   "eSTUPIDnd"
+         program coroutinebody = newcoroutinebody :(REPLACECOROUTINE)
+* end Check Scope
+
+* Block: Parse Coroutine
+* Description: Parse the coroutine.
+* Replace coroutine with procedure,
+* Add a switch declaration and counter for the switch after the begin.
+* Add a reset label, and if statement containing a go to to each coroutine *NOT IMPLEMENTED*
+* Parse Resume
+* Replace coroutine with procedure in program.
+PARSEDATCOROUTINE
+         numberOfCoroutines = numberOfCoroutines - 1
+         coroutinehead "coroutina" = ""
+         coroutinehead identifier . coid
+         coroutinehead = "procedure" coroutinehead
+         coroutineswitch = "switch" coid "labels:=" coid "0" "," "reset" coid
+         coroutineswitchcounter = coid "switchcounter"
+         coroutineresetter = "is" coid "reset"
+         coroutineresetcondition = "if" coroutineresseter "then beSTUPIDgin" 
+         coroutinebody (number "_s_t_a_r_t_") = "beSTUPIDgin"
+         coroutinebody (number "end")         = "eSTUPIDnd"
+
+* Block: Replace Resume
+* Description: Parse and replace resume statements with the following:
+* increment switch counter,
+* remove reuse to create procedure statement,
+* add label
+REPLACERESUME coroutinebody "resume" arb ";" $ resumestatement :s(CONTINUEREPLACEMENT)f(ENDREPLACERESUME)
+CONTINUEREPLACEMENT
+         resumestatement "resume" = ""
+         resumestatement = coroutineswitchcounter ":=" coroutineswitchcounter
++                                                 "+1" resumestatement coid labelcounter ":"
+         coroutineswitch = coroutineswitch "," coid labelcounter
+* IFCOROUTINERESETABLE coroutineresettoggle 0 :s(COROUTINENOTRESETABLE)f(COROUTINERESETABLE)
+* COROUTINENOTRESETABLE
+*         coroutineresettoggle = 1
+*         coroutineresetcondition = coroutineresetcondition resumestatement "eSTUPIDnd"
+* COROUTINERESETABLE
+         labelcounter = labelcounter + 1
+         coroutinebody "resume" arb ";" = resumestatement :(REPLACERESUME)
+ENDREPLACERESUME
+* end Replace Resume
+
+*         coroutinebody (number "end") = ("reset" coid ":") . resetlabel "eSTUPIDnd"
+*         coroutinebody resetlabel = resetlabel coroutineresetcondition
+         coroutineswitch ("reset" coid ",") = ""
+         coroutineswitch = coroutineswitch ",reset" coid
+         coroutinebody "beSTUPIDgin" ="owninteger" coroutineswitchcounter ":= 0;" "beSTUPIDgin" coroutineswitch ";" coroutineswitchcounter "[" coroutineswitchcounter "]" ";" 
+* +                                      "ownboolean" coroutineresetter "= true;"
+         completecoroutine = coroutinehead coroutinebody
+         program oldcoroutine = completecoroutine :(REPLACECOROUTINE)
+* end Parse Coroutine
+ENDREPLACECOROUTINE
+* end Replace Coroutine
+
+FIXBEGIN program "beSTUPIDgin" = "begin" :s(FIXBEGIN)
+FIXEND   program "eSTUPIDnd"   = "end"   :s(FIXEND)
+         output = program
+         output("resulted",2,,"output.a60")
+         resulted = program
+END
