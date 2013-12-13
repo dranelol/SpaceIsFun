@@ -128,8 +128,8 @@ namespace SpaceIsFun
         SoundEffect weaponsSelected;
         SoundEffect weaponsDeselected;
         SoundEffect menuClick;
-        SoundEffectInstance IntroMusic;
-        SoundEffectInstance BattleMusic;
+        SoundEffect IntroMusic;
+        SoundEffect BattleMusic;
 
         #endregion
 
@@ -275,11 +275,11 @@ namespace SpaceIsFun
 
             #region sounds
 
-            weaponsSelected = Content.Load<SoundEffect>("WeaponsSelected.xnb");
+            weaponsSelected = Content.Load<SoundEffect>("WeaponsSelected");
             weaponsDeselected = Content.Load<SoundEffect>("WeaponsDeselected");
             menuClick = Content.Load<SoundEffect>("MenuClick");
-            IntroMusic = Content.Load<SoundEffectInstance>("SpaceIsFunIntroMusic");
-            BattleMusic = Content.Load<SoundEffectInstance>("SpaceIsFunBatlleMusic");
+            IntroMusic = Content.Load<SoundEffect>("SpaceIsFunIntro");
+            BattleMusic = Content.Load<SoundEffect>("SpaceIsFunBatlle");
 
             #endregion
 

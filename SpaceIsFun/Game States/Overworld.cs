@@ -23,7 +23,7 @@ namespace SpaceIsFun
         Vector2 starNodeSelected;
         Drawable overworldCursorDraw;
         Vector2 cursorCoords = new Vector2();          //Both the cursor coordinates and the selected node
-
+        SoundEffectInstance ThisIntroSong;
         void setupOverworld()
         {
             
@@ -37,7 +37,11 @@ namespace SpaceIsFun
 
                 setNodes();
 
-                IntroMusic.Play();
+                #region music
+                ThisIntroSong = IntroMusic.CreateInstance();
+                ThisIntroSong.IsLooped = true;
+                ThisIntroSong.Play();
+                #endregion
 
                 for (int i = 0; i < starNodes.Count; i++)
                 {
@@ -171,6 +175,8 @@ namespace SpaceIsFun
 
             overworld.leave += () =>
             {
+                //Stop the music on exit
+                ThisIntroSong.Stop();
                 // remove gui elements here
             };
         }
