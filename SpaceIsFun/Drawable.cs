@@ -11,14 +11,25 @@ using Microsoft.Xna.Framework.Graphics;
 namespace SpaceIsFun
 {
     /// <summary>
-    ///  This is the object that holds all the info for drawing an entity
+    /// Different ways an animation can run 
+    /// </summary>		
+    public enum AnimationType
+    {
+        Single,		/**< Runs through animation one time */
+        Oscillate,	/**< Runs through animation back and forth */
+        Loop,		/**< Runs through animation indefinitely */
+        None		/**< Doesn't Animate */
+    };
+
+    /// <summary>
+    ///  This is the object that holds all the info for drawing and animating an entity
     /// </summary>
     public class Drawable : Object
     {
         #region fields
 
         /// <summary>
-        /// texture to draw
+        /// Spritesheet for the drawable
         /// </summary>
         private Texture2D spriteTexture;
 
@@ -27,14 +38,8 @@ namespace SpaceIsFun
         /// </summary>
         public Texture2D SpriteTexture
         {
-            get
-            {
-                return spriteTexture;
-            }
-            set
-            {
-                spriteTexture = value;
-            }
+            get { return spriteTexture; }
+            set { spriteTexture = value; }
         }
 
         /// <summary>
@@ -43,220 +48,229 @@ namespace SpaceIsFun
         private Vector2 position2D;
 
         /// <summary>
-        /// parameter for position2D
+        /// Parameter for position2D
         /// </summary>
         public Vector2 Position2D
         {
-            get
-            {
-                return position2D;
-            }
-            set
-            {
-                position2D = value;
-            }
+            get { return position2D; }
+            set { position2D = value; }
         }
 
         /// <summary>
-        /// width of the drawable, in pixels
+        /// Width of the drawable's sprite in pixels
         /// </summary>
         private int width;
 
         /// <summary>
-        /// parameter for width
+        /// Parameter for width
         /// </summary>
         public int Width
         {
-            get
-            {
-                return width;
-            }
-
-            set
-            {
-                width = value;
-            }
+            get { return width; }
+            set { width = value; }
         }
 
         /// <summary>
-        /// height of the drawable, in pixels
+        /// Height of the drawable's sprite in pixels
         /// </summary>
         private int height;
 
         /// <summary>
-        /// parameter for height
+        /// Parameter for height
         /// </summary>
         public int Height
         {
-            get
-            {
-                return height;
-            }
-
-            set
-            {
-                height = value;
-            }
+            get { return height; }
+            set { height = value; }
         }
 
         /// <summary>
-        /// which frame of animation we're on. if this isn't an animated drawable, this remains 0
+        /// Which frame of animation we're on. If this isn't an animated drawable, this remains 0
         /// </summary>
         private int frame;
 
         /// <summary>
-        /// parameter for frame
+        /// Parameter for frame
         /// </summary>
         public int Frame
         {
-            get
-            {
-                return frame;
-            }
-
-            set
-            {
-                frame = value;
-            }
+            get { return frame; }
+            set { frame = value; }
         }
 
         /// <summary>
-        /// speed of the drawable; how much it moves (in screen space) per frame
+        /// Speed of the drawable; how much it moves (in screen space) per frame
         /// </summary>
         private float speed;
 
         /// <summary>
-        /// parameter for speed
+        /// Parameter for speed
         /// </summary>
         public float Speed
         {
-            get
-            {
-                return speed;
-            }
-
-            set
-            {
-                speed = value;
-            }
+            get { return speed; }
+            set { speed = value; }
         }
 
         /// <summary>
-        /// current target of moving drawable
+        /// Target (X,Y) grid coordinates the drawable is moving towards
         /// </summary>
         private Vector2 target;
 
         /// <summary>
-        /// parameter for target
+        /// Parameter for target
         /// </summary>
         public Vector2 Target
         {
-            get
-            {
-                return target;
-            }
-
-            set
-            {
-                target = value;
-            }
+            get { return target; }
+            set { target = value; }
         }
 
-        
-
         /// <summary>
-        /// whether or not the drawable is moving
+        /// Whether the drawable is currently moving
         /// </summary>
         private bool moving;
 
         /// <summary>
-        /// paramter for moving
+        /// Paramter for moving
         /// </summary>
         public bool Moving
         {
-            get
-            {
-                return moving;
-            }
-
-            set
-            {
-                moving = value;
-            }
+            get { return moving; }
+            set { moving = value; }
         }
 
         /// <summary>
-        /// whether or not the drawable is moving along a path
+        /// Whether the drawable is currently moving along a path
         /// </summary>
         private bool pathing;
 
         /// <summary>
-        /// parameter for pathing
+        /// Parameter for pathing
         /// </summary>
         public bool Pathing
         {
-            get
-            {
-                return pathing;
-            }
-
-            set
-            {
-                pathing = value;
-            }
+            get { return pathing; }
+            set { pathing = value; }
         }
 
         /// <summary>
-        /// path of the drawable
+        /// List of Vector2 (X,Y) grid cells that make up the drawable's path
         /// </summary>
         private List<Vector2> path;
 
         /// <summary>
-        /// parameter for path
+        /// Parameter for path list
         /// </summary>
         public List<Vector2> Path
         {
-            get
-            {
-                return path;
-            }
-
-            set
-            {
-                path = value;
-            }
+            get { return path; }
+            set { path = value; }
         }
 
         /// <summary>
-        /// path of the drawable
+        /// Vector2 (X,Y) coordinates of the drawable's current grid position
         /// </summary>
         private Vector2 positionGrid;
 
         /// <summary>
-        /// parameter for path
+        /// Parameter for grid position
         /// </summary>
         public Vector2 PositionGrid
         {
-            get
-            {
-                return positionGrid;
-            }
-
-            set
-            {
-                positionGrid = value;
-            }
+            get { return positionGrid; }
+            set { positionGrid = value; }
         }
+
+        //////////////////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Number of columns in spritesheet
+        /// </summary>
+        private int numColumns;
+
+        /// <summary>
+        /// Parameter for Number of columns in spritesheet
+        /// </summary>
+        public int NumColumns
+        {
+            get { return numColumns; }
+            set { numColumns = value; }
+        }
+
+        /// <summary>
+        /// Number of rows in spritesheet
+        /// </summary>
+        private int numRows;
+
+        /// <summary>
+        /// Parameter for Number of rows in spritesheet
+        /// </summary>
+        public int NumRows
+        {
+            get { return numRows; }
+            set { numRows = value; }
+        }
+
+        /// <summary>
+        /// The type of animation
+        /// </summary>
+        private AnimationType animType;
+
+        /// <summary>
+        /// Parameter for Animation Type
+        /// </summary>
+        public AnimationType AnimType
+        {
+            get { return animType; }
+            set { animType = value; }
+        }
+
+        /// <summary>
+        /// The frame to start the animation on
+        /// </summary>
+        private int startFrame;
+
+        /// <summary>
+        /// Parameter for Start Frame
+        /// </summary>
+        public int StartFrame
+        {
+            get { return startFrame; }
+            set { startFrame = (value <= numRows * numColumns) ? value : 1; }
+        }
+
+        /// <summary>
+        /// The number of frames in the animation
+        /// </summary>
+        private int animLength;
+
+        /// <summary>
+        /// Parameter for animation length
+        /// </summary>
+        public int AnimLength
+        {
+            get { return animLength; }
+            set { animLength = value; }
+        }
+
+        /// Functional Variables
+        /// Variables that are only used and modified by the methods of this class
+        private float lastFrame;	//!< Time the frame was last changed
+        private Rectangle src;      //!< Bounding box of individual sprite
+        //private Vector2 offset;   //!< X,Y relative to the texture for the current frame
+        private bool playing;       //!< bool to indicate whether the animation is currently playing or not
+        private bool recoil;        //!< indicates direction of oscillation; true indicates left
 
         #endregion
 
         #region constructors / destructors
 
         /// <summary>
-        /// constructor for a drawable
+        /// Simple constructor for a drawable (non-Animated)
         /// </summary>
-        /// <param name="sprite">texture to draw</param>
-        /// <param name="position">2d position of the drawable in screen space</param>
+        /// <param name="sprite"> Spritesheet for the drawable</param>
+        /// <param name="position"> 2D position of the drawable in screen space</param>
         public Drawable(Texture2D sprite, Vector2 position)
             : base()
         {
@@ -264,70 +278,174 @@ namespace SpaceIsFun
             position2D = position;
             width = spriteTexture.Bounds.Width;
             height = spriteTexture.Bounds.Height;
-            path = new List<Vector2>();
             frame = 0;
-            speed = 2;
-            
+            speed = 1;
+            animLength = 1;
+            animType = AnimationType.None;
+            numColumns = 1;
+            numRows = 1;
+            Initialize();
         }
 
-        public Drawable(Texture2D sprite, Vector2 position, Vector2 gPosition)
+        /// <summary>
+        /// Full constructor for an animated drawable
+        /// </summary>
+        /// <param name="sprite"> Spritesheet for the drawable</param>
+        /// <param name="position"> 2D position of the drawable in screen space</param>
+        /// <param name="w"> Width of individual sprite</param>
+        /// <param name="h"> Height of individual sprite</param>
+        /// <param name="spd"> Frame rate of the animation in 1/100 of a sec</param>
+        /// <param name="nCols"> Number of columns in the spritesheet</param>
+        /// <param name="nRows"> Number of rows in the spritesheet</param>
+        /// <param name="aType"> How the frames are animated</param>
+        /// <param name="start"> The initial frame of the animation</param>
+        /// <param name="length"> The number of frames in the animation</param>
+        public Drawable(Texture2D sprite, Vector2 position, int w, int h, float spd,
+                        int nCols, int nRows, AnimationType aType, int start, int length)
+            : base()
+        {
+            // Parameter's passed in:
+            spriteTexture = sprite;
+            position2D = position;
+            width = w;
+            height = h;
+            speed = spd;
+            numColumns = nCols;
+            numRows = nRows;
+            animType = aType;
+            startFrame = start;
+            animLength = length;
+            Initialize();
+        }
+
+        /// <summary>
+        /// Catch-All Constructor
+        /// </summary>
+        /// <param name="sprite"> Texture to draw</param>
+        /// <param name="position"> 2D position of the drawable in screen space</param>
+        /// <param name="gPosition"> Position of the drawable in the grid space</param>
+        public Drawable(Texture2D sprite, Vector2 position, Vector2 gPosition, 
+                        int nCols, int nRows, AnimationType aType, int start, int length)
             : base()
         {
             spriteTexture = sprite;
             position2D = position;
             positionGrid = gPosition;
-            width = spriteTexture.Bounds.Width;
-            height = spriteTexture.Bounds.Height;
-            path = new List<Vector2>();
-            frame = 0;
-            speed = 2;
-
+            width = (int)(spriteTexture.Bounds.Width/nCols);
+            height = (int)(spriteTexture.Bounds.Height/nRows);
+            startFrame = start;
+            speed = 1;
+            animLength = length;
+            animType = AnimationType.Loop;
+            numColumns = nCols;
+            numRows = nRows;
+            Initialize();
         }
+
 
         #endregion
 
         #region methods
 
         /// <summary>
-        /// init the drawable
+        /// Initialize the drawable
         /// </summary>
         public void Initialize()
         {
+            lastFrame = 0.0f;
+            src = new Rectangle(0, 0, width, height);
+            src.Y = (int)(frame / numColumns) * height;
+            src.X = (frame % numColumns) * width;
+            playing = false;
+            recoil = false;
+            path = new List<Vector2>();
+            frame = startFrame;
         }
 
         /// <summary>
-        /// load any content for the drawable
+        /// Load any content for the drawable
         /// </summary>
         public void LoadContent()
         {
-            
+
         }
 
         /// <summary>
-        /// update the drawable
+        /// Update the drawable
         /// </summary>
-        /// <param name="gameTime">current game time</param>
+        /// <param name="gameTime"> Current game time</param>
         public void Update(GameTime gameTime)
         {
+            //[DEBUG]/ System.Diagnostics.Debug.WriteLine("position: "+position2D.ToString());
 
-            //System.Diagnostics.Debug.WriteLine("position: "+position2D.ToString());
-            
-            //System.Diagnostics.Debug.WriteLine("updating");
+            //[DEBUG]/ System.Diagnostics.Debug.WriteLine("updating");
 
-            
-            
-            if(pathing == true)
+            //[UPDATE ANIMATION FRAME]
+            //1. If this drawable is animated && the time since the last frame change is greater than animation speed
+            //   > Based on the animation type determine the next frame
+            //   > Set the src Vector2 to that coordinates of that frame on the Texture
+            if ((animType != AnimationType.None) && (playing))
             {
+                lastFrame += (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                if (lastFrame >= speed * 0.1)
+                {
+                    //[DETERMINE NEXT FRAME]
+                    switch (animType)
+                    {
+                        case AnimationType.Loop:
+                            frame = (frame == (startFrame - 1 + animLength)) ? startFrame : frame + 1;
+                            break;
+                        case AnimationType.Oscillate:
+                            if (!recoil) // If frame animation is forward...
+                            {
+                                if (frame == (startFrame - 1 + animLength))
+                                {
+                                    recoil = true;
+                                    frame--;
+                                }
+                                else frame++;
+                            }
+                            else        // Else if frame animation is reversed
+                            {
+                                if (frame == startFrame)
+                                {
+                                    recoil = false;
+                                    frame++;
+                                }
+                                else frame--;
+                            }
+                            break;
+                        case AnimationType.Single:
+                            if (frame == (startFrame - 1 + animLength)) playing = false;
+                            else frame++;
+                            break;
+                        default:
+                            System.Diagnostics.Debug.WriteLine("Animation Issue");
+                            break;
+                    }
 
-                //System.Diagnostics.Debug.WriteLine("updating");
+                    //[SET NEXT FRAME]
+                    src.Y = (int)(frame / numColumns) * height;
+                    src.X = (frame % numColumns) * width;
+                }
+            }
+
+            if (pathing == true)
+            {
+                //[DEBUG]/ System.Diagnostics.Debug.WriteLine("updating");
+
+                // Find the distance to target
+                /*
+				double c = Math.Sqrt(Math.Pow((double)(target.X - position2D.X), 2d) +
+					Math.Pow((double)(target.Y - position2D.Y), 2d));
                 
-                // find the distance to target
-                //double c = Math.Sqrt(Math.Pow((double)(target.X - position2D.X), 2d) + Math.Pow((double)(target.Y - position2D.Y), 2d));
-                //System.Diagnostics.Debug.WriteLine("target: " + target.ToString());
+				//[DEBUG]/ System.Diagnostics.Debug.WriteLine("target: " + target.ToString());
+                */
                 Vector2 delta = new Vector2(target.X - position2D.X, target.Y - position2D.Y);
-                //System.Diagnostics.Debug.WriteLine("target: " + target.ToString());
 
-                // if distance to target is less than speed, we're at our destination
+                //[DEBUG]/ System.Diagnostics.Debug.WriteLine("target: " + target.ToString());
+
+                // If distance to target is less than speed, we're at our destination
                 if (delta.Length() <= (double)speed)
                 {
                     // so, move to destination
@@ -336,33 +454,30 @@ namespace SpaceIsFun
                     if (path.Count != 0)
                     {
                         this.positionGrid = target;
-                        //System.Diagnostics.Debug.WriteLine("Draw Position: "+positionGrid.ToString());
+                        //[DEBUG]/ System.Diagnostics.Debug.WriteLine("Draw Position: "+positionGrid.ToString());
                         target = path[0];
                         path.RemoveAt(0);
-                        
                     }
 
-                    // if path is empty, stop moving, stop pathing, set target to null
+                    // Else if path is empty, stop moving, stop pathing, set target to null
                     else
                     {
                         pathing = false;
                         moving = false;
                         target = new Vector2();
-                        
+                        playing = false;
                     }
-
-
                 }
 
-                // else, we need to move along the delta
+                // Else, we need to move along the delta
                 else
                 {
-                    // get the movement delta
+                    // Get the movement delta
                     #region old movement code
                     /*
                     double alpha = Math.Asin((target.Y - position2D.Y) / c);
 
-                    // alpha is the angle between c and (x2-x1)
+                    // Alpha is the angle between c and (x2-x1)
 
                     double Y = speed * Math.Sin(alpha);
 
@@ -386,13 +501,13 @@ namespace SpaceIsFun
 
 
 
-            
-            
+
+
 
 
             // if we have a current target, figure out how much to move by and move
 
-            
+
         }
 
         /// <summary>
@@ -402,7 +517,7 @@ namespace SpaceIsFun
         public void Draw(SpriteBatch spriteBatch)
         {
             //spriteBatch.Begin();
-            spriteBatch.Draw(spriteTexture, position2D, Color.White);
+            spriteBatch.Draw(spriteTexture, position2D, src, Color.White);
             //spriteBatch.
         }
 
@@ -424,36 +539,29 @@ namespace SpaceIsFun
         }
 
         /// <summary>
-        /// move the drawable to newPosition in screen space
+        /// Move the drawable to newPosition in screen space
         /// </summary>
-        /// <param name="newPosition">position in screen space to which the drawable should be moved</param>
+        /// <param name="newPosition"> Position in screen space to which the drawable should be moved</param>
         public void MoveTo(Vector2 newPosition)
         {
             position2D = newPosition;
         }
 
         /// <summary>
-        /// sets the drawable's path
+        /// Sets the drawable's path
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">List of grid X,Y coordinates of the drawable's path </param>
         public void setPath(List<Vector2> path)
         {
-
-
-
-
-            //System.Diagnostics.Debug.WriteLine("setpath");
-
-            
-
             this.path = path;
             pathing = true;
             moving = true;
+            playing = true;
             target = path[0];
             path.RemoveAt(0);
         }
 
-        
+
 
         #endregion
 
