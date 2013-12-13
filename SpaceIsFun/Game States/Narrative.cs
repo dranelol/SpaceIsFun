@@ -76,7 +76,7 @@ namespace SpaceIsFun
                     narrative1Resolved = true;
                 }
 
-                else if(battle1Resolved == true && battle2Resolved == false && narrative2Resolved == false && twoHappened == false && outState==false)
+                else if (battle1Resolved == true && battle2Resolved == false && narrative2Resolved == false && narrative1Resolved == false && twoHappened == false && outState == false)
                 {
                     
                     introTwo.Visible = false;

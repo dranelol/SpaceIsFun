@@ -745,6 +745,8 @@ namespace SpaceIsFun
                 || stateMachine.CurrentState.Name == pauseState.Name && stateMachine.PreviousState.Name == battle.Name)
             {
                 spriteBatch.Begin();
+
+                
                 Ship playerShip = (Ship)ShipManager.RetrieveEntity(playerShipUID);
                 playerShip.Draw(spriteBatch);
 
@@ -887,7 +889,9 @@ namespace SpaceIsFun
         /// </summary>
         public void setRoomGridDictionary(int shipUID)
         {
+            
             Ship thisShip = (Ship)ShipManager.RetrieveEntity(shipUID);
+            
 
             Dictionary<int, int> roomGridDict = new Dictionary<int, int>();
 
@@ -983,6 +987,8 @@ namespace SpaceIsFun
 
             //return roomGridDict;
             // TODO: possibly un-associate any un-wanted grids with rooms (weirdly-shaped rooms, for example)
+
+            
 
         }
 
@@ -1114,7 +1120,10 @@ namespace SpaceIsFun
         /// </summary>
         public void setUnwalkableGrids(int shipUID)
         {
+
+            
             Ship thisShip = (Ship)ShipManager.RetrieveEntity(shipUID);
+            
             for (int i = 0; i < thisShip.ShipGrid.GetLength(0); i++)
             {
                 for (int j = 0; j < thisShip.ShipGrid.GetLength(1); j++)
@@ -1133,6 +1142,7 @@ namespace SpaceIsFun
                     }
                 }
             }
+            
         }
 
         /// <summary>
